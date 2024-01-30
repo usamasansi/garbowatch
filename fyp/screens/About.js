@@ -1,10 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView,Image } from 'react-native';
 
 const About = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.content}>
+      <Image
+        source={require('../assests/images/garbowatch.png')}
+        style={styles.image}
+      />
         <Text style={styles.title}>Welcome to Garbage Deduction</Text>
 
         <Text style={styles.description}>
@@ -52,6 +56,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     color:'grey'
+  },
+  image: {
+    width: '100%',
+    height: 200, // Set an appropriate height for the image
+    resizeMode: 'cover', // Adjust the image's size and aspect ratio
   },
   sectionTitle: {
     fontSize: 20,

@@ -72,7 +72,7 @@ const Homescreen = ({navigation}) => {
           <Text style={styles.quoteAuthor}> - Robert Swan</Text>
         </View>
         <Image
-        source={require('../assests/images/raed.jpeg')}
+        source={require('../assests/images/garbowatch.png')}
         style={styles.image}
       />
       </View>

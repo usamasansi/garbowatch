@@ -7,15 +7,17 @@ import {
   ScrollView,
   TextInput,
   Image,
-  
+  Button,
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+
 const Report_edit = ({navigation}) => {
     const [activeNavItem, setActiveNavItem] = useState(null);
+
     const navigateTo = screen => {
         // Assuming 'navigation' prop is passed from React Navigation
         
@@ -33,21 +35,90 @@ const Report_edit = ({navigation}) => {
       const isNavItemActive = (navItem) => {
         return activeNavItem === navItem;
       };
+      
+     
+    
       return (
         <ScrollView contentContainerStyle={styles.container}>
-         <View style={styles.contentView}>
+              <View style={styles.garbowatch}>
+         
+          <TouchableOpacity
+              onPress={() => navigateTo('Report')}
+              onPressIn={() => handleNavItemPressIn('Report')}
+              onPressOut={handleNavItemPressOut}
+              style={[
+                styles.navItem,
+                isNavItemActive('About') && styles.activeabout,
+              ]}
+            >
+             <Icon style={styles.garbowatch}
+      name="arrow-left" size={25} /> 
+              
+            </TouchableOpacity>
+            
+         
+          </View>
+       
+          <View style={styles.contentView}>
          <View
       style={{
-        width: 20,
-        height: 20,
-        backgroundColor: 'grey',
+        width: "130%",
+        height: '35%',
+       
+        top:-207,
+       
       }}>
-        <Text>You must take atleast one photo</Text>
-    </View> 
+        <Text  style={{
+     textAlign:'center',
+     fontSize:25,
+     fontWeight:'bold',
+     color:'black',
+     bottom:-70
+
+ 
+      }}>You must take atleast one photo 
+      </Text>
+      <View
+      style={{
+        backgroundColor:'#D3D3D3',
+        bottom:-180,
+        width:'auto',
+        height:'200%'
+      }}>
+      <Text  style={{
+     fontSize:28,
+     fontWeight:'bold',
+     color:'black',
     
-         
-         
+
+ 
+      }}>       Size of the Trash
+      </Text>
+      <TouchableOpacity 
+              
+               style=
+                {styles.buttonContainer}
+                
+    
+               
+      >
+     <Image source={require('../assests/images/garbage-bag-icon-.jpg')} style={styles.buttonImage} /></TouchableOpacity>
+       <Text style={{fontSize:24,
+     fontWeight:'bold',
+     color:'black',
+     right:-50}}>
+      Fits in a bag</Text>
+    
+
+      </View>
+    </View> 
+  <TouchableOpacity style={styles.cameraButton} >
+ <Icon style={styles.cameraIcon}name='camera' size={30} onPress={this.openCamera}> </Icon>
+ </TouchableOpacity>
          </View>
+        
+       
+         
     
           
           <View style={styles.navbar}>
@@ -99,7 +170,19 @@ const styles = StyleSheet.create({
       width: '100%',
       height: '90%',
     },
-  
+    cameraIcon: {
+      width: 30,
+      height: 30,
+      color: 'white', // Adjust icon color if needed
+    
+    },
+    cameraButton: {
+      backgroundColor: '#4CAF50', // Adjust green shade as needed
+      borderRadius: 30,
+     padding:12,
+     bottom:230,
+     left:150
+    },
     navbar: {
       flexDirection: 'row',
       justifyContent: 'space-around',
@@ -118,7 +201,7 @@ const styles = StyleSheet.create({
       color: 'grey', // Change text color to white
       fontSize: 18,
       fontWeight: 'bold', // Add subtle bold emphasis
-      marginBottom: 10, 
+    
       justifyContent:'space-between',
      
     },
@@ -153,6 +236,7 @@ const styles = StyleSheet.create({
       padding: 20,
       alignItems: 'center', // Center the button horizontally
       justifyContent: 'center', // Center the button vertically
+      
     },
     content: {
       alignItems: 'center',
@@ -241,7 +325,7 @@ const styles = StyleSheet.create({
     },
     garbowatch: {
       backgroundColor:'#4CBB17',
-      padding:4,
+      padding:5,
       color: 'white',
       fontWeight: 'bold',
       fontSize: 25,
@@ -254,7 +338,31 @@ const styles = StyleSheet.create({
       marginRight:1000
     },
   
-    
+    buttonContainer: {
+      flexDirection: 'row',
+      right:-80,
+      padding: 10,
+      borderRadius: 30,
+      width:65,
+      backgroundColor:'white',
+      borderColor:'grey',
+      borderWidth:1
+    },
+    buttonImage: {
+      width: 40,
+      height: 40,
+      marginRight: 10,
+      borderRadius:20,
+      fontWeight:'bold',
+      color:'#4CBB17',
+      fontSize: 20,
+      
+      
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 16,
+    },
     
   });
   
