@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,14 @@ import {
 } from 'react-native';
 import ImagePicker,{launchCamera} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
+import Geolocation from '@react-native-community/geolocation';
+import MapView, { Marker } from 'react-native-maps';
+import MapViewComponent from './MapViewComponent';
 
 const Report = ({navigation}) => {
     const [activeNavItem, setActiveNavItem] = useState(null);
+ 
+  
   const navigateTo = screen => {
     // Assuming 'navigation' prop is passed from React Navigation
     navigation.navigate(screen);
@@ -30,6 +35,12 @@ const Report = ({navigation}) => {
     return activeNavItem === navItem;
   };
 
+  const [showMap, setShowMap] = useState(false);
+
+  const handleShowMap = () => {
+    // Toggle the visibility of the MapViewComponent
+    setShowMap(!showMap);
+  };
 
  
 
@@ -38,6 +49,24 @@ const Report = ({navigation}) => {
      
 
       <View style={styles.contentView}>
+      <View style={{ flex: 1,
+      width:'100%'
+      }}>
+      {/* Your other components go here */}
+      <TouchableOpacity onPress={handleShowMap}>
+        
+      </TouchableOpacity>
+
+      {/* Render the MapViewComponent conditionally based on the state */}
+      {showMap && (
+        <MapViewComponent
+          latitude={12.841550}
+          longitude={77.667060}
+        />
+      )}
+      
+    </View>
+    
       <TouchableOpacity
           onPress={() => navigateTo('Report_edit')}
           onPressIn={() => handleNavItemPressIn('Report_Edit')}
@@ -47,9 +76,9 @@ const Report = ({navigation}) => {
             isNavItemActive('Report_edit') && styles.activeNavItem,
           ]}
         >
-          <Text style={styles.activeNavItem}><Icon
+          <Text style={styles.Icon}><Icon
  
- name="account" size={25}/></Text>
+ name="plus-circle" size={50}/></Text>
         </TouchableOpacity>
         
         <Text style={styles.contentText}></Text>
@@ -101,6 +130,15 @@ const Report = ({navigation}) => {
           flex: 1, // Make the container take up the entire screen
           flexDirection: 'column', // Arrange the child elements vertically
         },
+        Icon:{
+          fontWeight:'bold',
+            color:'#4CBB17',
+             fontSize: 20,
+             borderBottomWidth: 2, // Add a border at the bottom to simulate underline
+             borderColor: 'white',
+             right:-140
+             
+        },
         navbar: {
           flexDirection: 'row',
     justifyContent: 'space-around',
@@ -121,6 +159,14 @@ const Report = ({navigation}) => {
     marginBottom: 10, 
     justifyContent:'space-between',
    
+        },
+        map : {
+          flex: 1, // Ensures map takes up all available space within its container
+          width: '100%', // Explicitly sets width to 100% for good measure
+          height: '100%', // Explicitly sets height to 100% for good measure
+          position: 'absolute', // Positions the map absolutely to avoid overlapping other elements
+          top: 0, // Positions the map at the top of the screen
+          left: 0, // Positions the map at the left of the screen
         },
         contentView: {
           flex: 1, // Make the content view take up the remaining space
