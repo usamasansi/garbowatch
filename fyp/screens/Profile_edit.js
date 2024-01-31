@@ -41,36 +41,37 @@ const Profile_edit = ({navigation}) => {
   const [isNotificationChecked, setNotificationChecked] = useState(false);
   const handleUpdateProfile = async () => {
     try {
-      const response = await fetch('http://192.168.10.4:3000/api/profile', {
+      const response = await fetch('http://192.168.10.12:3000/api/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          firstName:'',
-          lastName:'',
-          email:'',
-          phone:'',
+          firstName: 'raed',
+          lastName: 'osman',
+          email: '',
+          phone: '',
           organizeAction: false,
           receiveNotifications: false,
           // Add other profile data as needed
         }),
       });
-
+  
       const data = await response.json();
       console.log('Profile Updated:', data);
-
+  
       // Show a success message or perform additional actions upon successful update
       Alert.alert('Success', 'Profile Updated Successfully');
-      
+  
       // Assuming 'navigation' prop is passed from React Navigation
       navigation.navigate('profile'); // Navigate back to the Profile screen
     } catch (error) {
       console.error('Error updating profile:', error);
       // Handle error or show an error message to the user
       Alert.alert('Error', 'Failed to Update Profile');
-    }
-  };
+    }
+  };
+  
 
   return (
     

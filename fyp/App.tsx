@@ -15,6 +15,7 @@ import Profile from './screens/Profile';
 import profile_edit from './screens/Profile_edit'
 import Profile_edit from './screens/Profile_edit';
 import Report_edit from './screens/Report_edit';
+import CameraComponent from './screens/CameraComponent';
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Stack.Screen name="profile_edit" component={Profile_edit} />
         <Stack.Screen name="CommunityForum" component={CommunityForm} />
         <Stack.Screen name="Report_edit" component={Report_edit} />
+        <Stack.Screen name="CameraComponent" component={CameraComponent} />
 
         <Stack.Screen name="About" component={About} />
         <Stack.Screen name="signingoogle" component={googlesignin} />
