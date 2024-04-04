@@ -46,7 +46,21 @@ const Report = ({navigation}) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-     
+      <View style={styles.garbowatch}>
+      <TouchableOpacity
+          onPress={() => navigateTo('Report')}
+          onPressIn={() => handleNavItemPressIn('Report')}
+          onPressOut={handleNavItemPressOut}
+          style={[
+            styles.navItem,
+            isNavItemActive('Report') && styles.activeabout,
+          ]}>
+         <TouchableOpacity onPress={handleShowMap}>
+         <Text style={styles.garbowatch}>MapView</Text>
+      </TouchableOpacity>
+        </TouchableOpacity>
+        
+      </View>
 
       <View style={styles.contentView}>
       <View style={{ flex: 1,
@@ -54,14 +68,13 @@ const Report = ({navigation}) => {
       }}>
       {/* Your other components go here */}
       <TouchableOpacity onPress={handleShowMap}>
-        
+       
       </TouchableOpacity>
 
       {/* Render the MapViewComponent conditionally based on the state */}
       {showMap && (
         <MapViewComponent
-          latitude={12.841550}
-          longitude={77.667060}
+          
         />
       )}
       
@@ -236,6 +249,15 @@ const Report = ({navigation}) => {
             resizeMode: 'contain',
             borderWidth: 1,
             borderColor: '#000',
+          },
+          garbowatch: {
+            backgroundColor: '#4CBB17',
+            padding: 5,
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: 20,
+            borderRadius: 5,
+            justifyContent: 'space-between',
           },
       });
 

@@ -40,8 +40,8 @@ const Profile = ({navigation, route}) => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.container2}>
-        <Text>Welcome, {loginState.username}</Text>
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 24 }}>
+        <Text> {loginState.username}</Text>
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 24 }}>RAED BIN UMAIR
             {loginState.username}
           </Text>
           <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16}}>
