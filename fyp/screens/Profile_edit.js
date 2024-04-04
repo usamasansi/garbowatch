@@ -41,7 +41,7 @@ const Profile_edit = ({navigation}) => {
   const [isNotificationChecked, setNotificationChecked] = useState(false);
   const handleUpdateProfile = async () => {
     try {
-      const response = await fetch('http://192.168.10.12:3000/api/profile', {
+      const response = await fetch('http://192.168.159.253:3000/api/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     height: '90%',
   },
   background: {
-    flex: 1,
+    height:'100%',
     resizeMode: 'cover', // or 'stretch' or 'contain'
     justifyContent: 'center',
     bottom:-23.5,
@@ -178,18 +178,24 @@ const styles = StyleSheet.create({
   Button: {
     width: 250,
     height: 40,
-      margin: 10,
-      elevation: 100,
-      textAlign:'center',
-      padding: 6.5,
-      borderRadius:2,
-      backgroundColor: '#F2F2F2',
-      color:'#4CBB17',
-      fontWeight:'bold',
-      fontSize:20,
-      bottom:-30,
-      right:-75
+    margin: 10,
+    textAlign: 'center',
+    padding: 6.5,
+    borderRadius: 2,
+    backgroundColor: 'white',
+    color: '#4CBB17',
+    fontWeight: 'bold',
+    fontSize: 20,
+    bottom: -20,
+    right: -75,
+    shadowColor: 'black',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 5.5,
+    shadowRadius: 2,
+    // Shadow properties for Android
+    elevation: 50,
   },
+  
   contentView: {
     flex: 1, // Make the content view take up the remaining space
     padding: 20,
