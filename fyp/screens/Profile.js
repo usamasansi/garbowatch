@@ -11,7 +11,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example 
 import CheckBox from '@react-native-community/checkbox';
 const Profile = ({navigation, route}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
-  const { username } = route.params || {};
+ 
+  const { firstName, lastName } = route.params || {};
 
   const navigateTo = screen => {
     // Assuming 'navigation' prop is passed from React Navigation
@@ -20,7 +21,10 @@ const Profile = ({navigation, route}) => {
   const handleNavItemPressIn = navItem => {
     setActiveNavItem(navItem);
   };
-
+  const updateProfileInfo = (newFirstName, newLastName) => {
+    setFirstName(newFirstName);
+    setLastName(newLastName);
+  };
   const handleNavItemPressOut = () => {
     setActiveNavItem(null);
   };
@@ -40,9 +44,9 @@ const Profile = ({navigation, route}) => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.container2}>
-        <Text> {loginState.username}</Text>
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 24 }}>RAED BIN UMAIR
-            {loginState.username}
+        
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 24 }}>
+          {firstName} {lastName}
           </Text>
           <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16}}>
             You didn't select any organization. Select company or organization
@@ -88,22 +92,25 @@ const Profile = ({navigation, route}) => {
               {' '}
               I want to organize a Cleaning Action
             </Text>
-            <CheckBox disabled />
+            <CheckBox disabled  />
+
           </View>
           <View style={styles.checkboxContainer}>
             <Text style={styles.checkboxLabel}>
               I want to receive notifications about cleaning
             </Text>
-            <CheckBox disabled />
+            <CheckBox disabled  />
+
           </View>
         </View>
 
         <View>
           <Text style={styles.sectionTitle}>Your Email</Text>
-          <Text style={styles.text}>Profile Your Email</Text>
+          <Text style={styles.text}></Text>
 
           <Text style={styles.sectionTitle}>Your Phone</Text>
-          <Text style={styles.text}>Profile Your Email Phone</Text>
+          <Text style={styles.text}></Text>
+
         </View>
         
       </ScrollView>

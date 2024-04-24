@@ -4,7 +4,8 @@ import MapView, { PROVIDER_GOOGLE,Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { Image } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native'
-const MapViewComponent = () => {
+
+const MapViewComponent2 = () => {
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
   const mapRef = useRef(null);
@@ -60,7 +61,7 @@ const MapViewComponent = () => {
 
       <MapView
         provider={PROVIDER_GOOGLE} // Use Google Maps
-        style={{ width:'130%',height:'130%',left:-17,top:-20 }}
+        style={{ width:'200%',height:'50%'}}
         initialRegion={{
           latitude: location?.latitude || 31.543944466894633,
           longitude: location?.longitude || 74.38568392767803,
@@ -94,4 +95,4 @@ const MapViewComponent = () => {
   );
 };
 
-export default MapViewComponent;
+export default MapViewComponent2;

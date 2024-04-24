@@ -15,9 +15,10 @@ import CheckBox from '@react-native-community/checkbox';
 import RadioButton from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-const Profile_edit = ({navigation}) => {
+const Profile_edit = ({navigation, route}) => {
 
-    
+ 
+
     const [activeNavItem, setActiveNavItem] = useState(null);
     const navigateTo = screen => {
         // Assuming 'navigation' prop is passed from React Navigation
@@ -37,41 +38,47 @@ const Profile_edit = ({navigation}) => {
         return activeNavItem === navItem;
       };
       
-    const [isOrganizeActionChecked, setOrganizeActionChecked] = useState(false);
-  const [isNotificationChecked, setNotificationChecked] = useState(false);
-  const handleUpdateProfile = async () => {
-    try {
-      const response = await fetch('http://192.168.159.253:3000/api/profile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          firstName: 'raed',
-          lastName: 'osman',
-          email: '',
-          phone: '',
-          organizeAction: false,
-          receiveNotifications: false,
-          // Add other profile data as needed
-        }),
-      });
-  
-      const data = await response.json();
-      console.log('Profile Updated:', data);
-  
-      // Show a success message or perform additional actions upon successful update
-      Alert.alert('Success', 'Profile Updated Successfully');
-  
-      // Assuming 'navigation' prop is passed from React Navigation
-      navigation.navigate('profile'); // Navigate back to the Profile screen
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      // Handle error or show an error message to the user
-      Alert.alert('Error', 'Failed to Update Profile');
-    }
-  };
-  
+      const [firstName, setFirstName] = useState('');
+      const [lastName, setLastName] = useState('');
+      const [email, setEmail] = useState('');
+      const [phone, setPhone] = useState('');
+      const [organizations, setOrganizations] = useState('');
+      const [isOrganizeActionChecked, setOrganizeActionChecked] = useState(false);
+      const [isNotificationChecked, setNotificationChecked] = useState(false);
+    
+      const handleUpdateProfile = async () => {
+        try {
+          const response = await fetch('http://192.168.10.14:3000/api/profile', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              firstName,
+              lastName,
+              email,
+              phone,
+              organizations,
+              organizeAction: isOrganizeActionChecked,
+              receiveNotifications: isNotificationChecked,
+              // Add other profile data as needed
+            }),
+          });
+    
+          const data = await response.json();
+          console.log('Profile Updated:', data);
+
+          // Show a success message or perform additional actions upon successful update
+          Alert.alert('Success', 'Profile Updated Successfully');
+    
+          // Assuming 'navigation' prop is passed from React Navigation
+          navigation.navigate('profile'); // Navigate back to the Profile screen
+        } catch (error) {
+          console.error('Error updating profile:', error);
+          // Handle error or show an error message to the user
+          Alert.alert('Error', 'Failed to Update Profile');
+        }
+      };
 
   return (
     
@@ -79,12 +86,12 @@ const Profile_edit = ({navigation}) => {
           <View style={styles.garbowatch}>
           
      <TouchableOpacity
-         onPress={() => navigateTo('Home')}
-         onPressIn={() => handleNavItemPressIn('Home')}
+         onPress={() => navigateTo('profile')}
+         onPressIn={() => handleNavItemPressIn('profile')}
          onPressOut={handleNavItemPressOut}
          style={[
            styles.navItem,
-           isNavItemActive('About') && styles.activeabout,
+           isNavItemActive('profile') && styles.activeabout,
          ]}
        >
         <Icon style={styles.garbowatch}
@@ -105,23 +112,32 @@ const Profile_edit = ({navigation}) => {
     placeholder="First Name"
     placeholderTextColor="grey"
     style={styles.input}
+    value={firstName}
+        onChangeText={setFirstName}
   />
    <TextInput
     placeholder="Last Name"
     placeholderTextColor="grey"
     style={styles.input}
+    value={lastName}
+    onChangeText={setLastName}
   />
   <TextInput
         placeholder="Email"
         keyboardType="email-address"
         placeholderTextColor="grey"
         style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        
       />
  <TextInput
         placeholder="Phone"
         keyboardType="phone-pad"
         style={styles.input}
         placeholderTextColor="grey"
+        value={phone}
+        onChangeText={setPhone}
       />
 
       <Text style={{ fontSize: 24, fontWeight: 'bold', marginVertical: 10, color:'grey' }}>Organization</Text>
@@ -130,6 +146,8 @@ const Profile_edit = ({navigation}) => {
         placeholder="Organizations"
         placeholderTextColor="grey"
         style={styles.input}
+        value={organizations}
+        onChangeText={setOrganizations}
 
       />
             <Text style={{ fontSize: 24, fontWeight: 'bold', marginVertical: 10, color:'grey' }}>
@@ -145,12 +163,12 @@ const Profile_edit = ({navigation}) => {
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text style={{ fontSize: 18, marginVertical: 10, color:'grey' }}>I want to receive notifications about cleaning</Text>
-       <CheckBox value={isOrganizeActionChecked}
-          onValueChange={(newValue) => setOrganizeActionChecked(newValue)}
+       <CheckBox  value={isNotificationChecked}
+        onValueChange={setNotificationChecked}
           tintColors={{ true: '#4CBB17' }} 
 
           />
-           
+          
        </View>
      
 
@@ -205,4 +223,4 @@ const styles = StyleSheet.create({
      
 });
 
-export default Profile_edit;
+export default Profile_edit;

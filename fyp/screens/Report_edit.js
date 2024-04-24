@@ -47,7 +47,12 @@ const Report_edit = ({navigation}) => {
   const [istypeactionchecked5, settypeactionchecked5] = useState(false);
   const [istypeactionchecked6, settypeactionchecked6] = useState(false);
   const [istypeactionchecked7, settypeactionchecked7] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
+  const handleShowMap = () => {
+    // Toggle the visibility of the MapViewComponent
+    setShowMap(!showMap);
+  };
  
   return (
     <View style={styles.container}>
@@ -278,6 +283,7 @@ const Report_edit = ({navigation}) => {
   onValueChange={newValue => settypeactionchecked7(newValue)}
   tintColors={{true: '#4CBB17'}}
 />
+
 <Text style={{top:-320,
    fontSize: 24,
    fontWeight: 'bold',
@@ -287,7 +293,11 @@ const Report_edit = ({navigation}) => {
    
   
   }}>Location</Text>
-  
+   
+       
+       
+ 
+       
 </View>
 <View>
 <Text style={{top:-320,

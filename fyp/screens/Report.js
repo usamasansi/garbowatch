@@ -79,7 +79,7 @@ const Report = ({navigation}) => {
       )}
       
     </View>
-    
+   
       <TouchableOpacity
           onPress={() => navigateTo('Report_edit')}
           onPressIn={() => handleNavItemPressIn('Report_Edit')}
@@ -93,6 +93,7 @@ const Report = ({navigation}) => {
  
  name="plus-circle" size={50}/></Text>
         </TouchableOpacity>
+
         
         <Text style={styles.contentText}></Text>
       </View>
