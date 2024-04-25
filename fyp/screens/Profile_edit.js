@@ -48,7 +48,7 @@ const Profile_edit = ({navigation, route}) => {
     
       const handleUpdateProfile = async () => {
         try {
-          const response = await fetch('http://192.168.10.14:3000/api/profile', {
+          const response = await fetch('http://192.168.100.56:3000/api/profile', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

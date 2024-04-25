@@ -12,12 +12,15 @@ import {
   TouchableOpacity,
   Animated,
   FlatList,
+  Alert,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Geolocation from '@react-native-community/geolocation';
 import MapView, { Marker } from 'react-native-maps';
 import CameraComponent from './CameraComponent';
+import MapViewComponent2 from './MapViewComponent2';
+import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const Report_edit = ({navigation}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
 
@@ -26,6 +29,7 @@ const Report_edit = ({navigation}) => {
 
     navigation.navigate(screen);
   };
+  
 
   const handleNavItemPressIn = navItem => {
     setActiveNavItem(navItem);
@@ -47,13 +51,52 @@ const Report_edit = ({navigation}) => {
   const [istypeactionchecked5, settypeactionchecked5] = useState(false);
   const [istypeactionchecked6, settypeactionchecked6] = useState(false);
   const [istypeactionchecked7, settypeactionchecked7] = useState(false);
+  const [istypeactionchecked8, settypeactionchecked8] = useState(false);
+
+  const [additionalInfo, setadditionalInfo] = useState('');
+
   const [showMap, setShowMap] = useState(false);
 
   const handleShowMap = () => {
     // Toggle the visibility of the MapViewComponent
     setShowMap(!showMap);
   };
- 
+  const handleUpdateReport = async () => {
+    try {
+      const response = await fetch('http://192.168.100.56:3000/api/reports', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fitsinabag:isOrganizeActionChecked,
+          fitsinawheelbarrow:istypeactionchecked,
+          truckneeded:istypeactionchecked2,
+          househould:istypeactionchecked3,
+          construction:istypeactionchecked4,
+          plastic:istypeactionchecked5,
+          glass:istypeactionchecked6,
+          paper:istypeactionchecked7,
+          accessibilebyacar:istypeactionchecked8,
+          additionalInfo,
+          // Add other profile data as needed
+        }),
+      });
+
+      const data = await response.json();
+      console.log('Report Updated:', data);
+
+      // Show a success message or perform additional actions upon successful update
+      Alert.alert('Success', 'report Updated Successfully');
+
+      // Assuming 'navigation' prop is passed from React Navigation
+      navigation.navigate('Report'); // Navigate back to the Profile screen
+    } catch (error) {
+      console.error('Error updating report:', error);
+      // Handle error or show an error message to the user
+      Alert.alert('Error', 'Failed to Update report');
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.garbowatch}>
@@ -249,8 +292,8 @@ const Report_edit = ({navigation}) => {
           </Text>
           <CheckBox 
             style={{bottom: 415, right: -60}}
-            value={istypeactionchecked6}
-            onValueChange={newValue => settypeactionchecked6(newValue)}
+            value={istypeactionchecked7}
+            onValueChange={newValue => settypeactionchecked7(newValue)}
             tintColors={{true: '#4CBB17'}}
           />
 
@@ -266,7 +309,7 @@ const Report_edit = ({navigation}) => {
   
   }}>Trash Accessibility</Text>
 </View>
-<View style={{
+<View style={{flex:1
 
 }}>
   <Text style={{top:-295,
@@ -279,8 +322,8 @@ const Report_edit = ({navigation}) => {
   
   }}>Accessible by a Car</Text><CheckBox 
   style={{bottom: 322, right: -72}}
-  value={istypeactionchecked7}
-  onValueChange={newValue => settypeactionchecked7(newValue)}
+  value={istypeactionchecked8}
+  onValueChange={newValue => settypeactionchecked8(newValue)}
   tintColors={{true: '#4CBB17'}}
 />
 
@@ -293,7 +336,16 @@ const Report_edit = ({navigation}) => {
    
   
   }}>Location</Text>
-   
+   <TouchableOpacity onPress={handleShowMap}>
+       <Text style={{color:'black',right: 100,top:-320,}}>click to show current</Text>
+       </TouchableOpacity>
+ 
+       {/* Render the MapViewComponent conditionally based on the state */}
+       {showMap && (
+         <MapViewComponent2
+           
+         />
+       )}
        
        
  
@@ -324,10 +376,12 @@ const Report_edit = ({navigation}) => {
           fontSize:16,
           color:'black'
         }}
+        value={additionalInfo}
+        onChangeText={setadditionalInfo}
       />
       <TouchableOpacity
        
-       onPress={() => navigation.navigate('Report')} >
+       onPress={handleUpdateReport}>
        <Text style={{top:-325,
       width: 400,
       height: 50,

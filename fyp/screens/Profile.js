@@ -9,10 +9,11 @@ import {
 import {color} from 'react-native-elements/dist/helpers';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
 import CheckBox from '@react-native-community/checkbox';
+
 const Profile = ({navigation, route}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
  
-  const { firstName, lastName } = route.params || {};
+   const { firstName } = route.params || {};
 
   const navigateTo = screen => {
     // Assuming 'navigation' prop is passed from React Navigation
@@ -46,7 +47,7 @@ const Profile = ({navigation, route}) => {
         <View style={styles.container2}>
         
           <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 24 }}>
-          {firstName} {lastName}
+          {firstName} 
           </Text>
           <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16}}>
             You didn't select any organization. Select company or organization
