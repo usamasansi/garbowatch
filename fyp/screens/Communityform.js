@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -33,45 +33,123 @@ const CommunityForm = ({navigation}) => {
     if (inputText.trim() !== '') {
       const newMessage = {
         text: inputText,
-        user: 'User', // You can modify this to indicate the sender
-        timestamp: new Date().toLocaleString(), // Or use a different timestamp format
+        user: 'User', 
+        timestamp: new Date().toLocaleString(), 
       };
 
       setMessages([...messages, newMessage]);
       setInputText('');
     }
   };
+  const [posts, setPosts] = useState([]);
+  const [newPostText, setNewPostText] = useState('');
+
+  useEffect(() => {
+    // Fetch posts from database or API when component mounts
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = () => {
+    // Example fetch function to get posts from an API or database
+    // Replace this with your actual fetch logic
+    const fetchedPosts = [
+      { id: 1, author: 'User 1', text: 'This is the first post.' },
+      { id: 2, author: 'User 2', text: 'Second post here!' },
+      { id: 3, author: 'User 3', text: 'Another post for testing.' },
+    ];
+    setPosts(fetchedPosts);
+  };
+  const [reactions, setReactions] = useState({});
+
+  const handleReact = (postId, reactionType) => {
+    const currentReaction = reactions[postId]?.[reactionType] || 0;
+    const updatedReactions = {
+      ...reactions,
+      [postId]: {
+        ...reactions[postId],
+        [reactionType]: currentReaction === 1 ? 0 : 1, // Toggle between 0 and 1
+      },
+    };
+    setReactions(updatedReactions);
+  };
+  
+  
+  const handlePostSubmit = () => {
+    const newPost = {
+      id: posts.length + 1,
+      author: 'Current User', 
+      text: newPostText,
+    };
+    setPosts([...posts, newPost]);
+    setNewPostText('');
+  };
   return (
     <View style={styles.container}>
+       <View style={styles.garbowatch}>
+      <TouchableOpacity
+          onPress={() => navigateTo('Report')}
+          onPressIn={() => handleNavItemPressIn('Report')}
+          onPressOut={handleNavItemPressOut}
+          style={[
+            styles.navItem,
+            isNavItemActive('Report') && styles.activeabout,
+          ]}>
+                     <Text style={styles.garbowatch}>Community Chat</Text>
+
+        </TouchableOpacity>
+        
+      </View>
       <ScrollView>
-        <FlatList
-          data={messages}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => (
-            <View style={styles.messageContainer}>
-              <Text style={styles.messageText}>
-                {item.user}: {item.text}
-              </Text>
-              <Text style={styles.timestamp}>{item.timestamp}</Text>
-            </View>
-          )}
-        />
-      </ScrollView>
+      
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Type a message..."
-          value={inputText}
-          onChangeText={setInputText}
+          placeholder="Write your post here..."
+          value={newPostText}
+          onChangeText={setNewPostText}
         />
-        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-          <Text style={styles.sendButtonText}>Send</Text>
+        <TouchableOpacity
+          style={styles.postButton}
+          onPress={handlePostSubmit}
+          disabled={!newPostText.trim()}
+        >
+          <Text style={styles.ButtonText}>Post</Text>
         </TouchableOpacity>
       </View>
+      <FlatList
+        
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.postContainer}>
+            <Text style={styles.author}>{item.author}</Text>
+            <Text style={styles.postText}>{item.text}</Text>
+            <View style={styles.reactionsContainer}>
+                <TouchableOpacity
+                  style={styles.reactionButton}
+                  onPress={() => handleReact(item.id, 'likes')}
+                >
+                  <Icon name="thumb-up-outline" size={20} color="blue" />
+                  <Text>{reactions[item.id]?.likes || 0}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.reactionButton}
+                  onPress={() => handleReact(item.id, 'dislikes')}
+                >
+                  <Icon name="thumb-down-outline" size={20} color="red" />
+                  <Text>{reactions[item.id]?.dislikes || 0}</Text>
+                </TouchableOpacity>
+              </View>
+          </View>
+        )}
+        data={posts}
+      />
+      </ScrollView>
+      
       <View style={styles.contentView}>
         {/* Add your content here */}
 
         <Text style={styles.contentText}></Text>
+        
       </View>
       <View style={styles.navbar}>
         <TouchableOpacity onPress={() => navigateTo('Home')}>
@@ -127,6 +205,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold', // Add subtle bold emphasis
   },
+  garbowatch: {
+    backgroundColor: '#4CBB17',
+    padding: 5,
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 25,
+    borderRadius: 5,
+    justifyContent: 'space-between',
+  },
   contentView: {
     flex: 1, // Make the content view take up the remaining space
     padding: 20,
@@ -158,9 +245,27 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2, // Add a border at the bottom to simulate underline
     borderColor: 'white',
   },
-  ButtonText: {
-    color: '#fff',
+  postContainer: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  author: {
     fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  postText: {},
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+     height:30,
+     fontSize:20
   },
   messageContainer: {
     padding: 8,
@@ -183,22 +288,32 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#CCCCCC',
     borderRadius: 6,
     paddingHorizontal: 8,
     paddingVertical: 6,
+    height:'100%',
+    fontSize:20
   },
   sendButton: {
     marginLeft: 8,
-    backgroundColor: '#42A5F5',
+    backgroundColor: 'white',
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 6,
   },
   sendButtonText: {
-    color: 'white',
+    color: '#fff',
     fontWeight: 'bold',
+  },
+  postButton: {
+    backgroundColor: '#4CBB17',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+
+    
   },
 });
 export default CommunityForm;

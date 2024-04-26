@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Geolocation from '@react-native-community/geolocation';
 import MapView, { Marker } from 'react-native-maps';
 import CameraComponent from './CameraComponent';
-import MapViewComponent2 from './MapViewComponent2';
+import MapViewComponent from './MapViewComponent';
 import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const Report_edit = ({navigation}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
@@ -63,7 +63,7 @@ const Report_edit = ({navigation}) => {
   };
   const handleUpdateReport = async () => {
     try {
-      const response = await fetch('http://192.168.100.56:3000/api/reports', {
+      const response = await fetch('http://172.29.32.1:3000/api/reports', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ const Report_edit = ({navigation}) => {
           onPressOut={handleNavItemPressOut}
           style={[
             styles.navItem,
-            isNavItemActive('Report') && styles.activeabout,
+            isNavItemActive('CameraComponent') && styles.activeabout,
           ]}>
           <Icon style={styles.garbowatch} name="arrow-left" size={25} />
         </TouchableOpacity>
@@ -141,7 +141,7 @@ const Report_edit = ({navigation}) => {
               style={styles.cameraIcon}
               name="camera"
               size={30}
-              onPress={() => navigation.navigate('CameraComponent')}>
+              onPress={() => navigation.navigate('CameraComponent2')}>
             </Icon>
           </TouchableOpacity>
         </View>
@@ -336,13 +336,23 @@ const Report_edit = ({navigation}) => {
    
   
   }}>Location</Text>
-   <TouchableOpacity onPress={handleShowMap}>
-       <Text style={{color:'black',right: 100,top:-320,}}>click to show current</Text>
+   <TouchableOpacity onPress={() => navigateTo('Report')}>
+       <Text style={{color:'black',right: 100,top:-320, width: 120,
+    height: 40,
+    
+    borderRadius: 6,
+    textAlign: 'center',
+    padding: 10,
+    backgroundColor: '#4CBB17',
+    color: '#fff',
+    fontWeight: 'bold',
+      
+      }}>click to show current</Text>
        </TouchableOpacity>
  
        {/* Render the MapViewComponent conditionally based on the state */}
        {showMap && (
-         <MapViewComponent2
+         <MapViewComponent
            
          />
        )}
@@ -585,6 +595,26 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     justifyContent: 'space-between',
+  },
+  Button: {
+    width: 250,
+    height: 40,
+    margin: 10,
+    textAlign: 'center',
+    padding: 6.5,
+    borderRadius: 2,
+    backgroundColor: 'white',
+    color: '#4CBB17',
+    fontWeight: 'bold',
+    fontSize: 20,
+    bottom: -20,
+    right: -75,
+    shadowColor: 'black',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 5.5,
+    shadowRadius: 2,
+    // Shadow properties for Android
+    elevation: 50,
   },
   ButtonText: {
     color: '#fff',
