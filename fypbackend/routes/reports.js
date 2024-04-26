@@ -6,12 +6,17 @@ const router = express.Router();
 // POST request to create a new report
 router.post('/', async (req, res) => {
   try {
-    const { size, type, accessibility, location, additionalInfo } = req.body;
+    const {fitsinabag,fitsinawheelbarrow,truckneeded,househould,construction,plastic,glass,paper,accessibilebyacar,additionalInfo } = req.body;
     const newReport = new Report({
-      size,
-      type,
-      accessibility,
-      location,
+        fitsinabag,
+        fitsinawheelbarrow,
+        truckneeded,
+        househould,
+        construction,
+        plastic,
+        glass,
+        paper,
+        accessibilebyacar,
       additionalInfo,
     });
     await newReport.save();

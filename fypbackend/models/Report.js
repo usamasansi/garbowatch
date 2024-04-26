@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
-  size: String,
-  type: String,
-  accessibility: String,
-  location: String,
+  fitsinabag: Boolean,
+  fitsinawheelbarrow: Boolean,
+  truckneeded: Boolean,
+  househould: Boolean,
+  construction: Boolean,
+  plastic: Boolean,
+  glass: Boolean,
+  paper: Boolean,
+  accessibilebyacar: Boolean,
+  // location: String,
   additionalInfo: String,
 });
 
