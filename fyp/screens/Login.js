@@ -35,7 +35,7 @@ const Login = () => {
   
     const handleLogin = async () => {
       try {
-        const response = await fetch('http://172.29.32.1:3000/api/login', {
+        const response = await fetch('http://192.168.10.14:3000/api/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
