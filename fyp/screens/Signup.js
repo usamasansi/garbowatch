@@ -3,6 +3,8 @@ import  { useState } from 'react';
 import { useNavigation } from '@react-navigation/native'
 import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity } from 'react-native';
 import { GoogleSigninButton, GoogleSignin,statusCodes } from '@react-native-google-signin/google-signin';
+import LinearGradient from 'react-native-linear-gradient';
+
 const ThemeContext = React.createContext({
     primaryColor: '#42A5F5',
     secondaryColor: '#fff',
@@ -62,8 +64,11 @@ export default function Signup(){
         <ThemeContext.Provider value={setTheme}>
           
            <View style={styles.garbowatch}>
+           <LinearGradient
+        colors={['#B9E976', '#21453F']}>
     <Text style={styles.garbowatch}>GARBOWATCH
       </Text>
+      </LinearGradient>
     </View>
       <View style={styles.container}>
      
@@ -105,21 +110,32 @@ export default function Signup(){
           <Text style={styles.error}>{signinState.errors.signin}</Text>
         )}
 <TouchableOpacity  >
-        
-        <Text style={styles.Button} onPress={handleSignin}>SIGNUP</Text>
+<LinearGradient
+        colors={['#B9E976', '#21453F']}
+        style={styles.gradient}
+        >
+        <Text style={styles.Button1} onPress={handleSignin}>SIGNUP</Text>
         {signinState.isSignedIn && (
           <Text style={styles.success}>Logged in as {signinState.username} </Text>
           
         )}
+         </LinearGradient>
         </TouchableOpacity>
-        
+       
       <TouchableOpacity
          
           onPress={() => navigation.navigate('Login')} >
-          <Text style={styles.Button}>LOGIN</Text>
+            <LinearGradient
+        colors={['#B9E976', '#21453F']}
+        
+          style={styles.gradient2}>
+          <Text style={styles.Button2}>LOGIN</Text>
+          </LinearGradient>
+
         </TouchableOpacity>
         
-        <GoogleSigninButton
+        
+        {/* <GoogleSigninButton
     size={GoogleSigninButton.Size.Wide}
     color={GoogleSigninButton.Color.Dark}
     style={styles.GoogleSigninButton}
@@ -140,7 +156,7 @@ export default function Signup(){
       }
     }
   }}
-  ></GoogleSigninButton>
+  ></GoogleSigninButton> */}
       
       </View>
       
@@ -160,6 +176,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0, // Add border width
     borderColor: 'black',
+  },
+  gradient:{
+    borderRadius:50
+  },
+  gradient2:{
+   bottom:-12,
+   borderRadius:50
   },
   header: {
     fontSize: 30,
@@ -184,20 +207,31 @@ const styles = StyleSheet.create({
   success: {
     color: 'green',
   },
-  Button: {
-    width: 400,
-    height: 40,
-    margin: 10,
-    borderRadius: 6,
-    textAlign: 'center',
-    padding: 6.5,
-    backgroundColor: '#4CBB17',
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize:18
+  Button1: {
+    width: 390,
+    height: 30,
+      margin: 10,
+      borderRadius: 5,
+      textAlign:'center',
+      padding: 3,
+      color:'#fff',
+      fontWeight:'bold',
+      fontSize:18,
+      marginBottom:10
+  },
+  Button2: {
+    width: 390,
+    height: 30,
+      margin: 10,
+      borderRadius: 5,
+      textAlign:'center',
+      padding: 3,
+      color:'#fff',
+      fontWeight:'bold',
+      fontSize:18,
   },
   garbowatch: {
-    backgroundColor:'#4CBB17',
+   height:55,
     padding:4,
     color: 'white',
     fontWeight: 'bold',
