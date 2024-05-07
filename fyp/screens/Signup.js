@@ -23,6 +23,9 @@ import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity } from 'reac
 import { GoogleSigninButton, GoogleSignin,statusCodes } from '@react-native-google-signin/google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 
+<<<<<<< HEAD
+>>>>>>> 8aad44751833a0f9ac7ab9b1f8fc8097b1ae9fd4
+=======
 >>>>>>> 8aad44751833a0f9ac7ab9b1f8fc8097b1ae9fd4
 const ThemeContext = React.createContext({
   primaryColor: '#42A5F5',
@@ -276,6 +279,7 @@ const styles = StyleSheet.create({
     color: 'green',
   },
 <<<<<<< HEAD
+<<<<<<< HEAD
   Button: {
     width: 400,
     height: 40,
@@ -316,6 +320,32 @@ const styles = StyleSheet.create({
       fontSize:18,
   },
   garbowatch: {
+=======
+  Button1: {
+    width: 390,
+    height: 30,
+      margin: 10,
+      borderRadius: 5,
+      textAlign:'center',
+      padding: 3,
+      color:'#fff',
+      fontWeight:'bold',
+      fontSize:18,
+      marginBottom:10
+  },
+  Button2: {
+    width: 390,
+    height: 30,
+      margin: 10,
+      borderRadius: 5,
+      textAlign:'center',
+      padding: 3,
+      color:'#fff',
+      fontWeight:'bold',
+      fontSize:18,
+  },
+  garbowatch: {
+>>>>>>> 8aad44751833a0f9ac7ab9b1f8fc8097b1ae9fd4
    height:55,
     padding:4,
 >>>>>>> 8aad44751833a0f9ac7ab9b1f8fc8097b1ae9fd4
