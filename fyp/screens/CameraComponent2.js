@@ -1,61 +1,40 @@
-import React, { Fragment, Component } from 'react';
-var ImagePicker = require('react-native-image-picker');
+import React, {useState, useEffect, Fragment} from 'react';
 import {
+  StatusBar,
   SafeAreaView,
-  StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
   Image,
-  Button,
+  TouchableOpacity,
   Dimensions,
-  TouchableOpacity
+  StyleSheet,
 } from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import * as ImagePicker from 'react-native-image-picker';
+import Geolocation from '@react-native-community/geolocation';
+import garbowatch from '../assests/images/garbowatch.png';
 
 const options = {
   title: 'Select Avatar',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+  customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
   storageOptions: {
     skipBackup: true,
     path: 'images',
   },
 };
-export default class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      filepath: {
-        data: '',
-        uri: ''
-      },
-      fileData: '',
-      fileUri: ''
-    }
-  }
 
-  chooseImage = () => {
-    let options = {
-      title: 'Select Image',
-      customButtons: [
-        { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
-      ],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
+const App = () => {
+  const [fileData, setFileData] = useState('');
+  const [fileUri, setFileUri] = useState('');
+  const [dateTime, setDateTime] = useState('');
+  const [location, setLocation] = useState('');
+  const [username, setUsername] = useState('');
 
+  useEffect(() => {
+    geolocation();
+  }, [fileUri]);
+
+  const chooseImage = () => {
+    ImagePicker.launchImageLibrary(options, response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -64,175 +43,190 @@ export default class App extends Component {
         console.log('User tapped custom button: ', response.customButton);
         alert(response.customButton);
       } else {
-        const source = { uri: response.uri };
-
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-        // alert(JSON.stringify(response));s
-        console.log('response', JSON.stringify(response));
-        this.setState({
-          filePath: response,
-          fileData: response.data,
-          fileUri: response.uri
-        });
+        console.log('ImagePicker Response:', response);
+        // Ensure that the response contains the assets array
+        if (response.assets && response.assets.length > 0) {
+          // Log the URI of the selected image
+          console.log('Selected Image URI:', response.assets[0].uri);
+          // Set the fileUri state with the URI
+          setFileUri(response.assets[0].uri);
+          // Optionally, set other state variables or perform additional actions
+        } else {
+          console.log('No image selected');
+        }
       }
     });
-  }
+  };
 
-  launchCamera = () => {
-    let options = {
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
+  const geolocation = () => {
+    const dateTime = new Date().toLocaleString();
+    setDateTime(dateTime);
+
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
+        setLocation(location);
       },
-    };
-    ImagePicker.launchCamera(options, (response) => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-        alert(response.customButton);
-      } else {
-        const source = { uri: response.uri };
-        console.log('response', JSON.stringify(response));
-        this.setState({
-          filePath: response,
-          fileData: response.data,
-          fileUri: response.uri
-        });
-      }
-    });
-
-  }
-
-  launchImageLibrary = () => {
-    let options = {
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
+      error => {
+        console.log(error.message);
       },
-    };
-    ImagePicker.launchImageLibrary(options, (response) => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-        alert(response.customButton);
-      } else {
-        const source = { uri: response.uri };
-        console.log('response', JSON.stringify(response));
-        this.setState({
-          filePath: response,
-          fileData: response.data,
-          fileUri: response.uri
-        });
-      }
-    });
-
-  }
-
-  renderFileData() {
-    if (this.state.fileData) {
-      return <Image source={{ uri: 'data:image/jpeg;base64,' + this.state.fileData }}
-        style={styles.images}
-      />
-    } else {
-      return <Image source={require('../assests/images/garbowatch.png')}
-        style={styles.images}
-      />
-    }
-  }
-
-  renderFileUri() {
-    if (this.state.fileUri) {
-      return <Image
-        source={{ uri: this.state.fileUri }}
-        style={styles.images}
-      />
-    } else {
-      return <Image
-        source={require('../assests/images/garbowatch.png')}
-        style={styles.images}
-      />
-    }
-  }
-  render() {
-    return (
-      <Fragment>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
-          <View style={styles.body}>
-            <Text style={{textAlign:'center',fontSize:20,paddingBottom:10}} >Pick Images from Camera & Gallery</Text>
-            <View style={styles.ImageSections}>
-              <View>
-                {this.renderFileData()}
-                <Text  style={{textAlign:'center'}}>Base 64 String</Text>
-              </View>
-              <View>
-                {this.renderFileUri()}
-                <Text style={{textAlign:'center'}}>File Uri</Text>
-              </View>
-            </View>
-
-            <View style={styles.btnParentSection}>
-              <TouchableOpacity onPress={this.chooseImage} style={styles.btnSection}  >
-                <Text style={styles.btnText}>Choose File</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this.launchCamera} style={styles.btnSection}  >
-                <Text style={styles.btnText}>Directly Launch Camera</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this.launchImageLibrary} style={styles.btnSection}  >
-                <Text style={styles.btnText}>Directly Launch Image Library</Text>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-        </SafeAreaView>
-      </Fragment>
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
-  }
+  };
+
+  const launchCamera = () => {
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.launchCamera(options, async response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        setFileData(response.data);
+        setFileUri(response.assets[0].originalPath);
+        console.log('====================================');
+        console.log(response.assets[0].originalPath);
+        console.log('====================================');
+
+        // Geolocation.getCurrentPosition(
+        //   position => {
+        //     const {latitude, longitude} = position.coords;
+        //     const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
+        //     setLocation(location);
+        //   },
+        //   error => {
+        //     console.log(error.message);
+        //   },
+        //   {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+        // );
+      }
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(
+        'http://192.168.100.7:3000/api/data/submit',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            image: fileUri,
+            location: location,
+            dateTime: dateTime,
+            username: username,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Data submitted successfully:', data);
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
+  };
+
+  // const handleSubmit = async () => {
+  //   try {
+  //     const response = await fetch('http://192.168.100.7:3000/api/data', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         image: fileData,
+  //         location: location,
+  //         dateTime: dateTime,
+  //         // username: username,
+  //       }),
+  //     });
+  //     const data = await response.json();
+  //     console.log('Data submitted successfully:', data);
+  //   } catch (error) {
+  //     console.error('Error submitting data:', error);
+  //   }
+  // };
+
+  return (
+    <Fragment>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView>
+        <View style={styles.body}>
+          <Text style={{textAlign: 'center', fontSize: 20, paddingBottom: 10}}>
+            Pick Images from Camera & Gallery
+          </Text>
+          <View style={styles.ImageSections}>
+            <View>
+              <Image source={{uri: fileUri}} style={styles.images} />
+              <Text style={{textAlign: 'center'}}>File Uri</Text>
+            </View>
+            <View>
+              <Text style={{textAlign: 'center'}}>Date: {dateTime}</Text>
+              <Text style={{textAlign: 'center'}}>Location: {location}</Text>
+            </View>
+          </View>
+          <View style={styles.btnParentSection}>
+            <TouchableOpacity
+              onPress={() => chooseImage()}
+              style={styles.btnSection}>
+              <Text style={styles.btnText}>Choose File</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => launchCamera()}
+              style={styles.btnSection}>
+              <Text style={styles.btnText}>Directly Launch Camera</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleSubmit} style={styles.btnSection}>
+              <Text style={styles.btnText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+    </Fragment>
+  );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: 'white',
     justifyContent: 'center',
     borderColor: 'black',
     borderWidth: 1,
     height: Dimensions.get('screen').height - 20,
-    width: Dimensions.get('screen').width
+    width: Dimensions.get('screen').width,
   },
   ImageSections: {
     display: 'flex',
     flexDirection: 'row',
     paddingHorizontal: 8,
     paddingVertical: 8,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   images: {
     width: 150,
     height: 150,
     borderColor: 'black',
     borderWidth: 1,
-    marginHorizontal: 3
+    marginHorizontal: 3,
   },
   btnParentSection: {
     alignItems: 'center',
-    marginTop:10
+    marginTop: 10,
   },
   btnSection: {
     width: 225,
@@ -241,12 +235,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 3,
-    marginBottom:10
+    marginBottom: 10,
   },
   btnText: {
     textAlign: 'center',
     color: 'gray',
     fontSize: 14,
-    fontWeight:'bold'
-  }
+    fontWeight: 'bold',
+  },
 });
+
+export default App;

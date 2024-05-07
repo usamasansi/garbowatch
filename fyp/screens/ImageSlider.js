@@ -10,7 +10,7 @@ export default function ImageSlider (){
     const images =[
     require('../assests/images/slider1.jpeg'),
     require('../assests/images/garbage2.jpeg'),
-    
+    require('../assests/images/garbage3.jpeg')
     ]
   return (
     <View style={styles.container}>
