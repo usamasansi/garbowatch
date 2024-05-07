@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState,useEffect } from 'react';
+import {useState, useEffect} from 'react';
 
 import {
   View,
@@ -17,10 +17,10 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Geolocation from '@react-native-community/geolocation';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import CameraComponent from './CameraComponent';
 import MapViewComponent from './MapViewComponent';
-import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const Report_edit = ({navigation}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
 
@@ -29,7 +29,6 @@ const Report_edit = ({navigation}) => {
 
     navigation.navigate(screen);
   };
-  
 
   const handleNavItemPressIn = navItem => {
     setActiveNavItem(navItem);
@@ -63,21 +62,21 @@ const Report_edit = ({navigation}) => {
   };
   const handleUpdateReport = async () => {
     try {
-      const response = await fetch('http://172.29.32.1:3000/api/reports', {
+      const response = await fetch('http://192.168.100.7:3000/api/reports', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          fitsinabag:isOrganizeActionChecked,
-          fitsinawheelbarrow:istypeactionchecked,
-          truckneeded:istypeactionchecked2,
-          househould:istypeactionchecked3,
-          construction:istypeactionchecked4,
-          plastic:istypeactionchecked5,
-          glass:istypeactionchecked6,
-          paper:istypeactionchecked7,
-          accessibilebyacar:istypeactionchecked8,
+          fitsinabag: isOrganizeActionChecked,
+          fitsinawheelbarrow: istypeactionchecked,
+          truckneeded: istypeactionchecked2,
+          househould: istypeactionchecked3,
+          construction: istypeactionchecked4,
+          plastic: istypeactionchecked5,
+          glass: istypeactionchecked6,
+          paper: istypeactionchecked7,
+          accessibilebyacar: istypeactionchecked8,
           additionalInfo,
           // Add other profile data as needed
         }),
@@ -100,7 +99,7 @@ const Report_edit = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.garbowatch}>
-      <TouchableOpacity
+        <TouchableOpacity
           onPress={() => navigateTo('Report')}
           onPressIn={() => handleNavItemPressIn('Report')}
           onPressOut={handleNavItemPressOut}
@@ -110,310 +109,306 @@ const Report_edit = ({navigation}) => {
           ]}>
           <Icon style={styles.garbowatch} name="arrow-left" size={25} />
         </TouchableOpacity>
-        
       </View>
       <ScrollView>
-      
-
-      <View style={styles.contentView}>
-        <View
-          style={{
-            width: '130%',
-            height: '50%',
-            top: -80,
-            borderWidth: 3,
-            borderColor: 'lightgrey',
-          }}>
-            
-          <Text
+        <View style={styles.contentView}>
+          <View
             style={{
-              textAlign: 'center',
-              fontSize: 25,
-              fontWeight: 'bold',
-              color: 'black',
-              bottom: -230,
-            }}></Text>
-            
+              width: '130%',
+              height: '50%',
+              top: -80,
+              borderWidth: 3,
+              borderColor: 'lightgrey',
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 25,
+                fontWeight: 'bold',
+                color: 'black',
+                bottom: -230,
+              }}></Text>
+          </View>
+          <View>
+            <TouchableOpacity style={styles.cameraButton}>
+              <Icon
+                style={styles.cameraIcon}
+                name="camera"
+                size={30}
+                onPress={() => navigation.navigate('CameraComponent2')}></Icon>
+            </TouchableOpacity>
+          </View>
+          <View style={{bottom: -120}}>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: 'black',
+                bottom: 250,
+                right: 105,
+              }}>
+              {' '}
+              Size of the Trash
+            </Text>
+            <Text
+              style={{
+                fontSize: 22,
+
+                color: 'black',
+                right: 65,
+                bottom: 250,
+              }}>
+              Fits in a bag
+            </Text>
+            <CheckBox
+              style={{bottom: 278, right: -115}}
+              value={isOrganizeActionChecked}
+              onValueChange={newValue => setOrganizeActionChecked(newValue)}
+              tintColors={{true: '#4CBB17'}}
+            />
+            <Text
+              style={{
+                right: 65,
+                bottom: 270,
+                fontSize: 22,
+
+                color: 'black',
+              }}>
+              Fits in a wheelbarrow
+            </Text>
+            <CheckBox
+              style={{bottom: 300, right: -145}}
+              value={istypeactionchecked}
+              onValueChange={newValue => settypeactionchecked(newValue)}
+              tintColors={{true: '#4CBB17'}}></CheckBox>
+            <Text
+              style={{
+                right: 65,
+                bottom: 290,
+                fontSize: 22,
+
+                color: 'black',
+              }}>
+              Truck needed
+            </Text>
+            <CheckBox
+              style={{bottom: 318, right: -115}}
+              value={istypeactionchecked2}
+              onValueChange={newValue => settypeactionchecked2(newValue)}
+              tintColors={{true: '#4CBB17'}}></CheckBox>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: 'black',
+                bottom: 250,
+                right: 105,
+                top: -300,
+              }}>
+              {' '}
+              Type of the Trash
+            </Text>
+            <Text
+              style={{
+                fontSize: 22,
+
+                color: 'black',
+                right: 65,
+                bottom: 290,
+              }}>
+              Household
+            </Text>
+            <CheckBox
+              style={{bottom: 320, right: -60}}
+              value={istypeactionchecked3}
+              onValueChange={newValue => settypeactionchecked3(newValue)}
+              tintColors={{true: '#4CBB17'}}
+            />
+            <Text
+              style={{
+                fontSize: 22,
+
+                color: 'black',
+                right: 65,
+                bottom: 310,
+              }}>
+              Construction
+            </Text>
+            <CheckBox
+              style={{bottom: 340, right: -60}}
+              value={istypeactionchecked4}
+              onValueChange={newValue => settypeactionchecked4(newValue)}
+              tintColors={{true: '#4CBB17'}}
+            />
+
+            <Text
+              style={{
+                fontSize: 22,
+
+                color: 'black',
+                right: 60,
+                bottom: 330,
+              }}>
+              Plastic
+            </Text>
+            <CheckBox
+              style={{bottom: 360, right: -60}}
+              value={istypeactionchecked5}
+              onValueChange={newValue => settypeactionchecked5(newValue)}
+              tintColors={{true: '#4CBB17'}}
+            />
+            <Text
+              style={{
+                fontSize: 22,
+
+                color: 'black',
+                right: 60,
+                bottom: 360,
+              }}>
+              Glass
+            </Text>
+            <CheckBox
+              style={{bottom: 390, right: -60}}
+              value={istypeactionchecked6}
+              onValueChange={newValue => settypeactionchecked6(newValue)}
+              tintColors={{true: '#4CBB17'}}
+            />
+            <Text
+              style={{
+                fontSize: 22,
+
+                color: 'black',
+                right: 60,
+                bottom: 385,
+              }}>
+              Paper
+            </Text>
+            <CheckBox
+              style={{bottom: 415, right: -60}}
+              value={istypeactionchecked7}
+              onValueChange={newValue => settypeactionchecked7(newValue)}
+              tintColors={{true: '#4CBB17'}}
+            />
+          </View>
+          <View style={{flex: 1}}>
+            <Text
+              style={{
+                top: -300,
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: 'black',
+
+                right: 100,
+              }}>
+              Trash Accessibility
+            </Text>
+          </View>
+          <View style={{flex: 1}}>
+            <Text
+              style={{
+                top: -295,
+                fontSize: 20,
+
+                color: 'black',
+
+                right: 100,
+              }}>
+              Accessible by a Car
+            </Text>
+            <CheckBox
+              style={{bottom: 322, right: -72}}
+              value={istypeactionchecked8}
+              onValueChange={newValue => settypeactionchecked8(newValue)}
+              tintColors={{true: '#4CBB17'}}
+            />
+
+            <Text
+              style={{
+                top: -320,
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: 'black',
+
+                right: 100,
+              }}>
+              Location
+            </Text>
+            <TouchableOpacity onPress={() => navigateTo('Report')}>
+              <Text
+                style={{
+                  color: 'black',
+                  right: 100,
+                  top: -320,
+                  width: 120,
+                  height: 40,
+
+                  borderRadius: 6,
+                  textAlign: 'center',
+                  padding: 10,
+                  backgroundColor: '#4CBB17',
+                  color: '#fff',
+                  fontWeight: 'bold',
+                }}>
+                click to show current
+              </Text>
+            </TouchableOpacity>
+
+            {/* Render the MapViewComponent conditionally based on the state */}
+            {showMap && <MapViewComponent />}
+          </View>
+          <View>
+            <Text
+              style={{
+                top: -320,
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: 'black',
+
+                right: -10,
+              }}>
+              Additional information
+            </Text>
+            <TextInput
+              placeholder="it is nearby it contains products"
+              keyboardType="email-address"
+              placeholderTextColor="grey"
+              style={{
+                top: -320,
+                width: 400,
+                height: 40,
+                borderWidth: 0,
+                borderColor: 'grey',
+                marginBottom: 10,
+                padding: 10,
+                borderBottomWidth: 2,
+                fontSize: 16,
+                color: 'black',
+              }}
+              value={additionalInfo}
+              onChangeText={setadditionalInfo}
+            />
+            <TouchableOpacity onPress={handleUpdateReport}>
+              <Text
+                style={{
+                  top: -325,
+                  width: 400,
+                  height: 50,
+                  margin: 10,
+                  borderRadius: 5,
+                  textAlign: 'center',
+                  padding: 6.5,
+                  backgroundColor: '#4CBB17',
+                  color: '#fff',
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                }}>
+                Send
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View>
-          <TouchableOpacity style={styles.cameraButton}>
-            <Icon
-              style={styles.cameraIcon}
-              name="camera"
-              size={30}
-              onPress={() => navigation.navigate('CameraComponent2')}>
-            </Icon>
-          </TouchableOpacity>
-        </View>
-        <View style={{bottom: -120}}>
-          <Text
-            style={{
-              fontSize: 24,
-              fontWeight: 'bold',
-              color: 'black',
-              bottom: 250,
-              right: 105,
-            }}>
-            {' '}
-                Size of the Trash
-          </Text>
-          <Text
-            style={{
-              fontSize: 22,
-
-              color: 'black',
-              right: 65,
-              bottom: 250,
-            }}>
-            Fits in a bag
-          </Text>
-          <CheckBox
-            style={{bottom: 278, right: -115}}
-            value={isOrganizeActionChecked}
-            onValueChange={newValue => setOrganizeActionChecked(newValue)}
-            tintColors={{true: '#4CBB17'}}
-          />
-          <Text
-            style={{
-              right: 65,
-              bottom: 270,
-              fontSize: 22,
-
-              color: 'black',
-            }}>
-            Fits in a wheelbarrow
-          </Text>
-          <CheckBox
-            style={{bottom: 300, right: -145}}
-            value={istypeactionchecked}
-            onValueChange={newValue => settypeactionchecked(newValue)}
-            tintColors={{true: '#4CBB17'}}></CheckBox>
-          <Text
-            style={{
-              right: 65,
-              bottom: 290,
-              fontSize: 22,
-
-              color: 'black',
-            }}>
-            Truck needed
-          </Text>
-          <CheckBox
-            style={{bottom: 318, right: -115}}
-            value={istypeactionchecked2}
-            onValueChange={newValue => settypeactionchecked2(newValue)}
-            tintColors={{true: '#4CBB17'}}></CheckBox>
-          <Text
-            style={{
-              fontSize: 24,
-              fontWeight: 'bold',
-              color: 'black',
-              bottom: 250,
-              right: 105,
-              top: -300,
-            }}>
-            {' '}
-            Type of the Trash
-          </Text>
-          <Text
-            style={{
-              fontSize: 22,
-
-              color: 'black',
-              right: 65,
-              bottom: 290,
-            }}>
-            Household
-          </Text>
-          <CheckBox
-            style={{bottom: 320, right: -60}}
-            value={istypeactionchecked3}
-            onValueChange={newValue => settypeactionchecked3(newValue)}
-            tintColors={{true: '#4CBB17'}}
-          />
-          <Text
-            style={{
-              fontSize: 22,
-
-              color: 'black',
-              right: 65,
-              bottom: 310,
-            }}>
-            Construction
-          </Text>
-          <CheckBox
-            style={{bottom: 340, right: -60}}
-            value={istypeactionchecked4}
-            onValueChange={newValue => settypeactionchecked4(newValue)}
-            tintColors={{true: '#4CBB17'}}
-          />
-
-          <Text
-            style={{
-              fontSize: 22,
-
-              color: 'black',
-              right: 60,
-              bottom: 330,
-            }}>
-            Plastic
-          </Text>
-          <CheckBox
-            style={{bottom: 360, right: -60}}
-            value={istypeactionchecked5}
-            onValueChange={newValue => settypeactionchecked5(newValue)}
-            tintColors={{true: '#4CBB17'}}
-          />
-          <Text
-            style={{
-              fontSize: 22,
-
-              color: 'black',
-              right: 60,
-              bottom: 360,
-            }}>
-            Glass
-          </Text>
-          <CheckBox
-            style={{bottom: 390, right: -60}}
-            value={istypeactionchecked6}
-            onValueChange={newValue => settypeactionchecked6(newValue)}
-            tintColors={{true: '#4CBB17'}}
-          />
-          <Text
-            style={{
-              fontSize: 22,
-
-              color: 'black',
-              right: 60,
-              bottom: 385,
-            }}>
-            Paper
-          </Text>
-          <CheckBox 
-            style={{bottom: 415, right: -60}}
-            value={istypeactionchecked7}
-            onValueChange={newValue => settypeactionchecked7(newValue)}
-            tintColors={{true: '#4CBB17'}}
-          />
-
-        </View>
-        <View style={{ flex: 1 }}>
-  <Text style={{top:-300,
-   fontSize: 24,
-   fontWeight: 'bold',
-   color: 'black',
-  
-   right: 100,
-   
-  
-  }}>Trash Accessibility</Text>
-</View>
-<View style={{flex:1
-
-}}>
-  <Text style={{top:-295,
-   fontSize: 20,
-  
-   color: 'black',
-  
-   right: 100,
-   
-  
-  }}>Accessible by a Car</Text><CheckBox 
-  style={{bottom: 322, right: -72}}
-  value={istypeactionchecked8}
-  onValueChange={newValue => settypeactionchecked8(newValue)}
-  tintColors={{true: '#4CBB17'}}
-/>
-
-<Text style={{top:-320,
-   fontSize: 24,
-   fontWeight: 'bold',
-   color: 'black',
-  
-   right: 100,
-   
-  
-  }}>Location</Text>
-   <TouchableOpacity onPress={() => navigateTo('Report')}>
-       <Text style={{color:'black',right: 100,top:-320, width: 120,
-    height: 40,
-    
-    borderRadius: 6,
-    textAlign: 'center',
-    padding: 10,
-    backgroundColor: '#4CBB17',
-    color: '#fff',
-    fontWeight: 'bold',
-      
-      }}>click to show current</Text>
-       </TouchableOpacity>
- 
-       {/* Render the MapViewComponent conditionally based on the state */}
-       {showMap && (
-         <MapViewComponent
-           
-         />
-       )}
-       
-       
- 
-       
-</View>
-<View>
-<Text style={{top:-320,
-   fontSize: 24,
-   fontWeight: 'bold',
-   color: 'black',
-  
-   right: -10,
-   
-  
-  }}>Additional information</Text>
-  <TextInput
-        placeholder="it is nearby it contains products"
-        keyboardType="email-address"
-        placeholderTextColor="grey"
-        style={{top:-320,
-          width: 400,
-          height: 40,
-          borderWidth: 0,
-          borderColor: 'grey',
-          marginBottom: 10,
-          padding: 10,
-          borderBottomWidth:2,
-          fontSize:16,
-          color:'black'
-        }}
-        value={additionalInfo}
-        onChangeText={setadditionalInfo}
-      />
-      <TouchableOpacity
-       
-       onPress={handleUpdateReport}>
-       <Text style={{top:-325,
-      width: 400,
-      height: 50,
-        margin: 10,
-        borderRadius: 5,
-        textAlign:'center',
-        padding: 6.5,
-        backgroundColor: '#4CBB17',
-        color:'#fff',
-        fontWeight:'bold',
-        fontSize:18,
-        
-      }}>Send</Text>
-     </TouchableOpacity>
-
-</View>
-
-
-      </View>
-    
       </ScrollView>
-      
+
       <View style={styles.navbar}>
         <TouchableOpacity onPress={() => navigateTo('Home')}>
           <Text style={styles.navItem}>
@@ -610,7 +605,7 @@ const styles = StyleSheet.create({
     bottom: -20,
     right: -75,
     shadowColor: 'black',
-    shadowOffset: { width: 2, height: 2 },
+    shadowOffset: {width: 2, height: 2},
     shadowOpacity: 5.5,
     shadowRadius: 2,
     // Shadow properties for Android
