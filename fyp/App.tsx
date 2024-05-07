@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './screens/Login';
@@ -17,11 +17,23 @@ import Profile_edit from './screens/Profile_edit';
 import Report_edit from './screens/Report_edit';
 import CameraComponent from './screens/CameraComponent';
 import CameraComponent2 from './screens/CameraComponent2';
+import ImageSlider from './screens/ImageSlider';
+import CustomLoader from './screens/CustomLoader';
+// import CameraComponent2 from './screens/CameraComponent2';
 const Stack = createNativeStackNavigator();
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true); // Initial loading state
+
+  // Simulate some loading logic (replace with your actual logic)
+  setTimeout(() => setIsLoading(false), 2000); // Change delay as needed
+  if (isLoading) {
+    return <CustomLoader children={''} isLoading={true}/>; // Show Loader component while loading
+  }
+
   return (
     <NavigationContainer>
+      
       <Stack.Navigator   initialRouteName='Login' screenOptions={{headerShown: false}}>
       
         <Stack.Screen name="Login" component={Login} />
@@ -34,7 +46,8 @@ function App() {
         <Stack.Screen name="CommunityForum" component={CommunityForm} />
         <Stack.Screen name="Report_edit" component={Report_edit} />
         <Stack.Screen name="CameraComponent" component={CameraComponent} />
-        <Stack.Screen name="CameraComponent2" component={CameraComponent2} />
+         <Stack.Screen name="CameraComponent2" component={CameraComponent2} />
+         <Stack.Screen name="ImageSlider" component={ImageSlider} />
 
         <Stack.Screen name="About" component={About} />
         <Stack.Screen name="signingoogle" component={googlesignin} />

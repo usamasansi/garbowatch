@@ -2,6 +2,8 @@ import {ACTIVE} from 'nativewind/dist/utils/selector';
 import React, {useState} from 'react';
 // You can choose a different icon set if you prefer
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
+import LinearGradient from 'react-native-linear-gradient';
+import ImageSlider from './ImageSlider';
 
 import {
   View,
@@ -50,13 +52,19 @@ const Homescreen = ({navigation}) => {
               styles.navItem,
               isNavItemActive('About') && styles.activeabout,
             ]}>
-            <Text style={styles.garbowatch}>GARBOWATCH</Text>
+               <LinearGradient 
+         colors={['#B9E976', '#21453F']}
+         style={styles.gradient}
+        >
+            <Text style={styles.garbowatch}> GARBOWATCH</Text>
+            </LinearGradient>
           </TouchableOpacity>
+          
         </View>
         <View style={styles.contentView}>
           <View style={{width:'120%',
-         height:'30%',
-         borderBottomWidth:1
+         
+         
         }}>
            <ImageBackground
       source={require('../assests/images/Leonardo_Diffusion_XL_green_background_image_with_white_maps_o_3.jpg')} // Set the path to your image
@@ -64,31 +72,20 @@ const Homescreen = ({navigation}) => {
     >
         <TouchableOpacity
         onPress={() => navigation.navigate('Report_edit')}>
+          
        <Text style={styles.Button}>Report Illegal dump</Text>
        
      </TouchableOpacity>
      </ImageBackground>
      </View>
-          <Text style={styles.title}>Garbage Deduction & Reporting</Text>
-          <Text style={styles.subtitle}>
-            Your solution for a cleaner environment
-          </Text>
-          <View style={styles.quoteContainer}>
-            <Text style={styles.quoteText}>
-              {' '}
-              "The greatest threat to our planet is the belief that someone else
-              will save it."{' '}
-            </Text>
-            <Text style={styles.quoteAuthor}> - Robert Swan</Text>
-          </View>
-          <Image
-            source={require('../assests/images/garbowatch.png')}
-            style={styles.image}
-          />
+          
+    
+
 
         </View>
-       
-     
+        <ImageSlider />
+        <Text style={styles.Button1}>Welcome to Garbage community app 
+        press on the button to report illegal dump</Text>
       </ScrollView>
 
       <View style={styles.navbar}>
@@ -131,19 +128,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, // Make the container take up the entire screen
     flexDirection: 'column', // Arrange the child elements vertically
-    borderBottomWidth:1
+    backgroundColor:'#FFFEE1'
+    
   },
   containers: {
     width: '100%',
     height: '90%',
+    
+
   },
   background: {
-    height:'100%',
+    height:160,
     resizeMode: 'cover', // or 'stretch' or 'contain'
     justifyContent: 'center',
-    bottom:-23.5,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the last value (0.5) for opacity
-
+    bottom:20
+    
+     
   },
   navbar: {
     flexDirection: 'row',
@@ -167,11 +167,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+
   },
-  contentView: {
-    flex: 1, // Make the content view take up the remaining space
-   
-  },
+ 
   contentText: {
     fontSize: 16,
   },
@@ -193,14 +191,36 @@ const styles = StyleSheet.create({
     shadowOpacity: 5.5,
     shadowRadius: 2,
     // Shadow properties for Android
-    elevation: 50,
+    elevation: 100,
   },
-  
+  Button1: {
+    
+    color: '#49AC25',
+    width: 390,
+    height: 110,
+    backgroundColor: '#FFFFFF',
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 4 },
+    shadowOpacity: 1.2,
+    shadowRadius: 20,
+    borderRadius: 16,
+    elevation: 20, // This adds elevation for Android shadows
+    fontSize:25,
+    fontFamily: 'Poppins',
+    fontWeight: 'bold',
+    fontSize: 25,
+    lineHeight: 30,
+    color: '#49AC25',
+    left:10,
+    
+  },
   contentView: {
     flex: 1, // Make the content view take up the remaining space
     padding: 20,
     alignItems: 'center', // Center the button horizontally
     justifyContent: 'center', // Center the button vertically
+  
+    
   },
   content: {
     alignItems: 'center',
@@ -216,6 +236,10 @@ const styles = StyleSheet.create({
     color: '#001F3F',
     bottom:-15
 
+  },
+  gradient:{
+ bottom:4,
+ 
   },
   subtitle: {
     fontSize: 16,
@@ -280,19 +304,21 @@ const styles = StyleSheet.create({
   garbowatchContainer: {
     flexDirection: 'row', // Set the container to row direction to align text and icon horizontally
     alignItems: 'center', // Center items vertically
-    backgroundColor: '#4CBB17',
+ 
     padding: 5,
     borderRadius: 8,
   },
   garbowatch: {
-    backgroundColor: '#4CBB17',
+    height:55,
+    width:'150%',
     padding: 4,
     color: 'white',
     fontWeight: 'bold',
     fontSize: 25,
     borderRadius: 5,
     justifyContent: 'space-between',
-   
+    left:-3,
+    bottom:0
   },
   image_icon: {
     marginRight: 1000,

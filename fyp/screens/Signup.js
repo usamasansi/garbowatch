@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -14,6 +15,15 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+=======
+import React from 'react'
+import  { useState } from 'react';
+import { useNavigation } from '@react-navigation/native'
+import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity } from 'react-native';
+import { GoogleSigninButton, GoogleSignin,statusCodes } from '@react-native-google-signin/google-signin';
+import LinearGradient from 'react-native-linear-gradient';
+
+>>>>>>> 8aad44751833a0f9ac7ab9b1f8fc8097b1ae9fd4
 const ThemeContext = React.createContext({
   primaryColor: '#42A5F5',
   secondaryColor: '#fff',
@@ -50,6 +60,7 @@ export default function Signup() {
         }),
       });
 
+<<<<<<< HEAD
       if (response.ok) {
         const userData = await response.json(); // Assuming the response contains user data including username
         setsigninState({
@@ -78,6 +89,18 @@ export default function Signup() {
       <View style={styles.garbowatch}>
         <Text style={styles.garbowatch}>GARBOWATCH</Text>
       </View>
+=======
+    return(
+        <ThemeContext.Provider value={setTheme}>
+          
+           <View style={styles.garbowatch}>
+           <LinearGradient
+        colors={['#B9E976', '#21453F']}>
+    <Text style={styles.garbowatch}>GARBOWATCH
+      </Text>
+      </LinearGradient>
+    </View>
+>>>>>>> 8aad44751833a0f9ac7ab9b1f8fc8097b1ae9fd4
       <View style={styles.container}>
         <Text style={styles.header}>Signup</Text>
 
@@ -120,6 +143,7 @@ export default function Signup() {
         {signinState.errors.signin && (
           <Text style={styles.error}>{signinState.errors.signin}</Text>
         )}
+<<<<<<< HEAD
         <TouchableOpacity>
           <Text style={styles.Button} onPress={handleSignin}>
             SIGNUP
@@ -158,6 +182,57 @@ export default function Signup() {
               }
             }
           }}></GoogleSigninButton>
+=======
+<TouchableOpacity  >
+<LinearGradient
+        colors={['#B9E976', '#21453F']}
+        style={styles.gradient}
+        >
+        <Text style={styles.Button1} onPress={handleSignin}>SIGNUP</Text>
+        {signinState.isSignedIn && (
+          <Text style={styles.success}>Logged in as {signinState.username} </Text>
+          
+        )}
+         </LinearGradient>
+        </TouchableOpacity>
+       
+      <TouchableOpacity
+         
+          onPress={() => navigation.navigate('Login')} >
+            <LinearGradient
+        colors={['#B9E976', '#21453F']}
+        
+          style={styles.gradient2}>
+          <Text style={styles.Button2}>LOGIN</Text>
+          </LinearGradient>
+
+        </TouchableOpacity>
+        
+        
+        {/* <GoogleSigninButton
+    size={GoogleSigninButton.Size.Wide}
+    color={GoogleSigninButton.Color.Dark}
+    style={styles.GoogleSigninButton}
+    onPress={async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(JSON.stringify(userInfo,null,2))
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  }}
+  ></GoogleSigninButton> */}
+      
+>>>>>>> 8aad44751833a0f9ac7ab9b1f8fc8097b1ae9fd4
       </View>
     </ThemeContext.Provider>
   );
@@ -169,6 +244,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0, // Add border width
     borderColor: 'black',
+  },
+  gradient:{
+    borderRadius:50
+  },
+  gradient2:{
+   bottom:-12,
+   borderRadius:50
   },
   header: {
     fontSize: 30,
@@ -193,6 +275,7 @@ const styles = StyleSheet.create({
   success: {
     color: 'green',
   },
+<<<<<<< HEAD
   Button: {
     width: 400,
     height: 40,
@@ -208,6 +291,34 @@ const styles = StyleSheet.create({
   garbowatch: {
     backgroundColor: '#4CBB17',
     padding: 4,
+=======
+  Button1: {
+    width: 390,
+    height: 30,
+      margin: 10,
+      borderRadius: 5,
+      textAlign:'center',
+      padding: 3,
+      color:'#fff',
+      fontWeight:'bold',
+      fontSize:18,
+      marginBottom:10
+  },
+  Button2: {
+    width: 390,
+    height: 30,
+      margin: 10,
+      borderRadius: 5,
+      textAlign:'center',
+      padding: 3,
+      color:'#fff',
+      fontWeight:'bold',
+      fontSize:18,
+  },
+  garbowatch: {
+   height:55,
+    padding:4,
+>>>>>>> 8aad44751833a0f9ac7ab9b1f8fc8097b1ae9fd4
     color: 'white',
     fontWeight: 'bold',
     fontSize: 25,

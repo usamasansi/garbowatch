@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example 
 import Geolocation from '@react-native-community/geolocation';
 import MapView, { Marker } from 'react-native-maps';
 import MapViewComponent from './MapViewComponent';
+import ImageSlider from './ImageSlider';
 
 const Report = ({navigation}) => {
     const [activeNavItem, setActiveNavItem] = useState(null);
