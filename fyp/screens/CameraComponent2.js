@@ -1,7 +1,6 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import {
   StatusBar,
-  StatusBar,
   SafeAreaView,
   View,
   Text,
@@ -245,3 +244,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default App;
