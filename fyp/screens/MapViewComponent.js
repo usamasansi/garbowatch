@@ -60,7 +60,7 @@ const MapViewComponent = () => {
 
       <MapView
         provider={PROVIDER_GOOGLE} // Use Google Maps
-        style={{ width:'130%',height:'130%',left:-17,top:-20 }}
+        style={{ width:'130%',height:'130%',left:-19,top:-20 }}
         initialRegion={{
           latitude: location?.latitude || 31.543944466894633,
           longitude: location?.longitude || 74.38568392767803,

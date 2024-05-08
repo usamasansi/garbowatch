@@ -14,7 +14,7 @@ import Geolocation from '@react-native-community/geolocation';
 import MapView, { Marker } from 'react-native-maps';
 import MapViewComponent from './MapViewComponent';
 import ImageSlider from './ImageSlider';
-
+import LinearGradient from 'react-native-linear-gradient';
 const Report = ({navigation}) => {
     const [activeNavItem, setActiveNavItem] = useState(null);
  
@@ -57,7 +57,12 @@ const Report = ({navigation}) => {
             isNavItemActive('Report') && styles.activeabout,
           ]}>
          <TouchableOpacity onPress={handleShowMap}>
-         <Text style={styles.garbowatch}>MapView</Text>
+         <LinearGradient 
+         colors={['#B9E976', '#21453F']}
+         style={styles.gradient}
+        >
+         <Text style={styles.garbowatch}> MapView</Text>
+         </LinearGradient>
       </TouchableOpacity>
         </TouchableOpacity>
         
@@ -253,13 +258,16 @@ const Report = ({navigation}) => {
             borderColor: '#000',
           },
           garbowatch: {
-            backgroundColor: '#4CBB17',
-            padding: 5,
+            height:55,
+            width:'150%',
+            padding: 4,
             color: 'white',
             fontWeight: 'bold',
-            fontSize: 20,
+            fontSize: 25,
             borderRadius: 5,
             justifyContent: 'space-between',
+            left:-3,
+            bottom:0
           },
       });
 
