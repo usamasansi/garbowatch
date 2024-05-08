@@ -6,8 +6,11 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import Signup from './Signup';
+import LinearGradient from 'react-native-linear-gradient';
+
 import {Link, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
@@ -53,7 +56,7 @@ const Login = () => {
         // Handle successful login
         const userData = await response.json(); // Assuming the response contains user data including username
         setLoginState({...loginState, isLoggedIn: true}); // Update the state to indicate the user is logged in
-        navigation.navigate('profile', {username: userData.username}); // Pass username to Profile
+        navigation.navigate('Home', {username: userData.username}); // Pass username to Profile
       } else {
         // Handle login errors
         const errorData = await response.json();
@@ -69,15 +72,14 @@ const Login = () => {
       navigation.navigate('profile', {username: userData.username}); // Pass username to Profile
     } else {
       // Handle login errors
-      const errorData = await response.json();
-      console.log(errorData); // Check the error response from the server
-      // ... Update state or show error message to the user
     }
   };
   return (
     <ThemeContext.Provider value={theme}>
       <View style={styles.garbowatch}>
-        <Text style={styles.garbowatch}>GARBOWATCH</Text>
+        <LinearGradient colors={['#B9E976', '#21453F']}>
+          <Text style={styles.garbowatch}>GARBOWATCH</Text>
+        </LinearGradient>
       </View>
       <View style={styles.container}>
         <Text style={styles.header}>LOG IN</Text>
@@ -108,11 +110,11 @@ const Login = () => {
         {loginState.errors.login && (
           <Text style={styles.error}>{loginState.errors.login}</Text>
         )}
-
-        <Text style={styles.Button} onPress={handleLogin}>
-          LOGIN
-        </Text>
-
+        <LinearGradient colors={['#B9E976', '#21453F']} style={styles.gradient}>
+          <Text style={styles.Button2} onPress={handleLogin}>
+            LOGIN
+          </Text>
+        </LinearGradient>
         {loginState.isLoggedIn && (
           <Text style={styles.success}>
             Logged in as {loginState.username}{' '}
@@ -120,7 +122,11 @@ const Login = () => {
         )}
 
         <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-          <Text style={styles.Button}>SIGN UP</Text>
+          <LinearGradient
+            colors={['#B9E976', '#21453F']}
+            style={styles.gradient2}>
+            <Text style={styles.Button}>SIGN UP</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
       <View></View>
@@ -137,7 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#4CBB17',
+    color: '#49AC25',
   },
   input: {
     width: 400,
@@ -157,19 +163,37 @@ const styles = StyleSheet.create({
     color: 'green',
   },
   Button: {
-    width: 400,
-    height: 40,
+    width: 390,
+    height: 30,
     margin: 10,
     borderRadius: 5,
     textAlign: 'center',
-    padding: 6.5,
-    backgroundColor: '#4CBB17',
+    padding: 3,
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  gradient: {
+    borderRadius: 50,
+  },
+  gradient2: {
+    bottom: -12,
+    borderRadius: 50,
+  },
+  Button2: {
+    width: 390,
+    height: 30,
+    margin: 10,
+    borderRadius: 5,
+    textAlign: 'center',
+    padding: 3,
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 18,
   },
   garbowatch: {
-    backgroundColor: '#4CBB17',
+    height: 55,
     padding: 4,
     color: 'white',
     fontWeight: 'bold',
