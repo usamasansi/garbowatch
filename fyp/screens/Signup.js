@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   garbowatch: {
-    height: 55,
+    height: 60,
     padding: 4,
     color: 'white',
     fontWeight: 'bold',
