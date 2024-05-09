@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   images: {
-    width: 150,
+    width: 149,
     height: 150,
     borderColor: 'black',
     borderWidth: 1,
