@@ -19,6 +19,7 @@ import CameraComponent from './screens/CameraComponent';
 import CameraComponent2 from './screens/CameraComponent2';
 import ImageSlider from './screens/ImageSlider';
 import CustomLoader from './screens/CustomLoader';
+import Stater from './screens/stater';
 // import CameraComponent2 from './screens/CameraComponent2';
 const Stack = createNativeStackNavigator();
 
@@ -34,8 +35,9 @@ function App() {
   return (
     <NavigationContainer>
       
-      <Stack.Navigator   initialRouteName='Login' screenOptions={{headerShown: false}}>
-      
+      <Stack.Navigator   initialRouteName='Stater' screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Stater" component={Stater} />
+
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="signup" component={Signup} />
         <Stack.Screen name="Home" component={Homescreen} />
