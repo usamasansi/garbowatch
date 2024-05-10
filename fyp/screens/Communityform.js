@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -9,6 +9,9 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
+import io from 'socket.io-client';
+
+const socket = io('http://192.168.100.7:3000');
 
 const CommunityForm = ({navigation}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
@@ -33,8 +36,8 @@ const CommunityForm = ({navigation}) => {
     if (inputText.trim() !== '') {
       const newMessage = {
         text: inputText,
-        user: 'User', 
-        timestamp: new Date().toLocaleString(), 
+        user: 'User',
+        timestamp: new Date().toLocaleString(),
       };
 
       setMessages([...messages, newMessage]);
@@ -45,17 +48,26 @@ const CommunityForm = ({navigation}) => {
   const [newPostText, setNewPostText] = useState('');
 
   useEffect(() => {
-    // Fetch posts from database or API when component mounts
-    fetchPosts();
+    // Listen for incoming messages from the backend
+    socket.on('message', message => {
+      setMessages(prevMessages => [...prevMessages, message]);
+      // console.log('message:', message);
+    });
+
+    // Clean up function to disconnect from the socket when component unmounts
+    return () => {
+      socket.disconnect();
+      // console.log('socket:', socket);
+    };
   }, []);
 
   const fetchPosts = () => {
     // Example fetch function to get posts from an API or database
     // Replace this with your actual fetch logic
     const fetchedPosts = [
-      { id: 1, author: 'User 1', text: 'This is the first post.' },
-      { id: 2, author: 'User 2', text: 'Second post here!' },
-      { id: 3, author: 'User 3', text: 'Another post for testing.' },
+      {id: 1, author: 'User 1', text: 'This is the first post.'},
+      {id: 2, author: 'User 2', text: 'Second post here!'},
+      {id: 3, author: 'User 3', text: 'Another post for testing.'},
     ];
     setPosts(fetchedPosts);
   };
@@ -72,21 +84,31 @@ const CommunityForm = ({navigation}) => {
     };
     setReactions(updatedReactions);
   };
-  
-  
+
+  // Ensure that messages are emitted to the server when the user sends a message
   const handlePostSubmit = () => {
-    const newPost = {
-      id: posts.length + 1,
-      author: 'Current User', 
-      text: newPostText,
-    };
-    setPosts([...posts, newPost]);
-    setNewPostText('');
+    if (newPostText.trim() !== '') {
+      const newMessage = {
+        text: newPostText,
+        user: 'User', // Replace 'User' with the actual username or user ID
+        timestamp: new Date().toLocaleString(),
+      };
+
+      // Emit the message along with sender's information to the server
+      socket.emit('message', newMessage);
+
+      // Update the input field for new posts
+      setNewPostText('');
+
+      // Add the new message to the list of messages
+      setMessages([...messages, newMessage]);
+    }
   };
+
   return (
     <View style={styles.container}>
-       <View style={styles.garbowatch}>
-      <TouchableOpacity
+      <View style={styles.garbowatch}>
+        <TouchableOpacity
           onPress={() => navigateTo('Report')}
           onPressIn={() => handleNavItemPressIn('Report')}
           onPressOut={handleNavItemPressOut}
@@ -94,62 +116,54 @@ const CommunityForm = ({navigation}) => {
             styles.navItem,
             isNavItemActive('Report') && styles.activeabout,
           ]}>
-                     <Text style={styles.garbowatch}>Community Chat</Text>
-
+          <Text style={styles.garbowatch}>Community Chat</Text>
         </TouchableOpacity>
-        
       </View>
       <ScrollView>
-      
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Write your post here..."
-          value={newPostText}
-          onChangeText={setNewPostText}
-        />
-        <TouchableOpacity
-          style={styles.postButton}
-          onPress={handlePostSubmit}
-          disabled={!newPostText.trim()}
-        >
-          <Text style={styles.ButtonText}>Post</Text>
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.postContainer}>
-            <Text style={styles.author}>{item.author}</Text>
-            <Text style={styles.postText}>{item.text}</Text>
-            <View style={styles.reactionsContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Write your post here..."
+            value={newPostText}
+            onChangeText={setNewPostText}
+          />
+          <TouchableOpacity
+            style={styles.postButton}
+            onPress={handlePostSubmit}
+            disabled={!newPostText.trim()}>
+            <Text style={styles.ButtonText}>Post</Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item}) => (
+            <View style={styles.postContainer}>
+              <Text style={styles.author}>{item.author}</Text>
+              <Text style={styles.postText}>{item.text}</Text>
+              <View style={styles.reactionsContainer}>
                 <TouchableOpacity
                   style={styles.reactionButton}
-                  onPress={() => handleReact(item.id, 'likes')}
-                >
+                  onPress={() => handleReact(item.id, 'likes')}>
                   <Icon name="thumb-up-outline" size={20} color="blue" />
                   <Text>{reactions[item.id]?.likes || 0}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.reactionButton}
-                  onPress={() => handleReact(item.id, 'dislikes')}
-                >
+                  onPress={() => handleReact(item.id, 'dislikes')}>
                   <Icon name="thumb-down-outline" size={20} color="red" />
                   <Text>{reactions[item.id]?.dislikes || 0}</Text>
                 </TouchableOpacity>
               </View>
-          </View>
-        )}
-        data={posts}
-      />
+            </View>
+          )}
+          data={posts}
+        />
       </ScrollView>
-      
+
       <View style={styles.contentView}>
         {/* Add your content here */}
 
         <Text style={styles.contentText}></Text>
-        
       </View>
       <View style={styles.navbar}>
         <TouchableOpacity onPress={() => navigateTo('Home')}>
@@ -264,8 +278,8 @@ const styles = StyleSheet.create({
   ButtonText: {
     color: 'white',
     fontWeight: 'bold',
-     height:30,
-     fontSize:20
+    height: 30,
+    fontSize: 20,
   },
   messageContainer: {
     padding: 8,
@@ -293,8 +307,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     paddingHorizontal: 8,
     paddingVertical: 6,
-    height:'100%',
-    fontSize:20
+    height: '100%',
+    fontSize: 20,
   },
   sendButton: {
     marginLeft: 8,
@@ -312,8 +326,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
-
-    
   },
 });
-export default CommunityForm;
+export default CommunityForm;
