@@ -21,6 +21,8 @@ import MapView, {Marker} from 'react-native-maps';
 import CameraComponent from './CameraComponent';
 import MapViewComponent from './MapViewComponent';
 import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import LinearGradient from 'react-native-linear-gradient';
+
 const Report_edit = ({navigation}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
 
@@ -62,7 +64,7 @@ const Report_edit = ({navigation}) => {
   };
   const handleUpdateReport = async () => {
     try {
-      const response = await fetch('http://192.168.100.7:3000/api/reports', {
+      const response = await fetch('http://192.168.131.253:3000/api/reports', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,10 +109,16 @@ const Report_edit = ({navigation}) => {
             styles.navItem,
             isNavItemActive('CameraComponent') && styles.activeabout,
           ]}>
-          <Icon style={styles.garbowatch} name="arrow-left" size={25} />
+              <LinearGradient 
+         colors={['#B9E976', '#21453F']}
+         style={styles.gradient}
+        >
+          <Icon style={styles.Icon} name="arrow-left" size={25} />
+          </LinearGradient>
         </TouchableOpacity>
       </View>
       <ScrollView>
+      
         <View style={styles.contentView}>
           <View
             style={{
@@ -130,12 +138,18 @@ const Report_edit = ({navigation}) => {
               }}></Text>
           </View>
           <View>
+          
             <TouchableOpacity style={styles.cameraButton}>
+            <LinearGradient 
+         colors={['#B9E976', '#21453F']}
+         style={styles.gradient1}
+        >
               <Icon
                 style={styles.cameraIcon}
                 name="camera"
                 size={30}
                 onPress={() => navigation.navigate('CameraComponent2')}></Icon>
+                </LinearGradient>
             </TouchableOpacity>
           </View>
           <View style={{bottom: -120}}>
@@ -357,6 +371,7 @@ const Report_edit = ({navigation}) => {
             {showMap && <MapViewComponent />}
           </View>
           <View>
+          
             <Text
               style={{
                 top: -320,
@@ -368,6 +383,7 @@ const Report_edit = ({navigation}) => {
               }}>
               Additional information
             </Text>
+            
             <TextInput
               placeholder="it is nearby it contains products"
               keyboardType="email-address"
@@ -387,26 +403,32 @@ const Report_edit = ({navigation}) => {
               value={additionalInfo}
               onChangeText={setadditionalInfo}
             />
-            <TouchableOpacity onPress={handleUpdateReport}>
-              <Text
-                style={{
-                  top: -325,
-                  width: 400,
-                  height: 50,
-                  margin: 10,
-                  borderRadius: 5,
-                  textAlign: 'center',
-                  padding: 6.5,
-                  backgroundColor: '#4CBB17',
-                  color: '#fff',
-                  fontWeight: 'bold',
-                  fontSize: 18,
-                }}>
-                Send
-              </Text>
-            </TouchableOpacity>
+            
           </View>
+         
         </View>
+        <TouchableOpacity onPress={handleUpdateReport}>
+        <LinearGradient colors={['#B9E976', '#21453F']}
+        style={styles.gradient2}
+        >
+           <Text
+             style={{
+               top: -5,
+               width: 400,
+               height: 40,
+               margin: 10,
+               borderRadius: 5,
+               textAlign: 'center',
+               padding: 6.5,
+               //backgroundColor: '#4CBB17',
+               color: '#fff',
+               fontWeight: 'bold',
+               fontSize: 22,
+             }}>
+             SEND
+           </Text>
+           </LinearGradient>
+         </TouchableOpacity>
       </ScrollView>
 
       <View style={styles.navbar}>
@@ -460,12 +482,14 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     color: 'white', // Adjust icon color if needed
+    left:9.5,
+    bottom:-9
   },
   cameraButton: {
-    backgroundColor: '#4CAF50', // Adjust green shade as needed
+     // Adjust green shade as needed
     borderRadius: 30,
     padding: 12,
-    bottom: 110,
+    bottom: 117,
     left: 150,
   },
   navbar: {
@@ -490,8 +514,19 @@ const styles = StyleSheet.create({
 
     justifyContent: 'space-between',
   },
+  gradient2:{
+    bottom:130,
+    height:55,
+    borderRadius: 50,
+  },
   content: {
     flex: 1,
+  },
+  gradient1:{
+   width:50,
+   
+   height:50,
+   borderRadius:24
   },
   contentView: {
     flex: 1, // Make the content view take up the remaining space
@@ -621,15 +656,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#4CBB17',
     padding: 5,
     borderRadius: 8,
+    
   },
   garbowatch: {
-    backgroundColor: '#4CBB17',
+    height:44,
     padding: 5,
     color: 'white',
     fontWeight: 'bold',
     fontSize: 25,
     borderRadius: 5,
     justifyContent: 'space-between',
+    bottom:2
+  },
+  Icon:{
+    height:48,
+    padding: 5,
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 27,
+    borderRadius: 5,
+    justifyContent: 'space-between',
+    bottom:-2
   },
   image_icon: {
     marginRight: 1000,

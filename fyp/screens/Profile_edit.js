@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import RadioButton from 'react-native-paper';
+import LinearGradient from 'react-native-linear-gradient';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const Profile_edit = ({navigation, route}) => {
@@ -48,7 +49,7 @@ const Profile_edit = ({navigation, route}) => {
     
       const handleUpdateProfile = async () => {
         try {
-          const response = await fetch('http://172.29.32.1:3000/api/profile', {
+          const response = await fetch('http://192.168.131.253:3000/api/profile', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -94,16 +95,31 @@ const Profile_edit = ({navigation, route}) => {
            isNavItemActive('profile') && styles.activeabout,
          ]}
        >
+  <LinearGradient 
+         colors={['#B9E976', '#21453F']}
+         style={styles.gradient}
+        >
         <Icon style={styles.garbowatch}
- name="arrow-left" size={25} /> 
-         
+         name="arrow-left" size={25} /> 
+         </LinearGradient>
 
          
        </TouchableOpacity>
-       <Text style={styles.garbowatch}>    Edit Profile
+       <LinearGradient 
+         colors={['#B9E976', '#21453F']}
+         style={styles.gradient1}
+        >
+       <Text style={styles.garbowatch1
+       }>    Edit Profile
      </Text>
+     </LinearGradient>
      <TouchableOpacity onPress={handleUpdateProfile}>
-        <Icon style={styles.garbowatch} name="check" size={25} />
+     <LinearGradient 
+         colors={['#B9E976', '#21453F']}
+         style={styles.gradient2}
+        >
+        <Icon style={styles.garbowatch2} name="check" size={25} />
+        </LinearGradient>
       </TouchableOpacity>
      </View>
      
@@ -195,8 +211,24 @@ const styles = StyleSheet.create({
         borderRadius: 8,
        
       },
+      gradient:{
+        width:100,
+        height:45,
+        bottom:2
+      },
+      gradient1:{
+        left:-20,
+        width:228,
+        height:45,
+        bottom:2
+        
+      },gradient2:{
+        height:45,
+        width:110,
+        left:-32,
+        bottom:2
+      },
       garbowatch: {
-        backgroundColor:'#4CBB17',
         padding:5,
         color: 'white',
         fontWeight: 'bold',
@@ -204,8 +236,30 @@ const styles = StyleSheet.create({
         borderRadius:5,
         textAlign:'justify',
         flexDirection:'row',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
         
+      },
+      garbowatch1:{
+        padding:5,
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 24,
+        borderRadius:5,
+        textAlign:'justify',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        left:25
+      },
+      garbowatch2:{
+        padding:5,
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 24,
+        borderRadius:5,
+        textAlign:'justify',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        left:65
       },
       input: {
         width: 400,
