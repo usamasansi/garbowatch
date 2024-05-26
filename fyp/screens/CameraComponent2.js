@@ -29,9 +29,9 @@ const App = () => {
   const [location, setLocation] = useState('');
   const [username, setUsername] = useState('');
 
-  useEffect(() => {
-    geolocation();
-  }, [fileUri]);
+  // useEffect(() => {
+  //   geolocation();
+  // }, [fileUri]);
 
   const chooseImage = () => {
     ImagePicker.launchImageLibrary(options, response => {
@@ -50,6 +50,7 @@ const App = () => {
           console.log('Selected Image URI:', response.assets[0].uri);
           // Set the fileUri state with the URI
           setFileUri(response.assets[0].uri);
+          geolocation();
           // Optionally, set other state variables or perform additional actions
         } else {
           console.log('No image selected');
@@ -64,7 +65,9 @@ const App = () => {
 
     Geolocation.getCurrentPosition(
       position => {
-        const {latitude, longitude} = position.coords;
+        let {latitude, longitude} = position.coords;
+        latitude = latitude.toFixed(2);
+        longitude = longitude.toFixed(2);
         const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
         setLocation(location);
       },
@@ -176,8 +179,10 @@ const App = () => {
               <Text style={{textAlign: 'center'}}>File Uri</Text>
             </View>
             <View>
-              <Text style={{textAlign: 'center'}}>Date: {dateTime}</Text>
-              <Text style={{textAlign: 'center'}}>Location: {location}</Text>
+              <Text style={{fontWeight: 'bold'}}>Date:</Text>
+              <Text style={{textAlign: 'center'}}>{dateTime}</Text>
+              <Text style={{fontWeight: 'bold'}}>Location:</Text>
+              <Text style={{textAlign: 'center'}}>{location}</Text>
             </View>
           </View>
           <View style={styles.btnParentSection}>
