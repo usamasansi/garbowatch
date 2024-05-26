@@ -22,7 +22,7 @@ const options = {
   },
 };
 
-const App = () => {
+const App = ({navigation}) => {
   const [fileData, setFileData] = useState('');
   const [fileUri, setFileUri] = useState('');
   const [dateTime, setDateTime] = useState('');
@@ -117,21 +117,18 @@ const App = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(
-        'http://192.168.10.47:3000/api/data/submit',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            image: fileUri,
-            location: location,
-            dateTime: dateTime,
-            username: username,
-          }),
+      const response = await fetch(`${process.env.BE_URL}/api/data/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({
+          image: fileUri,
+          location: location,
+          dateTime: dateTime,
+          username: username,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -139,6 +136,7 @@ const App = () => {
 
       const data = await response.json();
       console.log('Data submitted successfully:', data);
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error submitting data:', error);
     }
@@ -228,7 +226,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
-   
   },
   btnParentSection: {
     alignItems: 'center',
