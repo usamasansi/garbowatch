@@ -95,6 +95,7 @@ const Report = ({navigation}) => {
             isNavItemActive('Report_edit') && styles.activeNavItem,
           ]}
         >
+          
           <Text style={styles.Icon}><Icon
  
  name="plus-circle" size={50}/></Text>

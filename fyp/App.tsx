@@ -20,6 +20,11 @@ import CameraComponent2 from './screens/CameraComponent2';
 import ImageSlider from './screens/ImageSlider';
 import CustomLoader from './screens/CustomLoader';
 import Stater from './screens/stater';
+import ChatScreen from './screens/ChatScreen';
+import ChannelListScreen from './screens/Channelistscreen';
+import ChannelScreen from './screens/ChannelScreen';
+import ChatClient from './screens/ChatClient';
+
 // import CameraComponent2 from './screens/CameraComponent2';
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +46,11 @@ function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="signup" component={Signup} />
         <Stack.Screen name="Home" component={Homescreen} />
-        
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
+        <Stack.Screen name="ChannelList" component={ChannelListScreen} />
+        <Stack.Screen name="Channel" component={ChannelScreen} />
+        <Stack.Screen name="ChatClient" component={ChatClient} />
+
         <Stack.Screen name="Report" component={Report} />
         <Stack.Screen name="profile" component={Profile} />
         <Stack.Screen name="profile_edit" component={Profile_edit} />

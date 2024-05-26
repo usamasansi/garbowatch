@@ -9,6 +9,7 @@ import {
 import {color} from 'react-native-elements/dist/helpers';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
 import CheckBox from '@react-native-community/checkbox';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Profile = ({navigation, route}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
@@ -45,15 +46,20 @@ const Profile = ({navigation, route}) => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.container2}>
-        
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 24 }}>
-          {firstName} 
+        <LinearGradient 
+         colors={['#B9E976', '#21453F']}
+         style={styles.gradient}
+        >
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 24,padding:10,bottom:-12 }}>
+            RAED BIN UMAIR
           </Text>
-          <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16}}>
-            You didn't select any organization. Select company or organization
-            in edit profile
+          <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16,padding:10,
+            bottom:-10
+          }}>
+                 You didn't select any organization. Select company or organization
+                  in edit profile
           </Text>
-
+          </LinearGradient>
           <TouchableOpacity
             onPress={() => navigateTo('profile_edit')}
             onPressIn={() => handleNavItemPressIn('profile_edit')}
@@ -65,6 +71,7 @@ const Profile = ({navigation, route}) => {
             <Icon style={styles.Icon} name="pencil-circle" size={25} />
           </TouchableOpacity>
         </View>
+        <View style={styles.activity}>
         <View>
           <Text style={styles.sectionTitle}>Your Activities</Text>
         </View>
@@ -113,7 +120,7 @@ const Profile = ({navigation, route}) => {
           <Text style={styles.text}></Text>
 
         </View>
-        
+        </View>
       </ScrollView>
       <View style={styles.navbar}>
         <TouchableOpacity onPress={() => navigateTo('Home')}>
@@ -154,6 +161,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, // Make the container take up the entire screen
     flexDirection: 'column', // Arrange the child elements vertically
+    
   },
   Icon: {
     color: 'white',
@@ -166,8 +174,14 @@ const styles = StyleSheet.create({
     height: '90%',
   },
   container2: {
-    backgroundColor: '#4CBB17',
+    
     padding: 20,
+  },
+  gradient:{
+ width:405,
+ left:-20,
+ height:160,
+ bottom:24
   },
   navbar: {
     flexDirection: 'row',
@@ -212,7 +226,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container2: {
-    backgroundColor: '#4CBB17',
+  
     padding: 25,
   },
   contentText: {
@@ -259,6 +273,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 5,
     color: 'grey',
+  },
+  activity:{
+    bottom:60
   },
   checkboxContainer: {
     flexDirection: 'row',
