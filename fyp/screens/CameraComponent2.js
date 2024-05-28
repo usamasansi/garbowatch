@@ -115,7 +115,7 @@ const App = () => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        'http://192.168.10.47:3000/api/data/submit',
+        'http://192.168.10.2:3000/api/data/submit',
         {
           method: 'POST',
           headers: {
@@ -167,17 +167,17 @@ const App = () => {
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <View style={styles.body}>
-          <Text style={{textAlign: 'center', fontSize: 20, paddingBottom: 10}}>
+          <Text style={{textAlign: 'center', fontSize: 20, paddingBottom: 40}}>
             Pick Images from Camera & Gallery
           </Text>
           <View style={styles.ImageSections}>
             <View>
               <Image source={{uri: fileUri}} style={styles.images} />
-              <Text style={{textAlign: 'center'}}>File Uri</Text>
+              <Text style={{textAlign: 'center' , left:200,color:'black',fontWeight:'bold'}}>File Uri</Text>
             </View>
             <View>
-              <Text style={{textAlign: 'center'}}>Date: {dateTime}</Text>
-              <Text style={{textAlign: 'center'}}>Location: {location}</Text>
+              <Text style={{textAlign: 'center',bottom:40,left:-60,color:'black',fontWeight:'bold'}}>Date: {dateTime}</Text>
+              <Text style={{textAlign: 'center',color:'black',fontWeight:'bold',bottom:40,left:-74}}>Location:{location}</Text>
             </View>
           </View>
           <View style={styles.btnParentSection}>
@@ -223,6 +223,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
+   left:200
    
   },
   btnParentSection: {
