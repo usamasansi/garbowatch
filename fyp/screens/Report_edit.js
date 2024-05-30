@@ -53,11 +53,29 @@ const Report_edit = ({navigation}) => {
   const [istypeactionchecked6, settypeactionchecked6] = useState(false);
   const [istypeactionchecked7, settypeactionchecked7] = useState(false);
   const [istypeactionchecked8, settypeactionchecked8] = useState(false);
+  const [location, setLocation] = useState('');
 
   const [additionalInfo, setadditionalInfo] = useState('');
 
   const [showMap, setShowMap] = useState(false);
+  const geolocation = () => {
+    
 
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
+        setLocation(location);
+      },
+      error => {
+        console.log(error.message);
+      },
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+    );
+  };
+  useEffect(() => {
+    geolocation();
+  });
   const handleShowMap = () => {
     // Toggle the visibility of the MapViewComponent
     setShowMap(!showMap);
@@ -325,12 +343,12 @@ const Report_edit = ({navigation}) => {
 
                 color: 'black',
 
-                right: 100,
+                right: 20,
               }}>
               Accessible by a Car
             </Text>
             <CheckBox
-              style={{bottom: 322, right: -72}}
+              style={{bottom: 322, right: -160}}
               value={istypeactionchecked8}
               onValueChange={newValue => settypeactionchecked8(newValue)}
               tintColors={{true: '#4CBB17'}}
@@ -343,7 +361,7 @@ const Report_edit = ({navigation}) => {
                 fontWeight: 'bold',
                 color: 'black',
 
-                right: 100,
+                right: 20,
               }}>
               Location
             </Text>
@@ -351,19 +369,19 @@ const Report_edit = ({navigation}) => {
               <Text
                 style={{
                   color: 'black',
-                  right: 100,
+                  right: 20,
                   top: -320,
-                  width: 120,
-                  height: 40,
+                  
+                  
 
-                  borderRadius: 6,
-                  textAlign: 'center',
-                  padding: 10,
-                  backgroundColor: '#4CBB17',
-                  color: '#fff',
+                  
+                  
+                  
+                  fontSize:15,
+                  color: 'black',
                   fontWeight: 'bold',
                 }}>
-                click to show current
+                {location}
               </Text>
             </TouchableOpacity>
 

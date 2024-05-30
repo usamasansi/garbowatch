@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import PropTypes from 'prop-types';
-import ProgressBar from 'react-native-progress/Bar'; // Import ProgressBar from react-native-progress
+import ProgressBar from 'react-native-progress/Bar'; 
 
 const CustomLoader = ({ children, isLoading }) => {
-  const [progressValue, setProgressValue] = useState(0); // State to control progress bar value
+  const [progressValue, setProgressValue] = useState(0); 
 
   useEffect(() => {
     let progress = 0;

@@ -22,16 +22,16 @@ const options = {
   },
 };
 
-const App = ({navigation}) => {
+const App = () => {
   const [fileData, setFileData] = useState('');
   const [fileUri, setFileUri] = useState('');
   const [dateTime, setDateTime] = useState('');
   const [location, setLocation] = useState('');
   const [username, setUsername] = useState('');
 
-  // useEffect(() => {
-  //   geolocation();
-  // }, [fileUri]);
+  useEffect(() => {
+    geolocation();
+  }, [fileUri]);
 
   const chooseImage = () => {
     ImagePicker.launchImageLibrary(options, response => {
@@ -50,7 +50,6 @@ const App = ({navigation}) => {
           console.log('Selected Image URI:', response.assets[0].uri);
           // Set the fileUri state with the URI
           setFileUri(response.assets[0].uri);
-          geolocation();
           // Optionally, set other state variables or perform additional actions
         } else {
           console.log('No image selected');
@@ -65,9 +64,7 @@ const App = ({navigation}) => {
 
     Geolocation.getCurrentPosition(
       position => {
-        let {latitude, longitude} = position.coords;
-        latitude = latitude.toFixed(2);
-        longitude = longitude.toFixed(2);
+        const {latitude, longitude} = position.coords;
         const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
         setLocation(location);
       },
@@ -117,18 +114,21 @@ const App = ({navigation}) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${process.env.BE_URL}/api/data/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'http://192.168.10.2:3000/api/data/submit',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            image: fileUri,
+            location: location,
+            dateTime: dateTime,
+            username: username,
+          }),
         },
-        body: JSON.stringify({
-          image: fileUri,
-          location: location,
-          dateTime: dateTime,
-          username: username,
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -136,7 +136,6 @@ const App = ({navigation}) => {
 
       const data = await response.json();
       console.log('Data submitted successfully:', data);
-      navigation.navigate('Home');
     } catch (error) {
       console.error('Error submitting data:', error);
     }
@@ -168,19 +167,17 @@ const App = ({navigation}) => {
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <View style={styles.body}>
-          <Text style={{textAlign: 'center', fontSize: 20, paddingBottom: 10}}>
+          <Text style={{textAlign: 'center', fontSize: 20, paddingBottom: 40}}>
             Pick Images from Camera & Gallery
           </Text>
           <View style={styles.ImageSections}>
             <View>
               <Image source={{uri: fileUri}} style={styles.images} />
-              <Text style={{textAlign: 'center'}}>File Uri</Text>
+              <Text style={{textAlign: 'center' , left:200,color:'black',fontWeight:'bold'}}>File Uri</Text>
             </View>
             <View>
-              <Text style={{fontWeight: 'bold'}}>Date:</Text>
-              <Text style={{textAlign: 'center'}}>{dateTime}</Text>
-              <Text style={{fontWeight: 'bold'}}>Location:</Text>
-              <Text style={{textAlign: 'center'}}>{location}</Text>
+              <Text style={{textAlign: 'center',bottom:40,left:-60,color:'black',fontWeight:'bold'}}>Date: {dateTime}</Text>
+              <Text style={{textAlign: 'center',color:'black',fontWeight:'bold',bottom:40,left:-74}}>Location:{location}</Text>
             </View>
           </View>
           <View style={styles.btnParentSection}>
@@ -226,6 +223,8 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
+   left:200
+   
   },
   btnParentSection: {
     alignItems: 'center',
