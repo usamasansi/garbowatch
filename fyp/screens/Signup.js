@@ -1,20 +1,15 @@
-import React from 'react';
-import {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {
-  GoogleSigninButton,
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+import { GoogleSigninButton, GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const ThemeContext = React.createContext({
   primaryColor: '#42A5F5',
@@ -22,6 +17,7 @@ const ThemeContext = React.createContext({
   textColor: '#000',
   errorColor: '#f00',
 });
+
 export default function Signup() {
   const navigation = useNavigation();
 
@@ -31,13 +27,15 @@ export default function Signup() {
     textColor: '#000',
     errorColor: '#f00',
   });
+
   const [signinState, setsigninState] = useState({
     username: 'example@example.com', // Set initial email
     password: '123',
     errors: {},
     email: 'example@example.com',
-    issignIn: false,
+    isSignedIn: false,
   });
+
   const handleSignin = async () => {
     try {
       const response = await fetch('http://192.168.100.7:3000/api/signup', {
@@ -56,22 +54,16 @@ export default function Signup() {
         const userData = await response.json(); // Assuming the response contains user data including username
         setsigninState({
           ...signinState,
-          isLoggedIn: true,
+          isSignedIn: true,
           username: userData.username,
         }); // Update the state with the username
-        navigation.navigate('profile', {username: userData.username}); // Pass username to Profile
+        navigation.navigate('profile', { username: userData.username }); // Pass username to Profile
       } else {
         const errorData = await response.json();
-        setsigninState({...signinState, errors: errorData});
+        setsigninState({ ...signinState, errors: errorData });
       }
     } catch (error) {
       console.error('Error:', error);
-    }
-    if (response.ok) {
-      const userData = await response.json();
-      navigation.navigate('profile', {username: userData.username}); // Pass username to Profile
-    } else {
-      // Handle signup errors
     }
   };
 
@@ -85,38 +77,50 @@ export default function Signup() {
       <View style={styles.container}>
         <Text style={styles.header}>Signup</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          value={signinState.username}
-          onChangeText={text =>
-            setsigninState({...signinState, username: text})
-          }
-        />
+        <View style={styles.inputContainer}>
+          <Icon name="person" size={24} color="#49AC25" />
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            value={signinState.username}
+            onChangeText={text =>
+              setsigninState({ ...signinState, username: text })
+            }
+          />
+        </View>
 
         {signinState.errors.username && (
           <Text style={styles.error}>{signinState.errors.username}</Text>
         )}
 
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry={true}
-          value={signinState.password}
-          onChangeText={text =>
-            setsigninState({...signinState, password: text})
-          }
-        />
+        <View style={styles.inputContainer}>
+          <Icon name="lock" size={24} color="#49AC25" />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry={true}
+            value={signinState.password}
+            onChangeText={text =>
+              setsigninState({ ...signinState, password: text })
+            }
+          />
+        </View>
 
         {signinState.errors.password && (
           <Text style={styles.error}>{signinState.errors.password}</Text>
         )}
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={signinState.email}
-          onChangeText={text => setsigninState({...signinState, email: text})}
-        />
+
+        <View style={styles.inputContainer}>
+          <Icon name="email" size={24} color="#49AC25" />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={signinState.email}
+            onChangeText={text =>
+              setsigninState({ ...signinState, email: text })
+            }
+          />
+        </View>
 
         {signinState.errors.email && (
           <Text style={styles.error}>{signinState.errors.email}</Text>
@@ -124,6 +128,7 @@ export default function Signup() {
         {signinState.errors.signin && (
           <Text style={styles.error}>{signinState.errors.signin}</Text>
         )}
+
         <TouchableOpacity>
           <LinearGradient
             colors={['#B9E976', '#21453F']}
@@ -173,6 +178,7 @@ export default function Signup() {
     </ThemeContext.Provider>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -194,14 +200,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#4CBB17',
   },
-  input: {
-    width: 400,
-    height: 40,
-    borderWidth: 0,
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 2,
     borderColor: 'grey',
     marginBottom: 10,
-    padding: 10,
-    borderBottomWidth: 2,
+  },
+  input: {
+    width: 350,
+    height: 40,
+    paddingLeft: 10,
     fontSize: 16,
     color: 'black',
   },
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
     textAlign: 'center',
-    padding: 3,
+    padding: 0,
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 18,
@@ -229,7 +238,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
     textAlign: 'center',
-    padding: 3,
+    padding: 0,
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 18,

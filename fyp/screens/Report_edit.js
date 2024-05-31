@@ -177,7 +177,7 @@ const Report_edit = ({navigation}) => {
                 fontWeight: 'bold',
                 color: 'black',
                 bottom: 250,
-                right: 105,
+                right: 70,
               }}>
               {' '}
               Size of the Trash
@@ -209,7 +209,7 @@ const Report_edit = ({navigation}) => {
               Fits in a wheelbarrow
             </Text>
             <CheckBox
-              style={{bottom: 300, right: -145}}
+              style={{bottom: 300, right: -210}}
               value={istypeactionchecked}
               onValueChange={newValue => settypeactionchecked(newValue)}
               tintColors={{true: '#4CBB17'}}></CheckBox>
@@ -224,7 +224,7 @@ const Report_edit = ({navigation}) => {
               Truck needed
             </Text>
             <CheckBox
-              style={{bottom: 318, right: -115}}
+              style={{bottom: 320, right: -115}}
               value={istypeactionchecked2}
               onValueChange={newValue => settypeactionchecked2(newValue)}
               tintColors={{true: '#4CBB17'}}></CheckBox>
@@ -234,7 +234,7 @@ const Report_edit = ({navigation}) => {
                 fontWeight: 'bold',
                 color: 'black',
                 bottom: 250,
-                right: 105,
+                right: 75,
                 top: -300,
               }}>
               {' '}
@@ -251,7 +251,7 @@ const Report_edit = ({navigation}) => {
               Household
             </Text>
             <CheckBox
-              style={{bottom: 320, right: -60}}
+              style={{bottom: 320, right: -100}}
               value={istypeactionchecked3}
               onValueChange={newValue => settypeactionchecked3(newValue)}
               tintColors={{true: '#4CBB17'}}
@@ -267,7 +267,7 @@ const Report_edit = ({navigation}) => {
               Construction
             </Text>
             <CheckBox
-              style={{bottom: 340, right: -60}}
+              style={{bottom: 340, right: -100}}
               value={istypeactionchecked4}
               onValueChange={newValue => settypeactionchecked4(newValue)}
               tintColors={{true: '#4CBB17'}}
@@ -284,7 +284,7 @@ const Report_edit = ({navigation}) => {
               Plastic
             </Text>
             <CheckBox
-              style={{bottom: 360, right: -60}}
+              style={{bottom: 360, right: -100}}
               value={istypeactionchecked5}
               onValueChange={newValue => settypeactionchecked5(newValue)}
               tintColors={{true: '#4CBB17'}}
@@ -300,7 +300,7 @@ const Report_edit = ({navigation}) => {
               Glass
             </Text>
             <CheckBox
-              style={{bottom: 390, right: -60}}
+              style={{bottom: 390, right: -100}}
               value={istypeactionchecked6}
               onValueChange={newValue => settypeactionchecked6(newValue)}
               tintColors={{true: '#4CBB17'}}
@@ -316,7 +316,7 @@ const Report_edit = ({navigation}) => {
               Paper
             </Text>
             <CheckBox
-              style={{bottom: 415, right: -60}}
+              style={{bottom: 415, right: -100}}
               value={istypeactionchecked7}
               onValueChange={newValue => settypeactionchecked7(newValue)}
               tintColors={{true: '#4CBB17'}}
@@ -330,7 +330,7 @@ const Report_edit = ({navigation}) => {
                 fontWeight: 'bold',
                 color: 'black',
 
-                right: 100,
+                right: 70,
               }}>
               Trash Accessibility
             </Text>
@@ -343,12 +343,12 @@ const Report_edit = ({navigation}) => {
 
                 color: 'black',
 
-                right: 20,
+                right: 50,
               }}>
               Accessible by a Car
             </Text>
             <CheckBox
-              style={{bottom: 322, right: -160}}
+              style={{bottom: 324, right: -180}}
               value={istypeactionchecked8}
               onValueChange={newValue => settypeactionchecked8(newValue)}
               tintColors={{true: '#4CBB17'}}
@@ -361,7 +361,7 @@ const Report_edit = ({navigation}) => {
                 fontWeight: 'bold',
                 color: 'black',
 
-                right: 20,
+                right: 50,
               }}>
               Location
             </Text>
@@ -369,7 +369,7 @@ const Report_edit = ({navigation}) => {
               <Text
                 style={{
                   color: 'black',
-                  right: 20,
+                  right: 50,
                   top: -320,
                   
                   
@@ -397,7 +397,7 @@ const Report_edit = ({navigation}) => {
                 fontWeight: 'bold',
                 color: 'black',
 
-                right: -10,
+                right: -5,
               }}>
               Additional information
             </Text>
@@ -437,7 +437,7 @@ const Report_edit = ({navigation}) => {
                margin: 10,
                borderRadius: 5,
                textAlign: 'center',
-               padding: 6.5,
+               padding: 4,
                //backgroundColor: '#4CBB17',
                color: '#fff',
                fontWeight: 'bold',
@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   gradient2:{
-    bottom:130,
+    bottom:100,
     height:55,
     borderRadius: 50,
   },

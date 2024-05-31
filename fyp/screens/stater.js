@@ -9,8 +9,8 @@ const Stack = createNativeStackNavigator();
 
 const Slides = ({ navigation }) => {
   const images = [
-    require('../assests/images/Stater_.png'),
-    require('../assests/images/Welcome_.png'),
+    require('../assests/images/Stater2.png'),
+    require('../assests/images/Welcome.png'),
   ];
 
   return (
@@ -65,9 +65,9 @@ const styles = StyleSheet.create({
   },
   slider1: {
     width: '100%',
-    height: 640,
+    height: 960,
     borderRadius: 30,
-    bottom:-25
+    bottom:-40
   },
   gradient: {
     borderRadius: 50,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
     textAlign: 'center',
-    padding: 3,
+    padding:0,
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 19,
