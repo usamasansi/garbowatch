@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   gradient:{
  width:405,
  left:-20,
- height:160,
+ height:200,
  bottom:24
   },
   navbar: {

@@ -10,8 +10,8 @@ import ChannelListScreen from './Channelistscreen';
 import ChannelScreen from './ChannelScreen';
 
 const API_KEY = 'dz5f4d5kzrue';
-const USER_ID = 'young-pine-4';
-const USER_TOKEN ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoieW91bmctcGluZS00IiwiZXhwIjoxNzE3MDY4NDA4fQ.FUkzJy2uwIA4hWgO04c9n04hghsBUs87Ym6-ou5B1Cw';
+const USER_ID = 'wispy-wind-6';
+const USER_TOKEN ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoid2lzcHktd2luZC02IiwiZXhwIjoxNzE3MTgwOTg4fQ.Q1iOtnhe-Sp7xschGdIZRexHC28nyWs-Uh9lcodf8_E';
 
 const chatClient = StreamChat.getInstance(API_KEY);
 
@@ -27,7 +27,7 @@ const ChatClient = () => {
         await chatClient.connectUser(
           {
             id: USER_ID,
-            name: 'young',
+            name: 'wisp',
             image: 'https://bit.ly/2u9Vc0r',
           },
           USER_TOKEN,

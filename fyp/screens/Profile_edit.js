@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
         
       },
       garbowatch1:{
-        padding:5,
+        
         color: 'white',
         fontWeight: 'bold',
         fontSize: 24,
