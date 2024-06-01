@@ -37,7 +37,7 @@ const MapViewComponent = () => {
               }
             },
             error => setError(error.message),
-            { enableHighAccuracy: true, timeout: 2147483647, maximumAge: 1000 }
+            { enableHighAccuracy: true, timeout: 200000, maximumAge: 1000 }
           );
         } else {
           setError('Location permission denied');
@@ -71,7 +71,7 @@ const MapViewComponent = () => {
           <Marker
             coordinate={location}
             title={"Your Location"}
-            description={"This is where you are"}
+            description={"Home"}
           />
         )}
       </MapView>

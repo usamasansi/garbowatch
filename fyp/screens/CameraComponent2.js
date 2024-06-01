@@ -71,7 +71,7 @@ const App = () => {
       error => {
         console.log(error.message);
       },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      {enableHighAccuracy: true, timeout: 200000, maximumAge: 1000},
     );
   };
 
@@ -115,7 +115,7 @@ const App = () => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        'http://192.168.141.200:3000/api/data/submit',
+        'http://192.168.10.2:3000/api/data/submit',
         {
           method: 'POST',
           headers: {

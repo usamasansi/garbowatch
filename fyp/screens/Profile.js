@@ -97,17 +97,17 @@ const Profile = ({navigation, route}) => {
           <Text style={styles.sectionTitle}> Cleaning Action</Text>
           <View style={styles.checkboxContainer}>
             <Text style={styles.checkboxLabel}>
-              {' '}
-              I want to organize a Cleaning Action
-            </Text>
-            <CheckBox disabled  />
+                 I want to organize a Cleaning Action                                                 
+            </Text> 
+            <CheckBox tintColors={{ true: '#4CBB17' }} />
+           
 
           </View>
           <View style={styles.checkboxContainer}>
             <Text style={styles.checkboxLabel}>
               I want to receive notifications about cleaning
             </Text>
-            <CheckBox disabled  />
+            <CheckBox tintColors={{ true: '#4CBB17' }} />
 
           </View>
         </View>
@@ -282,8 +282,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkboxLabel: {
-    fontSize: 19,
+    fontSize: 18,
     color: 'grey',
+    right:-2
+
   },
   subtitle: {
     fontSize: 16,
