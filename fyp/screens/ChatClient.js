@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View, Text } from 'react-native';
 import { StreamChat } from 'stream-chat';
-import { Chat, OverlayProvider } from 'stream-chat-react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {Chat} from 'stream-chat-react-native'
+import { OverlayProvider } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ChannelListScreen from './Channelistscreen';
@@ -66,6 +67,7 @@ const ChatClient = () => {
     <SafeAreaProvider>
       <OverlayProvider>
         <Chat client={chatClient}>
+          console.log(client)
           <NavigationContainer>
             <Stack.Navigator initialRouteName="ChannelList">
               <Stack.Screen name="ChannelList" component={ChannelListScreen} />
