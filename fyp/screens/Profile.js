@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -10,11 +10,72 @@ import {color} from 'react-native-elements/dist/helpers';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
 import CheckBox from '@react-native-community/checkbox';
 import LinearGradient from 'react-native-linear-gradient';
+import axios from 'axios'; // Import axios
+import storage from './storage';
 
 const Profile = ({navigation, route}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
- 
-   const { firstName } = route.params || {};
+  const[profiledata,setprofiledata]=useState(null);
+  const [isChecked, setIsChecked] = useState(false);
+
+  console.log(profiledata)
+  const[email,setEmail]=useState('')
+  // _retrieveData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('email');
+  //     if (value !== null) {
+  //       // We have data!!
+  //       console.log(value);
+  //       return value
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //   }
+  // };
+  storage.load({
+    key: 'email',
+
+    // autoSync (default: true) means if data is not found or has expired,
+    // then invoke the corresponding sync method
+    autoSync: true,
+
+    // syncInBackground (default: true) means if data expired,
+    // return the outdated data first while invoking the sync method.
+    // If syncInBackground is set to false, and there is expired data,
+    // it will wait for the new data and return only after the sync completed.
+    // (This, of course, is slower)
+    syncInBackground: true,
+
+    // you can pass extra params to the sync method
+    // see sync example below
+    syncParams: {
+      extraFetchOptions: {
+        // blahblah
+      },
+      someFlag: true
+    }
+  })
+  .then(ret => {
+    // found data go to then()
+    console.log(ret.email);
+    setEmail(ret.email)
+  })
+  .catch(err => {
+    // any exception including data not found
+    // goes to catch()
+    console.warn(err.message);
+    switch (err.name) {
+      case 'NotFoundError':
+        // TODO;
+        break;
+      case 'ExpiredError':
+        // TODO
+        break;
+    }
+  });
+
+
+  //  const { username } = route.params || {};
 
   const navigateTo = screen => {
     // Assuming 'navigation' prop is passed from React Navigation
@@ -27,10 +88,44 @@ const Profile = ({navigation, route}) => {
     setFirstName(newFirstName);
     setLastName(newLastName);
   };
+  
   const handleNavItemPressOut = () => {
     setActiveNavItem(null);
   };
+  const [isOrganizeActionChecked, setOrganizeActionChecked] = useState(false);
+      const [isNotificationChecked, setNotificationChecked] = useState(false);
+  useEffect(() => {
+    if (profiledata && profiledata.data) {
+      setIsChecked(profiledata.data.organizeAction);
+      setOrganizeActionChecked(profiledata.data.receiveNotifications);
+    }
+    
+  
+getProfileData();
+  }, []); // E
+  const getProfileData = async () => {
+    try {
+      const response = await fetch(`http://192.168.141.200:3000/api/profile/${JSON.stringify({email:"Ashraf@gmail.com"})}`, {
+        method: 'GET',
+      });
+  
+     
+  
+      const data = await response.json();
+      // console.log('Profile get:', data);
+      setIsChecked(data.data.organizeAction);
+      setOrganizeActionChecked(data.data.receiveNotifications);
+      // const dataObj=JSON.parse(data)
+      // console.log(dataObj)
+      setprofiledata(data)
 
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      // Handle error or show an error message to the user
+      // Alert.alert('Error', 'Failed to Update Profile');
+    }
+  };
+  
   const isNavItemActive = navItem => {
     return activeNavItem === navItem;
   };
@@ -51,13 +146,17 @@ const Profile = ({navigation, route}) => {
          style={styles.gradient}
         >
           <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 24,padding:10,bottom:-12 }}>
-            RAED BIN UMAIR
+            {/* {profiledata.data.firstName} */}
+            {profiledata && profiledata.data ? profiledata.data.firstName : 'Loading...'}
+            {profiledata && profiledata.data ? profiledata.data.lastName : 'Loading...'}
+
           </Text>
           <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16,padding:10,
             bottom:-10
           }}>
-                 You didn't select any organization. Select company or organization
-                  in edit profile
+           {profiledata && profiledata.data ? profiledata.data.organizations : 'Loading...'}
+              
+
           </Text>
           </LinearGradient>
           <TouchableOpacity
@@ -99,7 +198,17 @@ const Profile = ({navigation, route}) => {
             <Text style={styles.checkboxLabel}>
                  I want to organize a Cleaning Action                                                 
             </Text> 
-            <CheckBox tintColors={{ true: '#4CBB17' }} />
+            <CheckBox tintColors={{ true: '#4CBB17' }} disabled
+            value={isChecked}
+        onValueChange={setIsChecked}>
+        {/* {profiledata && profiledata.data ? profiledata.data.organizeAction : 'Loading...'} */}
+
+            </CheckBox>
+            <Text style={styles.label}>
+      </Text>
+
+            
+              
            
 
           </View>
@@ -107,17 +216,26 @@ const Profile = ({navigation, route}) => {
             <Text style={styles.checkboxLabel}>
               I want to receive notifications about cleaning
             </Text>
-            <CheckBox tintColors={{ true: '#4CBB17' }} />
+            <CheckBox tintColors={{ true: '#4CBB17' }} disabled
+              value={isOrganizeActionChecked}
+              onValueChange={setOrganizeActionChecked}>
+            </CheckBox>
 
           </View>
         </View>
 
         <View>
           <Text style={styles.sectionTitle}>Your Email</Text>
-          <Text style={styles.text}></Text>
+          <Text style={styles.text}>
+          {profiledata && profiledata.data ? profiledata.data.email : 'Loading...'}
+
+          </Text>
 
           <Text style={styles.sectionTitle}>Your Phone</Text>
-          <Text style={styles.text}></Text>
+          <Text style={styles.text}>
+          {profiledata && profiledata.data ? profiledata.data.phone : 'Loading...'}
+
+          </Text>
 
         </View>
         </View>

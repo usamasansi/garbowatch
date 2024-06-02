@@ -10,7 +10,9 @@ import {
 import { GoogleSigninButton, GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Storage from 'react-native-storage';
+import storage from './storage';
 const ThemeContext = React.createContext({
   primaryColor: '#42A5F5',
   secondaryColor: '#fff',
@@ -20,7 +22,7 @@ const ThemeContext = React.createContext({
 
 export default function Signup() {
   const navigation = useNavigation();
-
+ 
   const [theme, setTheme] = useState({
     primaryColor: '#42A5F5',
     secondaryColor: '#fff',
@@ -32,13 +34,13 @@ export default function Signup() {
     username: 'example@example.com', // Set initial email
     password: '123',
     errors: {},
-    email: 'example@example.com',
+    email: 'Raedumair01@gmail.com',
     isSignedIn: false,
   });
 
   const handleSignin = async () => {
     try {
-      const response = await fetch('http://192.168.10.2:3000/api/signup', {
+      const response = await fetch('http://192.168.141.200:3000/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,12 +54,27 @@ export default function Signup() {
 
       if (response.ok) {
         const userData = await response.json(); // Assuming the response contains user data including username
+        console.log(userData);
         setsigninState({
           ...signinState,
           isSignedIn: true,
-          username: userData.username,
+         
         }); // Update the state with the username
-        navigation.navigate('profile', { username: userData.username }); // Pass username to Profile
+        // await AsyncStorage.setItem(
+        //   'email',
+        //   "example@example.com" ??'raedumair01@gmail.com'
+        // );
+        storage.save({
+          key: 'email', // Note: Do not use underscore("_") in key!
+          data: {
+           email:signinState.email
+          },
+        
+          // if expires not specified, the defaultExpires will be applied instead.
+          // if set to null, then it will never expire.
+          expires: 1000 * 3600
+        });
+        navigation.navigate('profile'); // Pass username to Profile
       } else {
         const errorData = await response.json();
         setsigninState({ ...signinState, errors: errorData });
