@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
   fitsinabag: Boolean,
@@ -10,12 +10,11 @@ const reportSchema = new mongoose.Schema({
   glass: Boolean,
   paper: Boolean,
   accessibilebyacar: Boolean,
-  location: String,
   additionalInfo: String,
-  image: String,
-  date: Date,
+  additionalInfo1:String,
+  latitude: Number,  // Add latitude
+  longitude: Number, // Add longitude
+  report:String,
 });
 
-const Report = mongoose.model("Report", reportSchema);
-
-module.exports = Report;
+module.exports = mongoose.model('Report', reportSchema);

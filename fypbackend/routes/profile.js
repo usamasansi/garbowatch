@@ -40,14 +40,15 @@ router.post('/', async (req, res) => {
 // Route to get user profile by email
 router.get('/:email', async (req, res) => {
   try {
-    const email = req.params.email;
-    const userProfile = await Profile.findOne({ email });
+     console.log(req.params.email)
+     const jsonObject = JSON.parse(req.params.email)
+    const userProfile = await Profile.findOne({ email:jsonObject.email });
+    console.log(userProfile);
 
     if (!userProfile) {
       return res.status(404).json({ error: 'Profile not found' });
     }
-
-    res.status(200).json(userProfile);
+   return res.status(200).json({data:userProfile});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
