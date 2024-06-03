@@ -2,18 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const socketIo = require("socket.io");
-const http = require("http");
-const dataRoutes = require("./routes/data");
-
 const app = express();
 
 // Middleware
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(cors());
-
 // MongoDB Connection
-mongoose.connect("mongodb://0.0.0.0:27017/garbowatch", {
+mongoose.connect('mongodb://localhost:27017/garbowatch', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -29,48 +24,20 @@ const signupRoute = require("./routes/signup");
 app.use("/api/signup", signupRoute); // Signup route
 
 const loginRoute = require("./routes/login");
-app.use("/api/login", loginRoute); // Login route
+app.use("/api/login", loginRoute); // Login route
 
 const reportsRoute = require("./routes/reports");
 app.use("/api/reports", reportsRoute); // Reports routes
 
-// Models
-const Profile = require("./models/Profile"); // Import your Profile model
-
-// Route to save or update user profile
-app.post("/api/profile", async (req, res) => {
-  // Your existing profile route code
-});
-
-// Route to get user profile by email
-app.get("/api/profile/:email", async (req, res) => {
-  // Your existing profile route code
-});
+const profileRoute = require("./routes/profile");
+app.use("/api/profile", profileRoute); // Profile routes
 
 // Use data routes
+const dataRoutes = require("./routes/data");
 app.use("/api/data", dataRoutes);
-
-// Setup Socket.io with Express server
-const server = http.createServer(app);
-const io = socketIo(server);
-
-// Handle incoming messages from clients
-io.on("connection", (socket) => {
-  console.log("New client connected");
-
-  // Handle incoming messages
-  socket.on("message", (data) => {
-    // Broadcast the message to all connected clients
-    io.emit("message", data);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
-});
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

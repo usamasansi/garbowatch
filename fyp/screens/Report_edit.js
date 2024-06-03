@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Geolocation from '@react-native-community/geolocation';
 import LinearGradient from 'react-native-linear-gradient';
 import * as ImagePicker from 'react-native-image-picker';
+import { Marker } from 'react-native-maps';
 const Report_edit = ({ navigation }) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
   const [fileUri, setFileUri] = useState('');
@@ -108,7 +109,17 @@ const Report_edit = ({ navigation }) => {
 
   const handleUpdateReport = async () => {
     try {
-      const response = await fetch('http://192.168.10.2:3000/api/reports', {
+      const { latitude, longitude } = await new Promise((resolve, reject) => {
+        Geolocation.getCurrentPosition(
+          position => {
+            resolve(position.coords);
+          },
+          error => reject(error),
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
+      });
+  
+      const response = await fetch('http://192.168.141.200:3000/api/reports', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,27 +135,32 @@ const Report_edit = ({ navigation }) => {
           paper: istypeactionchecked7,
           accessibilebyacar: istypeactionchecked8,
           additionalInfo,
-          image: fileUri,
+          latitude,  // Include latitude
+          longitude,
+          report:"report submitted"
+          
+           // Include longitude
         }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Error response:', errorData);
         Alert.alert('Error', `Failed to Update Report: ${errorData.message}`);
         return;
       }
-
+  
       const data = await response.json();
       console.log('Report Updated:', data);
       Alert.alert('Success', 'Report Updated Successfully');
-      navigation.navigate('Report');
+      navigation.navigate('Report', { newReport: data.report });
+      
     } catch (error) {
       console.error('Error updating report:', error);
       Alert.alert('Error', `Failed to Update Report: ${error.message}`);
     }
   };
-
+  
 
   return (
     <View style={styles.container}>
