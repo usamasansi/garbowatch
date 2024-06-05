@@ -24,7 +24,7 @@ import ChatScreen from './screens/ChatScreen';
 import ChannelListScreen from './screens/Channelistscreen';
 import ChannelScreen from './screens/ChannelScreen';
 import ChatClient from './screens/ChatClient';
-
+import test_call from "./screens/test_call"
 // import CameraComponent2 from './screens/CameraComponent2';
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +42,7 @@ function App() {
       
       <Stack.Navigator   initialRouteName='Stater' screenOptions={{headerShown: false}}>
       <Stack.Screen name="Stater" component={Stater} />
+      <Stack.Screen name="testcall" component={test_call} />
 
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="signup" component={Signup} />

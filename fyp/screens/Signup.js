@@ -40,7 +40,7 @@ export default function Signup() {
 
   const handleSignin = async () => {
     try {
-      const response = await fetch('http://192.168.141.200:3000/api/signup', {
+      const response = await fetch('http://192.168.146.30:3000/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export default function Signup() {
           // if set to null, then it will never expire.
           expires: 1000 * 3600
         });
-        navigation.navigate('profile'); // Pass username to Profile
+        navigation.navigate('profile',{ email: userData.email }); // Pass username to Profile
       } else {
         const errorData = await response.json();
         setsigninState({ ...signinState, errors: errorData });

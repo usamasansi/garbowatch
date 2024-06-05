@@ -35,7 +35,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.141.200:3000/api/login', {
+      const response = await fetch('http://192.168.146.30:3000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Login = () => {
         // Handle successful login
         const userData = await response.json(); // Assuming the response contains user data including username
         setLoginState({ ...loginState, isLoggedIn: true }); // Update the state to indicate the user is logged in
-        navigation.navigate('Home', { username: userData.username }); // Pass username to Profile
+        navigation.navigate('profile', { username: userData.username }); // Pass username to Profile
       } else {
         // Handle login errors
         const errorData = await response.json();

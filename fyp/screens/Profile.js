@@ -105,16 +105,17 @@ getProfileData();
   }, []); // E
   const getProfileData = async () => {
     try {
-      const response = await fetch(`http://192.168.141.200:3000/api/profile/${JSON.stringify({email:"Ashraf@gmail.com"})}`, {
+      const response = await fetch(`http://192.168.146.30:3000/api/profile/${JSON.stringify({email:"Raedumair01@gmail.com"})}`, {
         method: 'GET',
       });
   
      
   
       const data = await response.json();
-      // console.log('Profile get:', data);
-      setIsChecked(data.data.organizeAction);
-      setOrganizeActionChecked(data.data.receiveNotifications);
+          setIsChecked(data.data.organizeAction);
+          setOrganizeActionChecked(data.data.receiveNotifications);
+        // console.log('Profile get:', data);
+    
       // const dataObj=JSON.parse(data)
       // console.log(dataObj)
       setprofiledata(data)
