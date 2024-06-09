@@ -87,30 +87,39 @@ const App = ({ navigation }) => {
   const uploadImage = async () => {
     let uriParts = fileUri.split(".");
     let fileType = uriParts[uriParts.length - 1];
-
+  
     let formData = new FormData();
     formData.append("file", {
       uri: fileUri,
       name: `photo.${fileType}`,
       type: `image/${fileType}`,
     });
-
+  
     try {
-      let response = await fetch("https://b05f-205-164-152-54.ngrok-free.app/predict", {
+      let response = await fetch("https://5b29-39-46-247-202.ngrok-free.app/predict", {
         method: "POST",
         body: formData,
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        
       });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
       let responseJson = await response.json();
-      setClassificationResult(responseJson);
-      Alert.alert("Garbage classified");
+  
+      if (!responseJson.hasGarbage) {
+        setClassificationResult(responseJson);
+        Alert.alert("Garbage classified");
+      } 
     } catch (error) {
       console.error(error);
+      Alert.alert("Error uploading image");
     }
   };
+  
 
   const handleSubmit = async () => {
     try {
@@ -140,7 +149,9 @@ const App = ({ navigation }) => {
       Alert.alert("Picture submitted");
       
     } catch (error) {
+      Alert.alert('cannot submit data without location')
       console.error('Error submitting data:', error);
+      
     }
   };
   const navigateTo = screen => {
@@ -192,28 +203,41 @@ const App = ({ navigation }) => {
         </TouchableOpacity>
       </View>
             <View style={styles.ImageSections}>
-              <View>
+              
                 <Image source={{ uri: fileUri }} style={styles.images} />
-                <Text style={{ textAlign: 'center', left: 170, color: 'black', fontWeight: 'bold', bottom: -15 }}>File Uri</Text>
-              </View>
+                
+              
               <View>
-                <Text style={{ textAlign: 'center', bottom: 60, left: -60, color: 'black', fontWeight: 'bold' }}>Date: {dateTime}</Text>
-                <Text style={{ textAlign: 'center', color: 'black', fontWeight: 'bold', bottom: 60, left: -74 }}>Location: {location}</Text>
+                <Text style={{ textAlign: 'center', bottom: 0, left: -190,bottom:-150, color: 'black', fontWeight: 'bold' }}>Date: {dateTime}</Text>
+                <Text style={{ textAlign: 'center', color: 'black', bottom:-150,fontWeight: 'bold',  left: -200, }}>Location: {location}</Text>
               </View>
             </View>
             <View style={styles.btnParentSection}>
+            <LinearGradient colors={['#B9E976', '#21453F']} style={styles.gradientButton}>
+
               <TouchableOpacity onPress={chooseImage} style={styles.btnSection}>
                 <Text style={styles.btnText}>Choose File</Text>
+                
               </TouchableOpacity>
+              </LinearGradient>
+              <LinearGradient colors={['#B9E976', '#21453F']} style={styles.gradientButton}>
+
               <TouchableOpacity onPress={launchCamera} style={styles.btnSection}>
                 <Text style={styles.btnText}>Directly Launch Camera</Text>
               </TouchableOpacity>
+              </LinearGradient>
+              <LinearGradient colors={['#B9E976', '#21453F']} style={styles.gradientButton}>
+
               <TouchableOpacity onPress={uploadImage} style={styles.btnSection}>
                 <Text style={styles.btnText}>Classify Image</Text>
               </TouchableOpacity>
+              </LinearGradient>
+              <LinearGradient colors={['#B9E976', '#21453F']} style={styles.gradientButton}>
+
               <TouchableOpacity onPress={handleSubmit} style={styles.btnSection}>
                 <Text style={styles.btnText}>Submit</Text>
               </TouchableOpacity>
+              </LinearGradient>
             </View>
             {classificationResult && (
               <View style={styles.resultSection}>
@@ -248,39 +272,39 @@ const styles = StyleSheet.create({
     bottom:-20
   },
   images: {
-    width: 149,
-    height: 150,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginHorizontal: 3,
-    left: 170,
-    bottom: -10
+    width: 420,
+    height: 190,
+    borderRadius: 15,
+    borderColor: 'lightgrey',
+    borderWidth: 3,
+    left:177,
+    bottom:55
+
   },
   btnParentSection: {
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 20,
+    top:30,
+    
   },
   btnSection: {
-    width: 225,
-    height: 50,
-    backgroundColor: '#DCDCDC',
+    width: '100%',
+    padding: 10,
     alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 3,
-    marginBottom: 10,
-    bottom:-25
+    borderRadius: 25,
+    
     
   },
   btnText: {
-    textAlign: 'center',
-    color: 'gray',
-    fontSize: 14,
+    color: 'white',
+    fontSize: 18,
     fontWeight: 'bold',
   },
   resultSection: {
-    marginTop: 10,
+
     alignItems: 'center',
-    padding:10
+    padding:10,
+    top:35
   },
   resultText: {
     fontSize: 18,
@@ -312,8 +336,14 @@ const styles = StyleSheet.create({
     padding: 10,
     top:-9,
   height:50,
-  width:400,
-  left:-7
+  width:420,
+  left:-10
+  },
+  gradientButton:{
+    width: '80%',
+    marginVertical: 5,
+    borderRadius: 25,
+    
   },
   garbowatch: {
     position: 'absolute',

@@ -10,7 +10,7 @@ import {color} from 'react-native-elements/dist/helpers';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
 import CheckBox from '@react-native-community/checkbox';
 import LinearGradient from 'react-native-linear-gradient';
-import axios from 'axios'; // Import axios
+
 import storage from './storage';
 
 const Profile = ({navigation, route}) => {
@@ -18,8 +18,9 @@ const Profile = ({navigation, route}) => {
   const[profiledata,setprofiledata]=useState(null);
   const [isChecked, setIsChecked] = useState(false);
 
-  console.log(profiledata)
+  // console.log(profiledata)
   const[email,setEmail]=useState('')
+   console.log(email,"email")
   // _retrieveData = async () => {
   //   try {
   //     const value = await AsyncStorage.getItem('email');
@@ -57,8 +58,9 @@ const Profile = ({navigation, route}) => {
   })
   .then(ret => {
     // found data go to then()
-    console.log(ret.email);
+    console.log(ret.email,"Profile");
     setEmail(ret.email)
+    
   })
   .catch(err => {
     // any exception including data not found
@@ -100,20 +102,22 @@ const Profile = ({navigation, route}) => {
       setOrganizeActionChecked(profiledata.data.receiveNotifications);
     }
     
-  
-getProfileData();
-  }, []); // E
+  if(email){
+    getProfileData();
+  }
+
+  }, [email]); // E
   const getProfileData = async () => {
     try {
-      const response = await fetch(`http://192.168.146.30:3000/api/profile/${JSON.stringify({email:"Raedumair01@gmail.com"})}`, {
+      const response = await fetch(`http://192.168.146.30:3000/api/profile/${JSON.stringify({email})}`, {
         method: 'GET',
       });
   
      
   
       const data = await response.json();
-          setIsChecked(data.data.organizeAction);
-          setOrganizeActionChecked(data.data.receiveNotifications);
+           setIsChecked(data?.data?.organizeAction);
+           setOrganizeActionChecked(data?.data?.receiveNotifications);
         // console.log('Profile get:', data);
     
       // const dataObj=JSON.parse(data)
