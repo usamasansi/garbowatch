@@ -27,6 +27,7 @@ const Profile_edit = ({navigation, route}) => {
         navigation.navigate(screen);
       };
       
+      
     const handleNavItemPressIn = (navItem) => {
         setActiveNavItem(navItem);
       };
@@ -49,7 +50,13 @@ const Profile_edit = ({navigation, route}) => {
     
       const handleUpdateProfile = async () => {
         try {
-          const response = await fetch('http://192.168.141.200:3000/api/profile', {
+          // Check if the email is valid
+          if (!validateEmail(email)) {
+            Alert.alert('Error', 'Please enter a valid email address');
+            return; // Exit the function if email is invalid
+          }
+      
+          const response = await fetch('http://192.168.146.30:3000/api/profile', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -65,13 +72,13 @@ const Profile_edit = ({navigation, route}) => {
               // Add other profile data as needed
             }),
           });
-    
+      
           const data = await response.json();
           console.log('Profile Updated:', data);
-
+      
           // Show a success message or perform additional actions upon successful update
           Alert.alert('Success', 'Profile Updated Successfully');
-    
+      
           // Assuming 'navigation' prop is passed from React Navigation
           navigation.navigate('profile'); // Navigate back to the Profile screen
         } catch (error) {
@@ -80,6 +87,14 @@ const Profile_edit = ({navigation, route}) => {
           Alert.alert('Error', 'Failed to Update Profile');
         }
       };
+      
+      // Function to validate email format
+      const validateEmail = (email) => {
+        // Regular expression for email validation
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+      };
+      
 
   return (
     

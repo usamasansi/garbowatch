@@ -5,6 +5,9 @@ const User = require('../models/User');
 router.post('/', async (req, res) => {
   try {
     const { username, password, email } = req.body;
+    if (!username || !password || !email) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
     const user = new User({ username, password, email });
     await user.save();
     res.status(201).json({ message: 'User signed up successfully' });

@@ -5,11 +5,12 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import storage from './storage';
 const ThemeContext = React.createContext({
   primaryColor: '#42A5F5',
   secondaryColor: '#fff',
@@ -28,40 +29,55 @@ const Login = () => {
 
   const [loginState, setLoginState] = useState({
     username: 'example@example.com', // Set initial email
-    password: '123', // Set initial password
+    password: '12345678', // Set initial password
     errors: {},
     isLoggedIn: false,
   });
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.141.200:3000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: loginState.username,
-          password: loginState.password,
-        }),
-      });
+        if (loginState.password.length < 8) {
+            // Password length is less than 8 characters
+            setLoginState({ ...loginState, errors: { login: 'Password must be at least 8 characters' } });
+            return; // Exit the function
+        }
 
-      if (response.ok) {
-        // Handle successful login
-        const userData = await response.json(); // Assuming the response contains user data including username
-        setLoginState({ ...loginState, isLoggedIn: true }); // Update the state to indicate the user is logged in
-        navigation.navigate('Home', { username: userData.username }); // Pass username to Profile
-      } else {
-        // Handle login errors
-        const errorData = await response.json();
-        console.log(errorData); // Check the error response from the server
-        // ... Update state or show error message to the user
-      }
+        const response = await fetch('http://192.168.146.30:3000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: loginState.username,
+                password: loginState.password,
+            }),
+        });
+
+        if (response.ok) {
+            // Handle successful login
+            const userData = await response.json();
+            console.log(userData.data.email,"raed")
+            storage.save({
+              key: 'email',
+              data: {
+                email: userData.data.email,
+              },
+              expires: 1000 * 3600,
+            }); // Assuming the response contains user data including username
+            setLoginState({ ...loginState, isLoggedIn: true }); // Update the state to indicate the user is logged in
+             navigation.navigate('profile', { username: userData.username }); // Pass username to Profile
+        } else {
+            // Handle login errors
+            const errorData = await response.json();
+            console.log(errorData); // Check the error response from the server
+            // ... Update state or show error message to the user
+            setLoginState({ ...loginState, errors: { login: 'Invalid username or password' } }); // Update state with error message
+        }
     } catch (error) {
-      console.error('Error:', error);
-      // Handle other errors
+        console.error('Error:', error);
     }
-  };
+};
+
 
   return (
     <ThemeContext.Provider value={theme}>
@@ -70,6 +86,7 @@ const Login = () => {
           <Text style={styles.garbowatch}>GARBOWATCH</Text>
         </LinearGradient>
       </View>
+      
       <View style={styles.container}>
         <Text style={styles.header}>LOG IN</Text>
 
@@ -150,7 +167,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 350,
-    height: 40,
+    height: 45,
     paddingLeft: 10,
     fontSize: 16,
     color: 'black',

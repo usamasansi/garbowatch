@@ -7,12 +7,10 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { GoogleSigninButton, GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Storage from 'react-native-storage';
 import storage from './storage';
+
 const ThemeContext = React.createContext({
   primaryColor: '#42A5F5',
   secondaryColor: '#fff',
@@ -22,7 +20,7 @@ const ThemeContext = React.createContext({
 
 export default function Signup() {
   const navigation = useNavigation();
- 
+
   const [theme, setTheme] = useState({
     primaryColor: '#42A5F5',
     secondaryColor: '#fff',
@@ -31,16 +29,33 @@ export default function Signup() {
   });
 
   const [signinState, setsigninState] = useState({
-    username: 'example@example.com', // Set initial email
-    password: '123',
+    username: '', // Set initial email
+    password: '',
     errors: {},
-    email: 'Raedumair01@gmail.com',
+    email: '',
     isSignedIn: false,
   });
 
   const handleSignin = async () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(signinState.email)) {
+      setsigninState({
+        ...signinState,
+        errors: { email: 'Invalid email format' },
+      });
+      return;
+    }
+
+    if (signinState.password.length < 8) {
+      setsigninState({
+        ...signinState,
+        errors: { password: 'Password must be at least 8 characters' },
+      });
+      return;
+    }
+
     try {
-      const response = await fetch('http://192.168.141.200:3000/api/signup', {
+      const response = await fetch('http://192.168.146.30:3000/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,34 +68,31 @@ export default function Signup() {
       });
 
       if (response.ok) {
-        const userData = await response.json(); // Assuming the response contains user data including username
+        const userData = await response.json();
         console.log(userData);
         setsigninState({
           ...signinState,
           isSignedIn: true,
-         
-        }); // Update the state with the username
-        // await AsyncStorage.setItem(
-        //   'email',
-        //   "example@example.com" ??'raedumair01@gmail.com'
-        // );
-        storage.save({
-          key: 'email', // Note: Do not use underscore("_") in key!
-          data: {
-           email:signinState.email
-          },
-        
-          // if expires not specified, the defaultExpires will be applied instead.
-          // if set to null, then it will never expire.
-          expires: 1000 * 3600
+          errors: {},
         });
-        navigation.navigate('profile'); // Pass username to Profile
+        storage.save({
+          key: 'email',
+          data: {
+            email: signinState.email,
+          },
+          expires: 1000 * 3600,
+        });
+        navigation.navigate('profile', { username: signinState.username, email: signinState.email });
       } else {
         const errorData = await response.json();
         setsigninState({ ...signinState, errors: errorData });
       }
     } catch (error) {
       console.error('Error:', error);
+      setsigninState({
+        ...signinState,
+        errors: { general: 'An error occurred. Please try again later.' },
+      });
     }
   };
 
@@ -142,8 +154,13 @@ export default function Signup() {
         {signinState.errors.email && (
           <Text style={styles.error}>{signinState.errors.email}</Text>
         )}
-        {signinState.errors.signin && (
-          <Text style={styles.error}>{signinState.errors.signin}</Text>
+        {signinState.errors.general && (
+          <Text style={styles.error}>{signinState.errors.general}</Text>
+        )}
+        {signinState.isSignedIn && (
+          <Text style={styles.success}>
+            Signed in as {signinState.username}
+          </Text>
         )}
 
         <TouchableOpacity>
@@ -153,11 +170,6 @@ export default function Signup() {
             <Text style={styles.Button1} onPress={handleSignin}>
               SIGNUP
             </Text>
-            {signinState.isSignedIn && (
-              <Text style={styles.success}>
-                Logged in as {signinState.username}{' '}
-              </Text>
-            )}
           </LinearGradient>
         </TouchableOpacity>
 
@@ -168,29 +180,6 @@ export default function Signup() {
             <Text style={styles.Button2}>LOGIN</Text>
           </LinearGradient>
         </TouchableOpacity>
-
-        {/* <GoogleSigninButton
-    size={GoogleSigninButton.Size.Wide}
-    color={GoogleSigninButton.Color.Dark}
-    style={styles.GoogleSigninButton}
-    onPress={async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log(JSON.stringify(userInfo,null,2))
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
-    }
-  }}
-  ></GoogleSigninButton> */}
       </View>
     </ThemeContext.Provider>
   );
@@ -201,14 +190,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 0, // Add border width
+    borderWidth: 0,
     borderColor: 'black',
   },
   gradient: {
     borderRadius: 50,
   },
   gradient2: {
-    bottom: -12,
+    bottom: -10,
     borderRadius: 50,
   },
   header: {
@@ -226,7 +215,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 350,
-    height: 40,
+    height: 45,
     paddingLeft: 10,
     fontSize: 16,
     color: 'black',
@@ -275,10 +264,9 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   contentView: {
-    flex: 1, // Make the content view take up the remaining space
+    flex: 1,
     padding: 20,
     alignItems: 'center',
-    backgroundColor: '#001F3F',
     justifyContent: 'center',
   },
 });

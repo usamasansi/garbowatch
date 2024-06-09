@@ -15,6 +15,7 @@ const dataSchema = new mongoose.Schema({
     required: true,
     unique: true, // Ensures that no two documents can have the same location
   },
+  classificationResult:mongoose.Schema.Types.Mixed,
 });
 
 module.exports = mongoose.model("Data", dataSchema);

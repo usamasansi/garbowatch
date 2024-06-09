@@ -1,83 +1,27 @@
-// ChatClient.js
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View, Text } from 'react-native';
-import { StreamChat } from 'stream-chat';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {Chat} from 'stream-chat-react-native'
-import { OverlayProvider } from 'react-native-elements';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import ChannelListScreen from './Channelistscreen';
-import ChannelScreen from './ChannelScreen';
+import React from "react";
+import PubNub from "pubnub";
+import { PubNubProvider } from "pubnub-react";
+import { MessageList, MessageInput} from "@pubnub/react-native-chat-components";
+import { Chat } from "@pubnub/react-native-chat-components";
 
-const API_KEY = 'dz5f4d5kzrue';
-const USER_ID = 'wispy-wind-6';
-const USER_TOKEN ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoid2lzcHktd2luZC02IiwiZXhwIjoxNzE3MTgwOTg4fQ.Q1iOtnhe-Sp7xschGdIZRexHC28nyWs-Uh9lcodf8_E';
+// Creates and configures your PubNub instance. Be sure to replace "myPublishKey" and "mySubscribeKey"
+// with your own keyset. If you wish, modify the default "myFirstUser" userId value for the chat user.
+const pubnub = new PubNub({
+  publishKey: "pub-c-b6483555-6cf8-4959-8663-2055e3fbe93f",
+  subscribeKey: "sub-c-444dd0dc-a5eb-4f70-ac33-cda6916e5a02",
+  userId: "myFirstUser",
+});
+const currentChannel = "Default";
+const theme = "light";
 
-const chatClient = StreamChat.getInstance(API_KEY);
-
-const Stack = createStackNavigator();
-
-const ChatClient = () => {
-  const [isClientReady, setClientReady] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const setupClient = async () => {
-      try {
-        await chatClient.connectUser(
-          {
-            id: USER_ID,
-            name: 'wisp',
-            image: 'https://bit.ly/2u9Vc0r',
-          },
-          USER_TOKEN,
-        );
-        setClientReady(true);
-      } catch (err) {
-        console.error('Error connecting user:', err);
-        setError(err.message || 'An error occurred while connecting.');
-      }
-    };
-
-    setupClient();
-
-    return () => {
-      chatClient.disconnectUser();
-    };
-  }, []);
-
-  if (error) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Error: {error}</Text>
-      </View>
-    );
-  }
-
-  if (!isClientReady) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
+export function ChatClient() {
   return (
-    <SafeAreaProvider>
-      <OverlayProvider>
-        <Chat client={chatClient}>
-          console.log(client)
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName="ChannelList">
-              <Stack.Screen name="ChannelList" component={ChannelListScreen} />
-              <Stack.Screen name="Channel" component={ChannelScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </Chat>
-      </OverlayProvider>
-    </SafeAreaProvider>
+    <PubNubProvider client={pubnub}>
+    <Chat currentChannel={currentChannel} theme={theme}>
+      <MessageList />
+      <MessageInput />
+    </Chat>
+  </PubNubProvider>
   );
-};
-
+}
 export default ChatClient;

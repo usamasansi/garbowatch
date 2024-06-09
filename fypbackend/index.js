@@ -35,7 +35,8 @@ app.use("/api/profile", profileRoute); // Profile routes
 // Use data routes
 const dataRoutes = require("./routes/data");
 app.use("/api/data", dataRoutes);
-
+const classifyRoute = require("./routes/classify");
+app.use("/api/classify", classifyRoute); // Classification route
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

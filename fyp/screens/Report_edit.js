@@ -119,7 +119,7 @@ const Report_edit = ({ navigation }) => {
         );
       });
   
-      const response = await fetch('http://192.168.141.200:3000/api/reports', {
+      const response = await fetch('http://192.168.146.30:3000/api/reports', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
