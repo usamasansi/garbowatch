@@ -21,6 +21,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "@react-navigation/stack": "^6.3.29",
     "@react-util/overlay": "^0.0.4",
+    "date-fns": "^3.6.0",
     "link": "^2.1.0",
     "material-ui-community-icons": "^0.15.0",
     "pubnub": "^7.6.3",

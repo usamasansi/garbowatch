@@ -10,14 +10,23 @@ import {
   SafeAreaView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
-
 import LinearGradient from 'react-native-linear-gradient';
+import Pubnub from 'pubnub';
+import { format } from 'date-fns';
 
+const pubnub = new Pubnub({
+    publishKey: "pub-c-175d671e-8966-40b6-a87c-56fc64a6dc8f",
+    subscribeKey: "sub-c-32f049ce-1ac9-4028-8e1a-7531d5c0c579",
+    userId: "raed" // Set your unique user ID here
+});
 
 const CommunityForm = ({navigation}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [inputText, setInputText] = useState('');
+  const [text, onChangeText] = useState("");
+  const [likes, setLikes] = useState({});
+  const [dislikes, setDislikes] = useState({});
+  const [userId, setUserId] = useState("");
   const navigateTo = screen => {
     // Assuming 'navigation' prop is passed from React Navigation
     navigation.navigate(screen);
@@ -33,61 +42,80 @@ const CommunityForm = ({navigation}) => {
   const isNavItemActive = navItem => {
     return activeNavItem === navItem;
   };
-  const handleSend = () => {
-    if (inputText.trim() !== '') {
-      const newMessage = {
-        text: inputText,
-        user: 'User', 
-        timestamp: new Date().toLocaleString(), 
-      };
-
-      setMessages([...messages, newMessage]);
-      setInputText('');
-    }
-  };
-  const [posts, setPosts] = useState([]);
-  const [newPostText, setNewPostText] = useState('');
-
   useEffect(() => {
-    // Listen for incoming messages from the backend
-    fetchPosts();
+    // Set and get user ID on component mount
+    const id = pubnub.getUserId();
+    setUserId(id);
 
-  }, []);
-
-  const fetchPosts = () => {
-    // Example fetch function to get posts from an API or database
-    // Replace this with your actual fetch logic
-    const fetchedPosts = [
-      { id: 1, author: 'User 1', text: 'This is the first post.' },
-      { id: 2, author: 'User 2', text: 'Second post here!' },
-      { id: 3, author: 'User 3', text: 'Another post for testing.' },
-    ];
-    setPosts(fetchedPosts);
-  };
-  const [reactions, setReactions] = useState({});
-
-  const handleReact = (postId, reactionType) => {
-    const currentReaction = reactions[postId]?.[reactionType] || 0;
-    const updatedReactions = {
-      ...reactions,
-      [postId]: {
-        ...reactions[postId],
-        [reactionType]: currentReaction === 1 ? 0 : 1, // Toggle between 0 and 1
-      },
+    const listener = {
+        message: (messageEvent) => {
+            setMessages((messages) => [
+                ...messages,
+                {
+                    id: messageEvent.message.id,
+                    text: messageEvent.message.description,
+                    sender: messageEvent.publisher,
+                    timestamp: new Date(messageEvent.timetoken / 10000) // PubNub timetoken is in microseconds
+                }
+            ]);
+        },
     };
-    setReactions(updatedReactions);
-  };
-  
-  
-  const handlePostSubmit = () => {
-    const newPost = {
-      id: posts.length + 1,
-      author: 'Current User', 
-      text: newPostText,
+
+    pubnub.addListener(listener);
+    pubnub.subscribe({ channels: ['hello_world'] });
+
+    return () => {
+        pubnub.removeListener(listener);
+        pubnub.unsubscribe({ channels: ['hello_world'] });
     };
-    setPosts([...posts, newPost]);
-    setNewPostText('');
+}, []);
+const handleLike = (messageId) => {
+  const newLikes = { ...likes };
+  const newDislikes = { ...dislikes };
+
+  if (newLikes[messageId]) {
+      delete newLikes[messageId]; // Remove like if already liked
+  } else {
+      newLikes[messageId] = 1; // Like the message
+      if (newDislikes[messageId]) {
+          delete newDislikes[messageId]; // Remove dislike if already disliked
+      }
+  }
+
+  setLikes(newLikes);
+  setDislikes(newDislikes);
+};
+
+const handleDislike = (messageId) => {
+  const newDislikes = { ...dislikes };
+  const newLikes = { ...likes };
+
+  if (newDislikes[messageId]) {
+      delete newDislikes[messageId]; // Remove dislike if already disliked
+  } else {
+      newDislikes[messageId] = 1; // Dislike the message
+      if (newLikes[messageId]) {
+          delete newLikes[messageId]; // Remove like if already liked
+      }
+  }
+
+  setLikes(newLikes);
+  setDislikes(newDislikes);
+};
+
+const publishMessage = async (message) => {
+  const publishPayload = {
+      channel: "hello_world",
+      message: {
+          id: new Date().getTime().toString(), // Generate a unique ID for each message
+          title: "greeting",
+          description: message
+      }
   };
+  await pubnub.publish(publishPayload);
+  onChangeText("");
+};
+ 
   return (
     <View style={styles.container}>
        <View style={styles.garbowatch}>
@@ -108,58 +136,42 @@ const CommunityForm = ({navigation}) => {
         </TouchableOpacity>
         
       </View>
-      <ScrollView>
-      
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Write your post here..."
-          value={newPostText}
-          onChangeText={setNewPostText}
-        />
-        <TouchableOpacity
-          style={styles.postButton}
-          onPress={handlePostSubmit}
-          disabled={!newPostText.trim()}
-        >
-          <Text style={styles.ButtonText}>Post</Text>
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.postContainer}>
-            <Text style={styles.author}>{item.author}</Text>
-            <Text style={styles.postText}>{item.text}</Text>
-            <View style={styles.reactionsContainer}>
-                <TouchableOpacity
-                  style={styles.reactionButton}
-                  onPress={() => handleReact(item.id, 'likes')}
-                >
-                  <Icon name="thumb-up-outline" size={20} color="blue" />
-                  <Text>{reactions[item.id]?.likes || 0}</Text>
+      <View style={styles.container}>
+            <Text style={{color:'black'}}>User ID: {userId}</Text>
+            <ScrollView style={styles.messagesContainer}>
+                {messages.map((message, idx) => (
+                    <View key={idx} style={styles.messageBubble}>
+                        <Text style={styles.messageSender}>{message.sender}</Text>
+                        <Text style={styles.messageText}>{message.text}</Text>
+                        <Text style={styles.messageTime}>{format(message.timestamp, 'HH:mm')}</Text>
+                        <View style={styles.reactionContainer}>
+                            <TouchableOpacity onPress={() => handleLike(message.id)}>
+                                <Icon name="thumb-up" size={20} color="#888" />
+                            </TouchableOpacity>
+                            <Text style={styles.countText}>{likes[message.id] || 0}</Text>
+                            <TouchableOpacity onPress={() => handleDislike(message.id)}>
+                                <Icon name="thumb-down" size={20} color="#888" />
+                            </TouchableOpacity>
+                            <Text style={styles.countText}>{dislikes[message.id] || 0}</Text>
+                        </View>
+                    </View>
+                ))}
+            </ScrollView>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.textInput}
+                    onChangeText={onChangeText}
+                    value={text}
+                    placeholder="Type a message"
+                    placeholderTextColor="#888"
+                />
+                <TouchableOpacity onPress={() => publishMessage(text)}>
+                    <Icon name="send" size={30} color="#4CBB17" />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.reactionButton}
-                  onPress={() => handleReact(item.id, 'dislikes')}
-                >
-                  <Icon name="thumb-down-outline" size={20} color="red" />
-                  <Text>{reactions[item.id]?.dislikes || 0}</Text>
-                </TouchableOpacity>
-              </View>
-          </View>
-        )}
-        data={posts}
-      />
-      </ScrollView>
+            </View>
+        </View>
       
-      <View style={styles.contentView}>
-        {/* Add your content here */}
-
-        <Text style={styles.contentText}></Text>
-        
-      </View>
+      
       <View style={styles.navbar}>
         <TouchableOpacity onPress={() => navigateTo('Home')}>
           <Text style={styles.navItem}>
@@ -255,75 +267,66 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2, // Add a border at the bottom to simulate underline
     borderColor: 'white',
   },
-  postContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
+  messagesContainer: {
+    flex: 1,
     marginBottom: 10,
-  },
-  author: {
+},
+countText: {
+    color: '#000', // Change the color to black
+    marginLeft: 5, // Add some spacing between the count and the icon
+},
+messageBubble: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 20,
+    marginBottom: 10,
+    alignSelf: 'flex-start',
+    maxWidth: '80%',
+    shadowColor: '#000',
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+},
+messageSender: {
     fontWeight: 'bold',
     marginBottom: 5,
-  },
-  postText: {},
-  inputContainer: {
+},
+messageText: {
+    color: '#333',
+},
+messageTime: {
+    fontSize: 10,
+    color: '#888',
+    marginTop: 5,
+},
+reactionContainer: {
+    flexDirection: 'row',
+    marginTop: 5,
+},
+inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  ButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-     height:30,
-     fontSize:20
-  },
-  messageContainer: {
-    padding: 8,
-    marginBottom: 8,
-    borderRadius: 8,
-    backgroundColor: '#F0F0F0',
-  },
-  messageText: {
-    fontSize: 16,
-  },
-  timestamp: {
-    fontSize: 12,
-    color: 'grey',
-    textAlign: 'right',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  input: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+},
+textInput: {
     flex: 1,
-    borderWidth: 2,
-    borderColor: '#CCCCCC',
-    borderRadius: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    height:'100%',
-    fontSize:20
-  },
-  sendButton: {
-    marginLeft: 8,
-    backgroundColor: 'white',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 6,
-  },
-  sendButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  postButton: {
-    backgroundColor: '#4CBB17',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-
-    
-  },
+    height: 45,
+    paddingHorizontal: 10,
+    color: '#333',
+},
 });
 export default CommunityForm;

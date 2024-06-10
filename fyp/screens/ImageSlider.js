@@ -2,15 +2,15 @@
 import { View, Image, StyleSheet, Dimensions,TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 import {SliderBox} from 'react-native-image-slider-box'
-import Image1 from '../assests/images/slider1.jpeg';
+import Image1 from '../assests/images/Home.png';
 import Image2 from '../assests/images/garbowatch.png';
 import Image3 from '../assests/images/garbowatch.png';
 
 export default function ImageSlider (){
     const images =[
-    require('../assests/images/slider1.jpeg'),
-    require('../assests/images/garbage2.jpeg'),
-    require('../assests/images/garbage3.jpeg')
+    require('../assests/images/Home.png'),
+    require('../assests/images/mapview.png'),
+    
     ]
   return (
     <View style={styles.container}>
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     left:-40,
     
+    
   },
 
   wrapper: {
@@ -70,8 +71,9 @@ const styles = StyleSheet.create({
   },
   slider1:{
     width:410, // Adjust as needed
-    height: 210,
-    borderRadius:30
+    height: 585,
+    borderRadius:40,
+    left:1
   },
 });
 

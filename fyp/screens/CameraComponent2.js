@@ -96,7 +96,7 @@ const App = ({ navigation }) => {
     });
   
     try {
-      let response = await fetch("https://5b29-39-46-247-202.ngrok-free.app/predict", {
+      let response = await fetch("https://beb1-119-155-0-225.ngrok-free.app/predict", {
         method: "POST",
         body: formData,
         headers: {
