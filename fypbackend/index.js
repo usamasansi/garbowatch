@@ -29,6 +29,7 @@ app.use("/api/login", loginRoute); // Login route
 const reportsRoute = require("./routes/reports");
 app.use("/api/reports", reportsRoute); // Reports routes
 
+
 const profileRoute = require("./routes/profile");
 app.use("/api/profile", profileRoute); // Profile routes
 
