@@ -115,7 +115,7 @@ const App = () => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        'http://192.168.141.200:3000/api/data/submit',
+        'http://192.168.238.196:3000/api/data/submit',
         {
           method: 'POST',
           headers: {
@@ -167,17 +167,50 @@ const App = () => {
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <View style={styles.body}>
-          <Text style={{textAlign: 'center', fontSize: 20,bottom: 60,color:'black'}}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 20,
+              bottom: 60,
+              color: 'black',
+            }}>
             Pick Images from Camera & Gallery
           </Text>
           <View style={styles.ImageSections}>
             <View>
               <Image source={{uri: fileUri}} style={styles.images} />
-              <Text style={{textAlign: 'center' , left:170,color:'black',fontWeight:'bold',bottom:-15}}>File Uri</Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  left: 170,
+                  color: 'black',
+                  fontWeight: 'bold',
+                  bottom: -15,
+                }}>
+                File Uri
+              </Text>
             </View>
             <View>
-              <Text style={{textAlign: 'center',bottom:60,left:-60,color:'black',fontWeight:'bold'}}>Date: {dateTime}</Text>
-              <Text style={{textAlign: 'center',color:'black',fontWeight:'bold',bottom:60,left:-74}}>Location:{location}</Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  bottom: 60,
+                  left: -60,
+                  color: 'black',
+                  fontWeight: 'bold',
+                }}>
+                Date: {dateTime}
+              </Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: 'black',
+                  fontWeight: 'bold',
+                  bottom: 60,
+                  left: -74,
+                }}>
+                Location:{location}
+              </Text>
             </View>
           </View>
           <View style={styles.btnParentSection}>
@@ -223,9 +256,8 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     marginHorizontal: 3,
-   left:170,
-   bottom:-10
-   
+    left: 170,
+    bottom: -10,
   },
   btnParentSection: {
     alignItems: 'center',

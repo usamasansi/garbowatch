@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   Alert,
   StyleSheet,
-  Image
+  Image,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Geolocation from '@react-native-community/geolocation';
 import LinearGradient from 'react-native-linear-gradient';
 import * as ImagePicker from 'react-native-image-picker';
-import { Marker } from 'react-native-maps';
-const Report_edit = ({ navigation }) => {
+import {Marker} from 'react-native-maps';
+const Report_edit = ({navigation}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
   const [fileUri, setFileUri] = useState('');
   const [isOrganizeActionChecked, setOrganizeActionChecked] = useState(false);
@@ -30,17 +30,16 @@ const Report_edit = ({ navigation }) => {
   const [location, setLocation] = useState('');
   const [additionalInfo, setadditionalInfo] = useState('');
   const [showMap, setShowMap] = useState(false);
-  
 
   const options = {
     title: 'Select Avatar',
-    customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+    customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
     storageOptions: {
       skipBackup: true,
       path: 'images',
     },
   };
-  
+
   const navigateTo = screen => {
     navigation.navigate(screen);
   };
@@ -60,14 +59,14 @@ const Report_edit = ({ navigation }) => {
   const geolocation = () => {
     Geolocation.getCurrentPosition(
       position => {
-        const { latitude, longitude } = position.coords;
+        const {latitude, longitude} = position.coords;
         const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
         setLocation(location);
       },
       error => {
         console.log(error.message);
       },
-      { enableHighAccuracy: true, timeout: 200000, maximumAge: 1000 },
+      {enableHighAccuracy: true, timeout: 200000, maximumAge: 1000},
     );
   };
 
@@ -109,17 +108,17 @@ const Report_edit = ({ navigation }) => {
 
   const handleUpdateReport = async () => {
     try {
-      const { latitude, longitude } = await new Promise((resolve, reject) => {
+      const {latitude, longitude} = await new Promise((resolve, reject) => {
         Geolocation.getCurrentPosition(
           position => {
             resolve(position.coords);
           },
           error => reject(error),
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+          {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
         );
       });
-  
-      const response = await fetch('http://192.168.141.200:3000/api/reports', {
+
+      const response = await fetch('http://192.168.238.196:3000/api/reports', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,32 +134,30 @@ const Report_edit = ({ navigation }) => {
           paper: istypeactionchecked7,
           accessibilebyacar: istypeactionchecked8,
           additionalInfo,
-          latitude,  // Include latitude
+          latitude, // Include latitude
           longitude,
-          report:"report submitted"
-          
-           // Include longitude
+          report: 'report submitted',
+
+          // Include longitude
         }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Error response:', errorData);
         Alert.alert('Error', `Failed to Update Report: ${errorData.message}`);
         return;
       }
-  
+
       const data = await response.json();
       console.log('Report Updated:', data);
       Alert.alert('Success', 'Report Updated Successfully');
-      navigation.navigate('Report', { newReport: data.report });
-      
+      navigation.navigate('Report', {newReport: data.report});
     } catch (error) {
       console.error('Error updating report:', error);
       Alert.alert('Error', `Failed to Update Report: ${error.message}`);
     }
   };
-  
 
   return (
     <View style={styles.container}>
@@ -175,8 +172,7 @@ const Report_edit = ({ navigation }) => {
           ]}>
           <LinearGradient
             colors={['#B9E976', '#21453F']}
-            style={styles.gradient}
-          >
+            style={styles.gradient}>
             <Icon style={styles.Icon} name="arrow-left" size={25} />
           </LinearGradient>
         </TouchableOpacity>
@@ -184,14 +180,13 @@ const Report_edit = ({ navigation }) => {
       <ScrollView>
         <View style={styles.contentView}>
           <View>
-        <Image source={{uri: fileUri}} style={styles.images} />
-        </View>
+            <Image source={{uri: fileUri}} style={styles.images} />
+          </View>
           <View style={styles.section}>
             <TouchableOpacity style={styles.cameraButton}>
               <LinearGradient
                 colors={['#B9E976', '#21453F']}
-                style={styles.gradient1}
-              >
+                style={styles.gradient1}>
                 <Icon
                   style={styles.cameraIcon}
                   name="camera"
@@ -209,7 +204,7 @@ const Report_edit = ({ navigation }) => {
               <CheckBox
                 value={isOrganizeActionChecked}
                 onValueChange={newValue => setOrganizeActionChecked(newValue)}
-                tintColors={{ true: '#4CBB17' }}
+                tintColors={{true: '#4CBB17'}}
               />
             </View>
             <View style={styles.checkboxContainer}>
@@ -217,7 +212,7 @@ const Report_edit = ({ navigation }) => {
               <CheckBox
                 value={istypeactionchecked}
                 onValueChange={newValue => settypeactionchecked(newValue)}
-                tintColors={{ true: '#4CBB17' }}
+                tintColors={{true: '#4CBB17'}}
               />
             </View>
             <View style={styles.checkboxContainer}>
@@ -225,7 +220,7 @@ const Report_edit = ({ navigation }) => {
               <CheckBox
                 value={istypeactionchecked2}
                 onValueChange={newValue => settypeactionchecked2(newValue)}
-                tintColors={{ true: '#4CBB17' }}
+                tintColors={{true: '#4CBB17'}}
               />
             </View>
           </View>
@@ -236,7 +231,7 @@ const Report_edit = ({ navigation }) => {
               <CheckBox
                 value={istypeactionchecked3}
                 onValueChange={newValue => settypeactionchecked3(newValue)}
-                tintColors={{ true: '#4CBB17' }}
+                tintColors={{true: '#4CBB17'}}
               />
             </View>
             <View style={styles.checkboxContainer}>
@@ -244,7 +239,7 @@ const Report_edit = ({ navigation }) => {
               <CheckBox
                 value={istypeactionchecked4}
                 onValueChange={newValue => settypeactionchecked4(newValue)}
-                tintColors={{ true: '#4CBB17' }}
+                tintColors={{true: '#4CBB17'}}
               />
             </View>
             <View style={styles.checkboxContainer}>
@@ -252,7 +247,7 @@ const Report_edit = ({ navigation }) => {
               <CheckBox
                 value={istypeactionchecked5}
                 onValueChange={newValue => settypeactionchecked5(newValue)}
-                tintColors={{ true: '#4CBB17' }}
+                tintColors={{true: '#4CBB17'}}
               />
             </View>
             <View style={styles.checkboxContainer}>
@@ -260,7 +255,7 @@ const Report_edit = ({ navigation }) => {
               <CheckBox
                 value={istypeactionchecked6}
                 onValueChange={newValue => settypeactionchecked6(newValue)}
-                tintColors={{ true: '#4CBB17' }}
+                tintColors={{true: '#4CBB17'}}
               />
             </View>
             <View style={styles.checkboxContainer}>
@@ -268,7 +263,7 @@ const Report_edit = ({ navigation }) => {
               <CheckBox
                 value={istypeactionchecked7}
                 onValueChange={newValue => settypeactionchecked7(newValue)}
-                tintColors={{ true: '#4CBB17' }}
+                tintColors={{true: '#4CBB17'}}
               />
             </View>
           </View>
@@ -279,16 +274,14 @@ const Report_edit = ({ navigation }) => {
               <CheckBox
                 value={istypeactionchecked8}
                 onValueChange={newValue => settypeactionchecked8(newValue)}
-                tintColors={{ true: '#4CBB17' }}
+                tintColors={{true: '#4CBB17'}}
               />
             </View>
           </View>
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Location</Text>
             <TouchableOpacity onPress={() => navigateTo('Report')}>
-              <Text style={styles.locationText}>
-                {location}
-              </Text>
+              <Text style={styles.locationText}>{location}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.section}>
@@ -303,11 +296,12 @@ const Report_edit = ({ navigation }) => {
               onChangeText={text => setadditionalInfo(text)}
             />
           </View>
-          <TouchableOpacity style={styles.submitButton} onPress={handleUpdateReport}>
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={handleUpdateReport}>
             <LinearGradient
               colors={['#B9E976', '#21453F']}
-              style={styles.gradient2}
-            >
+              style={styles.gradient2}>
               <Text style={styles.submitButtonText}>SEND REPORT</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -332,7 +326,7 @@ const styles = StyleSheet.create({
   navItem: {
     color: 'grey', // Change text color to white
     fontSize: 18,
-    fontWeight: 'bold', 
+    fontWeight: 'bold',
   },
   activeabout: {
     opacity: 0.5,
@@ -340,15 +334,13 @@ const styles = StyleSheet.create({
   gradient: {
     borderRadius: 8,
     padding: 10,
-    top:-7
+    top: -7,
   },
   Icon: {
     color: 'white',
     textAlign: 'center',
-    width:372,
-    left:-180,
-    
-
+    width: 372,
+    left: -180,
   },
   ImageSections: {
     display: 'flex',
@@ -359,7 +351,7 @@ const styles = StyleSheet.create({
   },
   contentView: {
     padding: 20,
-    bottom:180
+    bottom: 180,
   },
   header: {
     alignItems: 'center',
@@ -381,14 +373,12 @@ const styles = StyleSheet.create({
   },
   cameraButton: {
     alignItems: 'center',
-    
   },
   gradient1: {
     borderRadius: 25,
     padding: 10,
-    marginBottom:200,
-    bottom:-185
-
+    marginBottom: 200,
+    bottom: -185,
   },
   cameraIcon: {
     color: 'white',
@@ -397,10 +387,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom:10,
-    
-    
-    
+    marginBottom: 10,
   },
   label: {
     fontSize: 16,
@@ -425,14 +412,13 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '100%',
   },
-  images:{
-  width: 380,
-  height: 200,
-  borderColor: 'black',
-  borderWidth: 1,
-  bottom:-210,
-  left:-4
-
+  images: {
+    width: 380,
+    height: 200,
+    borderColor: 'black',
+    borderWidth: 1,
+    bottom: -210,
+    left: -4,
   },
   submitButtonText: {
     fontSize: 18,

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {useState} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from './screens/Login';
 import Signup from './screens/Signup';
 import Homescreen from './screens/Homescreen';
@@ -10,9 +10,9 @@ import CommunityForm from './screens/Communityform';
 
 import About from './screens/About';
 import googlesignin from './screens/googlesignin';
-import profile from './screens/Profile'
+import profile from './screens/Profile';
 import Profile from './screens/Profile';
-import profile_edit from './screens/Profile_edit'
+import profile_edit from './screens/Profile_edit';
 import Profile_edit from './screens/Profile_edit';
 import Report_edit from './screens/Report_edit';
 import CameraComponent from './screens/CameraComponent';
@@ -24,6 +24,7 @@ import ChatScreen from './screens/ChatScreen';
 import ChannelListScreen from './screens/Channelistscreen';
 import ChannelScreen from './screens/ChannelScreen';
 import ChatClient from './screens/ChatClient';
+import Chat from './screens/Chat';
 
 // import CameraComponent2 from './screens/CameraComponent2';
 const Stack = createNativeStackNavigator();
@@ -34,14 +35,15 @@ function App() {
   // Simulate some loading logic (replace with your actual logic)
   setTimeout(() => setIsLoading(false), 2000); // Change delay as needed
   if (isLoading) {
-    return <CustomLoader children={''} isLoading={true}/>; // Show Loader component while loading
+    return <CustomLoader children={''} isLoading={true} />; // Show Loader component while loading
   }
 
   return (
     <NavigationContainer>
-      
-      <Stack.Navigator   initialRouteName='Stater' screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Stater" component={Stater} />
+      <Stack.Navigator
+        initialRouteName="Stater"
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Stater" component={Stater} />
 
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="signup" component={Signup} />
@@ -57,8 +59,8 @@ function App() {
         <Stack.Screen name="CommunityForum" component={CommunityForm} />
         <Stack.Screen name="Report_edit" component={Report_edit} />
         <Stack.Screen name="CameraComponent" component={CameraComponent} />
-         <Stack.Screen name="CameraComponent2" component={CameraComponent2} />
-         <Stack.Screen name="ImageSlider" component={ImageSlider} />
+        <Stack.Screen name="CameraComponent2" component={CameraComponent2} />
+        <Stack.Screen name="ImageSlider" component={ImageSlider} />
 
         <Stack.Screen name="About" component={About} />
         <Stack.Screen name="signingoogle" component={googlesignin} />

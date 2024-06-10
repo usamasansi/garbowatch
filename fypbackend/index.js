@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/garbowatch', {
+mongoose.connect("mongodb://0.0.0.0:27017/garbowatch", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

@@ -15,11 +15,11 @@ import storage from './storage';
 
 const Profile = ({navigation, route}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
-  const[profiledata,setprofiledata]=useState(null);
+  const [profiledata, setprofiledata] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
 
-  console.log(profiledata)
-  const[email,setEmail]=useState('')
+  console.log(profiledata);
+  const [email, setEmail] = useState('');
   // _retrieveData = async () => {
   //   try {
   //     const value = await AsyncStorage.getItem('email');
@@ -32,48 +32,48 @@ const Profile = ({navigation, route}) => {
   //     // Error retrieving data
   //   }
   // };
-  storage.load({
-    key: 'email',
+  storage
+    .load({
+      key: 'email',
 
-    // autoSync (default: true) means if data is not found or has expired,
-    // then invoke the corresponding sync method
-    autoSync: true,
+      // autoSync (default: true) means if data is not found or has expired,
+      // then invoke the corresponding sync method
+      autoSync: true,
 
-    // syncInBackground (default: true) means if data expired,
-    // return the outdated data first while invoking the sync method.
-    // If syncInBackground is set to false, and there is expired data,
-    // it will wait for the new data and return only after the sync completed.
-    // (This, of course, is slower)
-    syncInBackground: true,
+      // syncInBackground (default: true) means if data expired,
+      // return the outdated data first while invoking the sync method.
+      // If syncInBackground is set to false, and there is expired data,
+      // it will wait for the new data and return only after the sync completed.
+      // (This, of course, is slower)
+      syncInBackground: true,
 
-    // you can pass extra params to the sync method
-    // see sync example below
-    syncParams: {
-      extraFetchOptions: {
-        // blahblah
+      // you can pass extra params to the sync method
+      // see sync example below
+      syncParams: {
+        extraFetchOptions: {
+          // blahblah
+        },
+        someFlag: true,
       },
-      someFlag: true
-    }
-  })
-  .then(ret => {
-    // found data go to then()
-    console.log(ret.email);
-    setEmail(ret.email)
-  })
-  .catch(err => {
-    // any exception including data not found
-    // goes to catch()
-    console.warn(err.message);
-    switch (err.name) {
-      case 'NotFoundError':
-        // TODO;
-        break;
-      case 'ExpiredError':
-        // TODO
-        break;
-    }
-  });
-
+    })
+    .then(ret => {
+      // found data go to then()
+      console.log(ret.email);
+      setEmail(ret.email);
+    })
+    .catch(err => {
+      // any exception including data not found
+      // goes to catch()
+      console.warn(err.message);
+      switch (err.name) {
+        case 'NotFoundError':
+          // TODO;
+          break;
+        case 'ExpiredError':
+          // TODO
+          break;
+      }
+    });
 
   //  const { username } = route.params || {};
 
@@ -88,44 +88,45 @@ const Profile = ({navigation, route}) => {
     setFirstName(newFirstName);
     setLastName(newLastName);
   };
-  
+
   const handleNavItemPressOut = () => {
     setActiveNavItem(null);
   };
   const [isOrganizeActionChecked, setOrganizeActionChecked] = useState(false);
-      const [isNotificationChecked, setNotificationChecked] = useState(false);
+  const [isNotificationChecked, setNotificationChecked] = useState(false);
   useEffect(() => {
     if (profiledata && profiledata.data) {
       setIsChecked(profiledata.data.organizeAction);
       setOrganizeActionChecked(profiledata.data.receiveNotifications);
     }
-    
-  
-getProfileData();
+
+    getProfileData();
   }, []); // E
   const getProfileData = async () => {
     try {
-      const response = await fetch(`http://192.168.141.200:3000/api/profile/${JSON.stringify({email:"Ashraf@gmail.com"})}`, {
-        method: 'GET',
-      });
-  
-     
-  
+      const response = await fetch(
+        `http://192.168.238.196:3000/api/profile/${JSON.stringify({
+          email: 'Ashraf@gmail.com',
+        })}`,
+        {
+          method: 'GET',
+        },
+      );
+
       const data = await response.json();
       // console.log('Profile get:', data);
       setIsChecked(data.data.organizeAction);
       setOrganizeActionChecked(data.data.receiveNotifications);
       // const dataObj=JSON.parse(data)
       // console.log(dataObj)
-      setprofiledata(data)
-
+      setprofiledata(data);
     } catch (error) {
       console.error('Error updating profile:', error);
       // Handle error or show an error message to the user
       // Alert.alert('Error', 'Failed to Update Profile');
     }
   };
-  
+
   const isNavItemActive = navItem => {
     return activeNavItem === navItem;
   };
@@ -136,28 +137,41 @@ getProfileData();
     isLoggedIn: false,
   });
 
-
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.container2}>
-        <LinearGradient 
-         colors={['#B9E976', '#21453F']}
-         style={styles.gradient}
-        >
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 24,padding:10,bottom:-12 }}>
-            {/* {profiledata.data.firstName} */}
-            {profiledata && profiledata.data ? profiledata.data.firstName : 'Loading...'}
-            {profiledata && profiledata.data ? profiledata.data.lastName : 'Loading...'}
-
-          </Text>
-          <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16,padding:10,
-            bottom:-10
-          }}>
-           {profiledata && profiledata.data ? profiledata.data.organizations : 'Loading...'}
-              
-
-          </Text>
+          <LinearGradient
+            colors={['#B9E976', '#21453F']}
+            style={styles.gradient}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: 'white',
+                fontSize: 24,
+                padding: 10,
+                bottom: -12,
+              }}>
+              {/* {profiledata.data.firstName} */}
+              {profiledata && profiledata.data
+                ? profiledata.data.firstName
+                : 'Loading...'}
+              {profiledata && profiledata.data
+                ? profiledata.data.lastName
+                : 'Loading...'}
+            </Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: 'white',
+                fontSize: 16,
+                padding: 10,
+                bottom: -10,
+              }}>
+              {profiledata && profiledata.data
+                ? profiledata.data.organizations
+                : 'Loading...'}
+            </Text>
           </LinearGradient>
           <TouchableOpacity
             onPress={() => navigateTo('profile_edit')}
@@ -171,73 +185,70 @@ getProfileData();
           </TouchableOpacity>
         </View>
         <View style={styles.activity}>
-        <View>
-          <Text style={styles.sectionTitle}>Your Activities</Text>
-        </View>
-
-        {/* Repeat the structure for other LinearLayout sections */}
-
-        <View>
-          <Text style={styles.text}>
-            <Icon style={styles.map} name="map-marker"></Icon>Your reports
-          </Text>
-          <Text style={styles.text}>
-            <Icon style={styles.map1} name="refresh-circle"></Icon>Your updates
-          </Text>
-          <Text style={styles.text}>
-            <Icon style={styles.map2} name="check-circle"></Icon>Dumps cleaned
-          </Text>
-          <ScrollView horizontal>
-            <View>{/* Add your badges dynamically here */}</View>
-          </ScrollView>
-        </View>
-
-        <View>
-          <Text style={styles.sectionTitle}> Cleaning Action</Text>
-          <View style={styles.checkboxContainer}>
-            <Text style={styles.checkboxLabel}>
-                 I want to organize a Cleaning Action                                                 
-            </Text> 
-            <CheckBox tintColors={{ true: '#4CBB17' }} disabled
-            value={isChecked}
-        onValueChange={setIsChecked}>
-        {/* {profiledata && profiledata.data ? profiledata.data.organizeAction : 'Loading...'} */}
-
-            </CheckBox>
-            <Text style={styles.label}>
-      </Text>
-
-            
-              
-           
-
+          <View>
+            <Text style={styles.sectionTitle}>Your Activities</Text>
           </View>
-          <View style={styles.checkboxContainer}>
-            <Text style={styles.checkboxLabel}>
-              I want to receive notifications about cleaning
+
+          {/* Repeat the structure for other LinearLayout sections */}
+
+          <View>
+            <Text style={styles.text}>
+              <Icon style={styles.map} name="map-marker"></Icon>Your reports
             </Text>
-            <CheckBox tintColors={{ true: '#4CBB17' }} disabled
-              value={isOrganizeActionChecked}
-              onValueChange={setOrganizeActionChecked}>
-            </CheckBox>
-
+            <Text style={styles.text}>
+              <Icon style={styles.map1} name="refresh-circle"></Icon>Your
+              updates
+            </Text>
+            <Text style={styles.text}>
+              <Icon style={styles.map2} name="check-circle"></Icon>Dumps cleaned
+            </Text>
+            <ScrollView horizontal>
+              <View>{/* Add your badges dynamically here */}</View>
+            </ScrollView>
           </View>
-        </View>
 
-        <View>
-          <Text style={styles.sectionTitle}>Your Email</Text>
-          <Text style={styles.text}>
-          {profiledata && profiledata.data ? profiledata.data.email : 'Loading...'}
+          <View>
+            <Text style={styles.sectionTitle}> Cleaning Action</Text>
+            <View style={styles.checkboxContainer}>
+              <Text style={styles.checkboxLabel}>
+                I want to organize a Cleaning Action
+              </Text>
+              <CheckBox
+                tintColors={{true: '#4CBB17'}}
+                disabled
+                value={isChecked}
+                onValueChange={setIsChecked}>
+                {/* {profiledata && profiledata.data ? profiledata.data.organizeAction : 'Loading...'} */}
+              </CheckBox>
+              <Text style={styles.label}></Text>
+            </View>
+            <View style={styles.checkboxContainer}>
+              <Text style={styles.checkboxLabel}>
+                I want to receive notifications about cleaning
+              </Text>
+              <CheckBox
+                tintColors={{true: '#4CBB17'}}
+                disabled
+                value={isOrganizeActionChecked}
+                onValueChange={setOrganizeActionChecked}></CheckBox>
+            </View>
+          </View>
 
-          </Text>
+          <View>
+            <Text style={styles.sectionTitle}>Your Email</Text>
+            <Text style={styles.text}>
+              {profiledata && profiledata.data
+                ? profiledata.data.email
+                : 'Loading...'}
+            </Text>
 
-          <Text style={styles.sectionTitle}>Your Phone</Text>
-          <Text style={styles.text}>
-          {profiledata && profiledata.data ? profiledata.data.phone : 'Loading...'}
-
-          </Text>
-
-        </View>
+            <Text style={styles.sectionTitle}>Your Phone</Text>
+            <Text style={styles.text}>
+              {profiledata && profiledata.data
+                ? profiledata.data.phone
+                : 'Loading...'}
+            </Text>
+          </View>
         </View>
       </ScrollView>
       <View style={styles.navbar}>
@@ -279,7 +290,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, // Make the container take up the entire screen
     flexDirection: 'column', // Arrange the child elements vertically
-    
   },
   Icon: {
     color: 'white',
@@ -292,14 +302,13 @@ const styles = StyleSheet.create({
     height: '90%',
   },
   container2: {
-    
     padding: 20,
   },
-  gradient:{
- width:405,
- left:-20,
- height:200,
- bottom:24
+  gradient: {
+    width: 405,
+    left: -20,
+    height: 200,
+    bottom: 24,
   },
   navbar: {
     flexDirection: 'row',
@@ -344,7 +353,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container2: {
-  
     padding: 25,
   },
   contentText: {
@@ -392,8 +400,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: 'grey',
   },
-  activity:{
-    bottom:60
+  activity: {
+    bottom: 60,
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -402,8 +410,7 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     fontSize: 18,
     color: 'grey',
-    right:-2
-
+    right: -2,
   },
   subtitle: {
     fontSize: 16,
@@ -504,4 +511,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default Profile;

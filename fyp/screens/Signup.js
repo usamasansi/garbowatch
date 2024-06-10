@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {
   View,
   Text,
@@ -7,7 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { GoogleSigninButton, GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSigninButton,
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,7 +26,7 @@ const ThemeContext = React.createContext({
 
 export default function Signup() {
   const navigation = useNavigation();
- 
+
   const [theme, setTheme] = useState({
     primaryColor: '#42A5F5',
     secondaryColor: '#fff',
@@ -40,7 +44,7 @@ export default function Signup() {
 
   const handleSignin = async () => {
     try {
-      const response = await fetch('http://192.168.141.200:3000/api/signup', {
+      const response = await fetch('http://192.168.238.196:3000/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +62,6 @@ export default function Signup() {
         setsigninState({
           ...signinState,
           isSignedIn: true,
-         
         }); // Update the state with the username
         // await AsyncStorage.setItem(
         //   'email',
@@ -67,17 +70,17 @@ export default function Signup() {
         storage.save({
           key: 'email', // Note: Do not use underscore("_") in key!
           data: {
-           email:signinState.email
+            email: signinState.email,
           },
-        
+
           // if expires not specified, the defaultExpires will be applied instead.
           // if set to null, then it will never expire.
-          expires: 1000 * 3600
+          expires: 1000 * 3600,
         });
         navigation.navigate('profile'); // Pass username to Profile
       } else {
         const errorData = await response.json();
-        setsigninState({ ...signinState, errors: errorData });
+        setsigninState({...signinState, errors: errorData});
       }
     } catch (error) {
       console.error('Error:', error);
@@ -101,7 +104,7 @@ export default function Signup() {
             placeholder="Username"
             value={signinState.username}
             onChangeText={text =>
-              setsigninState({ ...signinState, username: text })
+              setsigninState({...signinState, username: text})
             }
           />
         </View>
@@ -118,7 +121,7 @@ export default function Signup() {
             secureTextEntry={true}
             value={signinState.password}
             onChangeText={text =>
-              setsigninState({ ...signinState, password: text })
+              setsigninState({...signinState, password: text})
             }
           />
         </View>
@@ -133,9 +136,7 @@ export default function Signup() {
             style={styles.input}
             placeholder="Email"
             value={signinState.email}
-            onChangeText={text =>
-              setsigninState({ ...signinState, email: text })
-            }
+            onChangeText={text => setsigninState({...signinState, email: text})}
           />
         </View>
 

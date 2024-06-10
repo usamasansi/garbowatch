@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const ThemeContext = React.createContext({
@@ -35,7 +35,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.141.200:3000/api/login', {
+      const response = await fetch('http://192.168.238.196:3000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,8 +49,8 @@ const Login = () => {
       if (response.ok) {
         // Handle successful login
         const userData = await response.json(); // Assuming the response contains user data including username
-        setLoginState({ ...loginState, isLoggedIn: true }); // Update the state to indicate the user is logged in
-        navigation.navigate('Home', { username: userData.username }); // Pass username to Profile
+        setLoginState({...loginState, isLoggedIn: true}); // Update the state to indicate the user is logged in
+        navigation.navigate('Home', {username: userData.username}); // Pass username to Profile
       } else {
         // Handle login errors
         const errorData = await response.json();
@@ -79,7 +79,9 @@ const Login = () => {
             style={styles.input}
             placeholder="Username"
             value={loginState.username}
-            onChangeText={text => setLoginState({ ...loginState, username: text })}
+            onChangeText={text =>
+              setLoginState({...loginState, username: text})
+            }
           />
         </View>
 
@@ -94,7 +96,9 @@ const Login = () => {
             placeholder="Password"
             secureTextEntry={true}
             value={loginState.password}
-            onChangeText={text => setLoginState({ ...loginState, password: text })}
+            onChangeText={text =>
+              setLoginState({...loginState, password: text})
+            }
           />
         </View>
 

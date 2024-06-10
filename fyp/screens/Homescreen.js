@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
 import LinearGradient from 'react-native-linear-gradient';
 import ImageSlider from './ImageSlider';
+import chat from './Chat';
 
 import {
   View,
@@ -52,40 +53,30 @@ const Homescreen = ({navigation}) => {
               styles.navItem,
               isNavItemActive('About') && styles.activeabout,
             ]}>
-               <LinearGradient 
-         colors={['#B9E976', '#21453F']}
-         style={styles.gradient}
-        >
-            <Text style={styles.garbowatch}> GARBOWATCH</Text>
+            <LinearGradient
+              colors={['#B9E976', '#21453F']}
+              style={styles.gradient}>
+              <Text style={styles.garbowatch}> GARBOWATCH</Text>
             </LinearGradient>
           </TouchableOpacity>
-          
         </View>
         <View style={styles.contentView}>
-          <View style={{width:'120%',
-         
-         
-        }}>
-           <ImageBackground
-      source={require('../assests/images/Leonardo_Diffusion_XL_green_background_image_with_white_maps_o_3.jpg')} // Set the path to your image
-      style={styles.background}
-    >
-        <TouchableOpacity
-        onPress={() => navigation.navigate('Report_edit')}>
-          
-       <Text style={styles.Button}>Report Illegal dump</Text>
-       
-     </TouchableOpacity>
-     </ImageBackground>
-     </View>
-          
-    
-
-
+          <View style={{width: '120%'}}>
+            <ImageBackground
+              source={require('../assests/images/Leonardo_Diffusion_XL_green_background_image_with_white_maps_o_3.jpg')} // Set the path to your image
+              style={styles.background}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Report_edit')}>
+                <Text style={styles.Button}>Report Illegal dump</Text>
+              </TouchableOpacity>
+            </ImageBackground>
+          </View>
         </View>
         <ImageSlider />
-        <Text style={styles.Button1}>Welcome to Garbage community app 
-        press on the button to report illegal dump</Text>
+        <Text style={styles.Button1}>
+          Welcome to Garbage community app press on the button to report illegal
+          dump
+        </Text>
       </ScrollView>
 
       <View style={styles.navbar}>
@@ -109,7 +100,7 @@ const Homescreen = ({navigation}) => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigateTo('CommunityForum')}>
+        <TouchableOpacity onPress={() => navigateTo('CommunityForm')}>
           <Text style={styles.navItem}>
             <Icon name="chat" size={25} />
           </Text>
@@ -128,22 +119,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, // Make the container take up the entire screen
     flexDirection: 'column', // Arrange the child elements vertically
-    backgroundColor:'#FFFEE1'
-    
+    backgroundColor: '#FFFEE1',
   },
   containers: {
     width: '100%',
     height: '90%',
-    
-
   },
   background: {
-    height:160,
+    height: 160,
     resizeMode: 'cover', // or 'stretch' or 'contain'
     justifyContent: 'center',
-    bottom:20
-    
-     
+    bottom: 20,
   },
   navbar: {
     flexDirection: 'row',
@@ -167,9 +153,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-
   },
- 
+
   contentText: {
     fontSize: 16,
   },
@@ -187,40 +172,36 @@ const styles = StyleSheet.create({
     bottom: -20,
     right: -75,
     shadowColor: 'black',
-    shadowOffset: { width: 2, height: 2 },
+    shadowOffset: {width: 2, height: 2},
     shadowOpacity: 5.5,
     shadowRadius: 2,
     // Shadow properties for Android
     elevation: 100,
   },
   Button1: {
-    
     color: '#49AC25',
     width: 390,
     height: 110,
     backgroundColor: '#FFFFFF',
     shadowColor: 'black',
-    shadowOffset: { width: 1, height: 4 },
+    shadowOffset: {width: 1, height: 4},
     shadowOpacity: 1.2,
     shadowRadius: 20,
     borderRadius: 16,
     elevation: 20, // This adds elevation for Android shadows
-    fontSize:25,
+    fontSize: 25,
     fontFamily: 'Poppins',
     fontWeight: 'bold',
     fontSize: 25,
     lineHeight: 30,
     color: '#49AC25',
-    left:10,
-    
+    left: 10,
   },
   contentView: {
     flex: 1, // Make the content view take up the remaining space
     padding: 20,
     alignItems: 'center', // Center the button horizontally
     justifyContent: 'center', // Center the button vertically
-  
-    
   },
   content: {
     alignItems: 'center',
@@ -234,12 +215,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 15,
     color: '#001F3F',
-    bottom:-15
-
+    bottom: -15,
   },
-  gradient:{
- bottom:4,
- 
+  gradient: {
+    bottom: 4,
   },
   subtitle: {
     fontSize: 16,
@@ -304,25 +283,25 @@ const styles = StyleSheet.create({
   garbowatchContainer: {
     flexDirection: 'row', // Set the container to row direction to align text and icon horizontally
     alignItems: 'center', // Center items vertically
- 
+
     padding: 5,
     borderRadius: 8,
   },
   garbowatch: {
-    height:55,
-    width:'150%',
+    height: 55,
+    width: '150%',
     padding: 4,
     color: 'white',
     fontWeight: 'bold',
     fontSize: 25,
     borderRadius: 5,
     justifyContent: 'space-between',
-    left:-3,
-    bottom:0
+    left: -3,
+    bottom: 0,
   },
   image_icon: {
     marginRight: 1000,
   },
 });
 
-export default Homescreen;
+export default Homescreen;
