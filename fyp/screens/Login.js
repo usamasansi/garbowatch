@@ -6,18 +6,24 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  Image
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import storage from './storage';
+import Pubnub from 'pubnub';
 const ThemeContext = React.createContext({
   primaryColor: '#42A5F5',
   secondaryColor: '#fff',
   textColor: '#000',
   errorColor: '#f00',
 });
-
+const pubnub = new Pubnub({
+  publishKey: "pub-c-175d671e-8966-40b6-a87c-56fc64a6dc8f",
+  subscribeKey: "sub-c-32f049ce-1ac9-4028-8e1a-7531d5c0c579",
+  userId: "myUniqueUserId" // Set your unique user ID here
+});
 const Login = () => {
   const navigation = useNavigation();
   const [theme, setTheme] = useState({
@@ -57,6 +63,8 @@ const Login = () => {
             // Handle successful login
             const userData = await response.json();
             console.log(userData.data.email,"raed")
+            pubnub.setUserId(userData.data.email);
+
             storage.save({
               key: 'email',
               data: {
@@ -88,6 +96,10 @@ const Login = () => {
       </View>
       
       <View style={styles.container}>
+      <Image
+        source={require('../assests/images/garbowatch.png')}
+        style={styles.image}
+      />
         <Text style={styles.header}>LOG IN</Text>
 
         <View style={styles.inputContainer}>
@@ -151,6 +163,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    top:-120,
+  
+    
   },
   header: {
     fontSize: 30,
@@ -171,6 +186,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     fontSize: 16,
     color: 'black',
+  },
+  image: {
+    width: '100%',
+    height: 200, // Set an appropriate height for the image
+    resizeMode: 'cover', // Adjust the image's size and aspect ratio
+    top:-40
   },
   error: {
     color: 'red',

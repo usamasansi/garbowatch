@@ -21,7 +21,7 @@ import ImageSlider from './screens/ImageSlider';
 import CustomLoader from './screens/CustomLoader';
 import Stater from './screens/stater';
 
-import {ChatClient} from './screens/ChatClient';
+import ChatClient from './screens/ChatClient';
 import test_call from "./screens/test_call"
 
 // import CameraComponent2 from './screens/CameraComponent2';

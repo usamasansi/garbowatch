@@ -71,11 +71,14 @@ const Homescreen = ({navigation}) => {
       style={styles.background}
     >
         <TouchableOpacity
-        onPress={() => navigation.navigate('Report_edit')}>
-          
-       <Text style={styles.Button}>Report Illegal dump</Text>
-       
-     </TouchableOpacity>
+                onPress={() => navigation.navigate('Report_edit')}>
+                <LinearGradient
+                  colors={['#ece9e6', '#ffffff']}
+                  style={styles.reportButtonGradient}
+                >
+                  <Text style={styles.reportButtonText}>Report Illegal Dump</Text>
+                </LinearGradient>
+              </TouchableOpacity>
      </ImageBackground>
      </View>
           
@@ -84,8 +87,7 @@ const Homescreen = ({navigation}) => {
 
         </View>
         <ImageSlider />
-        <Text style={styles.Button1}>Welcome to Garbage community app 
-        press on the button to report illegal dump</Text>
+        
       </ScrollView>
 
       <View style={styles.navbar}>
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, // Make the container take up the entire screen
     flexDirection: 'column', // Arrange the child elements vertically
-    backgroundColor:'#FFFEE1'
+  
     
   },
   containers: {
@@ -190,8 +192,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 5.5,
     shadowRadius: 2,
-    // Shadow properties for Android
     elevation: 100,
+    borderRadius:25
   },
   Button1: {
     
@@ -221,6 +223,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Center the button vertically
   
     
+  },
+  reportButtonGradient: {
+    width: 250,
+    height: 40,
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+    shadowColor: 'black',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 5.5,
+    shadowRadius: 2,
+    elevation: 100,
+  left:80
+  },
+  reportButtonText: {
+    color: '#4CBB17',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
   content: {
     alignItems: 'center',

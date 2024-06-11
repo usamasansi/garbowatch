@@ -340,7 +340,9 @@ const styles = StyleSheet.create({
   gradient: {
     borderRadius: 8,
     padding: 10,
-    top:-7
+    top:-7,
+    width:420,
+    left:-8
   },
   Icon: {
     color: 'white',
@@ -426,12 +428,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   images:{
-  width: 380,
+    width: 420,
   height: 200,
-  borderColor: 'black',
-  borderWidth: 1,
-  bottom:-210,
-  left:-4
+  borderColor: 'lightgrey',
+  borderWidth: 2,
+  bottom:-207,
+  left:-17
 
   },
   submitButtonText: {

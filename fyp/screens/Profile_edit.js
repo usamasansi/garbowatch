@@ -187,14 +187,15 @@ const Profile_edit = ({navigation, route}) => {
 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
     
       <Text style={{ fontSize: 18, marginVertical: 10 , color:'grey'}}> I want to organize Cleaning Action</Text>
-      <CheckBox value={isOrganizeActionChecked}
+      <CheckBox style={{left:16}}value={isOrganizeActionChecked}
           onValueChange={(newValue) => setOrganizeActionChecked(newValue)}
           tintColors={{ true: '#4CBB17' }} 
           />
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={{ fontSize: 18, marginVertical: 10, color:'grey' }}>I want to receive notifications about cleaning</Text>
-       <CheckBox  value={isNotificationChecked}
+        <Text style={{ fontSize: 18, marginVertical: 10, color:'grey' }}> I want to receive notifications about 
+           cleaning</Text>
+       <CheckBox style={{bottom:12, left:-5}} value={isNotificationChecked}
         onValueChange={setNotificationChecked}
           tintColors={{ true: '#4CBB17' }} 
 
@@ -203,13 +204,7 @@ const Profile_edit = ({navigation, route}) => {
        </View>
      
 
-       <Text style={{ fontSize: 24, marginVertical: 10, fontWeight:'bold', color:'grey' }}> GPS coordinate formats </Text>
-      
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-      <Text style={{ flex: 1, color: 'gray', fontSize: 18 }}>Location Format Degrees Example</Text>
-      
-
-      </View>
+       
           </View>
        
  
