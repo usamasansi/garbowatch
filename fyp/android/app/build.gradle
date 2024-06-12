@@ -91,6 +91,7 @@ android {
         }
     }
     buildTypes {
+        
         debug {
             signingConfig signingConfigs.debug
         }
