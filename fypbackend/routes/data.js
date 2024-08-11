@@ -65,5 +65,55 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+router.get("/last30days", async (req, res) => {
+  try {
+    // Get the current date
+    const currentDate = new Date();
+    console.log('Current Date:', currentDate);
+
+    // Calculate the date 30 days ago
+    const pastDate = new Date();
+    pastDate.setDate(currentDate.getDate() - 30);
+    pastDate.setHours(0, 0, 0, 0);
+    console.log('Past Date:', pastDate);
+
+    // Find all data entries where the date is greater than or equal to 30 days ago
+    const recentData = await Data.find({ date: { $gte: pastDate } }).exec();
+    console.log('Recent Data:', recentData);
+
+    // Send the data as JSON response
+    res.status(200).json(recentData);
+  } catch (error) {
+    console.error("Error fetching data from the last 30 days:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.get("/most-issues-area", async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const pastDate = new Date();
+    pastDate.setDate(currentDate.getDate() - 30);
+    pastDate.setHours(0, 0, 0, 0);
+
+    // Group by location and count occurrences
+    const areaData = await Data.aggregate([
+      { $match: { date: { $gte: pastDate } } },
+      { $group: { _id: "$location", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 1 } // Get the area with the most reports
+    ]);
+
+    if (areaData.length > 0) {
+      res.status(200).json(areaData[0]);
+    } else {
+      res.status(404).json({ message: "No reports found in the last 30 days" });
+    }
+  } catch (error) {
+    console.error("Error fetching area with most issues:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 module.exports = router;

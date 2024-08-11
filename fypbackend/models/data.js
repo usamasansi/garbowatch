@@ -18,4 +18,5 @@ const dataSchema = new mongoose.Schema({
   classificationResult:mongoose.Schema.Types.Mixed,
 });
 
+
 module.exports = mongoose.model("Data", dataSchema);
