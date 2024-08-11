@@ -65,7 +65,7 @@ const Homescreen = ({navigation}) => {
 
         // Optionally, alert the user with the combined information
         Alert.alert(
-          'Monthly Reports and Most Issues Area',
+          ' Most Issues Area',
           `Total Reports in Last 30 Days: ${reportCount}\n` +
           `Area with Most Garbage Issues: ${mostIssuesData._id} (Reports: ${mostIssuesData.count})`
         );
