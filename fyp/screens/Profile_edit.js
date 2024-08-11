@@ -56,7 +56,7 @@ const Profile_edit = ({navigation, route}) => {
             return; // Exit the function if email is invalid
           }
       
-          const response = await fetch('http://192.168.146.30:3000/api/profile', {
+          const response = await fetch('http://192.168.10.15:3000/api/profile', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

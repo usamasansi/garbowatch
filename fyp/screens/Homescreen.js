@@ -1,5 +1,5 @@
 import {ACTIVE} from 'nativewind/dist/utils/selector';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 // You can choose a different icon set if you prefer
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Example icon library
 import LinearGradient from 'react-native-linear-gradient';
@@ -14,10 +14,14 @@ import {
   Image,
   ScrollView,
   Linking,
+  Alert
 } from 'react-native';
 
 const Homescreen = ({navigation}) => {
   const [activeNavItem, setActiveNavItem] = useState(null);
+  const [cameraData, setCameraData] = useState([]);
+  const [mostIssuesArea, setMostIssuesArea] = useState(null);
+
   const navigateTo = screen => {
     // Assuming 'navigation' prop is passed from React Navigation
 
@@ -39,7 +43,42 @@ const Homescreen = ({navigation}) => {
   const isNavItemActive = navItem => {
     return activeNavItem === navItem;
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch the area with the most garbage issues
+        const mostIssuesResponse = await fetch('http://192.168.10.15:3000/api/data/most-issues-area');
+        if (!mostIssuesResponse.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const mostIssuesData = await mostIssuesResponse.json();
+        setMostIssuesArea(mostIssuesData);
 
+        // Fetch the monthly reports
+        const monthlyReportsResponse = await fetch('http://192.168.10.15:3000/api/data/last30days');
+        if (!monthlyReportsResponse.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const monthlyReportsData = await monthlyReportsResponse.json();
+        const reportCount = Array.isArray(monthlyReportsData) ? monthlyReportsData.length : 0;
+        setCameraData(reportCount);
+
+        // Optionally, alert the user with the combined information
+        Alert.alert(
+          'Monthly Reports and Most Issues Area',
+          `Total Reports in Last 30 Days: ${reportCount}\n` +
+          `Area with Most Garbage Issues: ${mostIssuesData._id} (Reports: ${mostIssuesData.count})`
+        );
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        Alert.alert('Error', `Failed to fetch data: ${error.message}`);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -86,10 +125,46 @@ const Homescreen = ({navigation}) => {
 
 
         </View>
-        <ImageSlider />
-        
-      </ScrollView>
+        <View>
+      <Text style={styles.statisticsText}>Statistics
 
+      </Text>
+      <TouchableOpacity>
+      <Text style={styles.moreText}>More</Text>
+      </TouchableOpacity>
+        {/* <ImageSlider /> */}
+        </View>
+      </ScrollView>
+      <View style={styles.container1}>
+        <View style={styles.frame1}>
+        <View style={styles.autoLayout1}>
+          
+          <Text style={styles.monthlyReports}>Monthly Reports</Text>
+          <Text style={styles.reportsCount}> {cameraData}</Text>
+
+        </View>
+        <View style={styles.autoLayout2}>
+          
+       {mostIssuesArea ? (
+  <View>
+    <Text style={styles.issuesTitle}>Most Issued Areas</Text>
+    {/* <Text style={styles.areaText}>{mostIssuesArea._id}</Text> */}
+    <Text style={styles.countText}> {mostIssuesArea.count}</Text>
+  </View>
+) : (
+  <Text style={styles.mostIssuesArea}></Text>
+)}
+
+     
+          
+        </View>
+        <View style={styles.autoLayout3}>
+         
+          {/* <Text style={styles.responsibal}>Responsible</Text> */}
+          
+        </View>
+      </View>
+      </View>
       <View style={styles.navbar}>
         <TouchableOpacity
           onPress={() => navigateTo('Home')}
@@ -139,13 +214,29 @@ const styles = StyleSheet.create({
     
 
   },
+
   background: {
-    height:160,
+    height:210,
     resizeMode: 'cover', // or 'stretch' or 'contain'
     justifyContent: 'center',
     bottom:20
     
      
+  },
+  issuesCount: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+    marginBottom: 5,
+  },
+ 
+  countText: {
+    fontSize: 16,
+    color: 'black',
+  bottom:12,
+  right:-315,
+  fontWeight:'bold'
+  
   },
   navbar: {
     flexDirection: 'row',
@@ -194,6 +285,17 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 100,
     borderRadius:25
+  },
+  issuesTitle:{
+   
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 16,
+    bottom:-20,
+    color: '#000000',
+    right:15,
+    top:10
   },
   Button1: {
     
@@ -322,6 +424,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  mostIssuesArea: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    margin: 20,
+    
+  },
   garbowatchContainer: {
     flexDirection: 'row', // Set the container to row direction to align text and icon horizontally
     alignItems: 'center', // Center items vertically
@@ -343,6 +452,162 @@ const styles = StyleSheet.create({
   },
   image_icon: {
     marginRight: 1000,
+  },
+ 
+  statisticsText: {
+   
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 20,
+    
+    color: '#000000',
+    left:20,
+    bottom:-30
+  },
+  moreText: {
+    
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '500',
+    fontSize: 16,
+    
+    color: '#3CBA39',
+    left:330,
+    
+  },
+  reportCount: {
+    fontSize: 18,
+    color: '#333',
+    right:150
+  },
+  frame1: {
+    position: 'absolute',
+    width: 358,
+    height: 30,
+    left: 16,
+    top: 16,
+  },
+  autoLayout1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',    
+    
+
+  },
+  group1: {
+    width: 24,
+    height: 24,
+    backgroundColor: '#000000',
+  },
+  monthlyReports: {
+   
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 16,
+    height:50,
+    color: '#000000',
+  },
+  reportsCount: {
+    
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 16,
+    left:-10,
+    color: '#000000',
+    top:-12
+  },
+  autoLayout2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: 358,
+    height: 24,
+    padding: 0,
+    gap: 210,
+    top: 40,
+    position: 'absolute',
+    left: 16,
+  },
+  group2: {
+    width: 24,
+    height: 24,
+    backgroundColor: '#000000',
+  },
+  garbageIssues: {
+    
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 16,
+   left:-15,
+    color: '#000000',
+    height:30,
+  },
+  issuesCount: {
+   
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 16,
+    lineHeight: 19,
+    color: '#000000',
+    right:15,
+  
+  },
+  autoLayout3: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+   
+    padding: 0,
+    gap: 212,
+    top: 80,
+    position: 'absolute',
+    left: 16,
+  },
+  group3: {
+    width: 24,
+    height: 24,
+    backgroundColor: '#000000',
+  },
+  responsibal: {
+  
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 16,
+    left:-12,
+    color: '#000000',
+    
+  top:-6
+    
+  },
+  responsibalCount: {
+    width: 30,
+    height: 19,
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 16,
+    lineHeight: 19,
+    color: '#000000',
+  },
+  container1: {
+    position: 'absolute',
+    width: 390,
+    height: 150,
+    left: 11.5,
+  bottom:340,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.08,
+    shadowRadius: 15,
+    elevation: 2,
   },
 });
 
