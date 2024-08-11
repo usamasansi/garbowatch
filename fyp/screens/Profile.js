@@ -109,7 +109,7 @@ const Profile = ({navigation, route}) => {
   }, [email]); // E
   const getProfileData = async () => {
     try {
-      const response = await fetch(`http://192.168.146.30:3000/api/profile/${JSON.stringify({email})}`, {
+      const response = await fetch(`http://192.168.10.15:3000/api/profile/${JSON.stringify({email})}`, {
         method: 'GET',
       });
   

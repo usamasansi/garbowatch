@@ -96,7 +96,7 @@ const App = ({ navigation }) => {
     });
   
     try {
-      let response = await fetch("https://beb1-119-155-0-225.ngrok-free.app/predict", {
+      let response = await fetch("https://5925-39-46-239-195.ngrok-free.app/predict", {
         method: "POST",
         body: formData,
         headers: {
@@ -124,7 +124,7 @@ const App = ({ navigation }) => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        'http://192.168.146.30:3000/api/data/submit',
+        'http://192.168.10.15:3000/api/data/submit',
         {
           method: 'POST',
           headers: {

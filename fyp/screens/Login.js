@@ -48,7 +48,7 @@ const Login = () => {
             return; // Exit the function
         }
 
-        const response = await fetch('http://192.168.146.30:3000/api/login', {
+        const response = await fetch('http://192.168.10.15:3000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

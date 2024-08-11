@@ -55,7 +55,7 @@ export default function Signup() {
     }
 
     try {
-      const response = await fetch('http://192.168.146.30:3000/api/signup', {
+      const response = await fetch('http://192.168.10.15:3000/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -269,4 +269,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
 });

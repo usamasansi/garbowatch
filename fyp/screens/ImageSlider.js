@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     width:410, // Adjust as needed
     height: 585,
     borderRadius:40,
-    left:1
+    
   },
 });
 
